@@ -25,6 +25,14 @@ interface TemplateMoviePageProps {
     children: React.ReactElement;
 }
 
+/**
+ * Page layout for a single movie, showing the movie header and its posters
+ * alongside whatever content the page passes in.
+ *
+ * @param movie The movie the page is about.
+ * @param children The content shown beside the posters.
+ * @returns JSX.Element
+ */
 const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({
     movie,
     children,

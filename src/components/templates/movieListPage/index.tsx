@@ -10,6 +10,14 @@ const styles = {
     },
 };
 
+/**
+ * Page layout for any list of movies, pairing a header with the movie grid.
+ *
+ * @param movies The movies to list.
+ * @param title The heading shown above the grid.
+ * @param action Renders the icon button shown on each card.
+ * @returns JSX.Element
+ */
 const MovieListPageTemplate: React.FC<MovieListPageTemplateProps> = ({
     movies,
     title,
