@@ -2,7 +2,7 @@
  * Fetches the first page of discoverable movies from TMDB.
  *
  * @returns The discover response, containing the page number, total counts
- * and a `results` array of movies.
+ * and a results array of movies.
  * @throws If the response status is not ok.
  */
 export const getMovies = () => {
@@ -48,7 +48,7 @@ export const getMovie = (id: string) => {
 /**
  * Fetches the full list of movie genres, used to populate the filter menu.
  *
- * @returns An object with a `genres` array of id and name pairs.
+ * @returns An object with a genres array of id and name pairs.
  * @throws If the response status is not ok.
  */
 export const getGenres = () => {
@@ -73,7 +73,7 @@ export const getGenres = () => {
  * Fetches the poster images for a movie.
  *
  * @param id The TMDB id of the movie.
- * @returns The `posters` array from the images response, not the whole payload.
+ * @returns The posters array from the images response, not the whole payload.
  * @throws If the response status is not ok.
  */
 export const getMovieImages = (id: string | number) => {
@@ -96,7 +96,7 @@ export const getMovieImages = (id: string | number) => {
  * Fetches the reviews written for a movie.
  *
  * @param id The TMDB id of the movie.
- * @returns The `results` array of reviews, not the whole payload.
+ * @returns The results array of reviews, not the whole payload.
  */
 export const getMovieReviews = (id: string | number) => {
     return fetch(
@@ -111,7 +111,7 @@ export const getMovieReviews = (id: string | number) => {
 /**
  * Fetches the first page of upcoming movie releases.
  *
- * @returns The same shape as the discover response, with a `results` array
+ * @returns The same shape as the discover response, with a results array
  * of movies.
  * @throws If the response status is not ok.
  */
