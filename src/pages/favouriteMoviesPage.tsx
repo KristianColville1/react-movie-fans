@@ -1,16 +1,16 @@
 import React, { useContext } from "react";
-import PageTemplate from "@components/templateMovieListPage";
+import PageTemplate from "@templates/movieListPage";
 import { MoviesContext } from "@contexts/moviesContext";
 import { useQueries } from "react-query";
 import { getMovie } from "@api/tmdb-api";
-import Spinner from "@components/spinner";
+import Spinner from "@atoms/spinner";
 import useFiltering from "@hooks/useFiltering";
 import MovieFilterUI, {
     titleFilter,
     genreFilter,
-} from "@components/movieFilterUI";
-import RemoveFromFavourites from "@components/cardIcons/removeFromFavourites";
-import WriteReview from "@components/cardIcons/writeReview";
+} from "@organisms/movieFilterUI";
+import RemoveFromFavourites from "@atoms/cardIcons/removeFromFavourites";
+import WriteReview from "@atoms/cardIcons/writeReview";
 
 
 const titleFiltering = {

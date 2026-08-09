@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import MovieHeader from "@components/headerMovie";
+import MovieHeader from "@molecules/headerMovie";
 import SampleMovie from "./sampleData";
 import { MemoryRouter } from "react-router";
 
 import React from 'react';
 
 const meta = {
-    title: "Movie Details Page/MovieHeader",
+    title: "Molecules/MovieHeader",
     component: MovieHeader,
     decorators: [
         (Story: React.FC) => <MemoryRouter initialEntries={["/"]}><Story /></MemoryRouter>,

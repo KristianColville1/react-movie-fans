@@ -1,16 +1,16 @@
 
 import type { Meta, StoryObj } from '@storybook/react';
-import MovieList from "@components/movieList";
+import MovieList from "@organisms/movieList";
 import SampleMovie from "./sampleData";
 import { MemoryRouter } from "react-router";
 
-import AddToFavouritesIcon from "@components/cardIcons/addToFavourites";
+import AddToFavouritesIcon from "@atoms/cardIcons/addToFavourites";
 import Grid from "@mui/material/Grid";
 import MoviesContextProvider from "@contexts/moviesContext";
 
 
 const meta = {
-  title: "Home Page/MovieList",
+  title: "Organisms/MovieList",
   component: MovieList,
   decorators: [
       (Story) => <MemoryRouter initialEntries={["/"]}><Story /></MemoryRouter>,

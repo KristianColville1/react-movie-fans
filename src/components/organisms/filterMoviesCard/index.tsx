@@ -13,7 +13,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { getGenres } from "@api/tmdb-api";
 import { useQuery } from "react-query";
-import Spinner from "@components/spinner";
+import Spinner from "@atoms/spinner";
 
 
 const styles = {

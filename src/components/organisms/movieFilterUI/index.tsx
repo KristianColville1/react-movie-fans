@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import FilterCard from "@components/filterMoviesCard";
+import FilterCard from "@organisms/filterMoviesCard";
 import Fab from "@mui/material/Fab";
 import Drawer from "@mui/material/Drawer";
 import { BaseMovieProps } from "@typings/interfaces";

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import FilterMoviesCard from "@components/filterMoviesCard";
+import FilterMoviesCard from "@organisms/filterMoviesCard";
 import { MemoryRouter } from "react-router";
 import { action } from "@storybook/addon-actions";
 import { QueryClientProvider, QueryClient } from "react-query";
@@ -16,7 +16,7 @@ const queryClient = new QueryClient({
 });
 
 const meta = {
-  title: 'Home Page/FilterMoviesCard',
+  title: 'Organisms/FilterMoviesCard',
   component: FilterMoviesCard,
   decorators: [
     (Story: React.FC) => <MemoryRouter initialEntries={["/"]}><Story /></MemoryRouter>,

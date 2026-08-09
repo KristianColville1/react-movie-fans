@@ -1,10 +1,10 @@
 import React from "react";
-import SiteHeader from "@components/siteHeader";
+import SiteHeader from "@organisms/siteHeader";
 import { MemoryRouter } from "react-router";
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: "App Header",
+  title: "Organisms/SiteHeader",
   component: SiteHeader,
   decorators: [
     (Story: React.FC) => <MemoryRouter initialEntries={["/"]}><Story /></MemoryRouter>,

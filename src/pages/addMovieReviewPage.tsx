@@ -1,10 +1,10 @@
 import React from "react";
-import PageTemplate from "@components/templateMoviePage";
-import ReviewForm from "@components/reviewForm";
+import PageTemplate from "@templates/moviePage";
+import ReviewForm from "@organisms/reviewForm";
 import { useLocation } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getMovie } from "@api/tmdb-api";
-import Spinner from "@components/spinner";
+import Spinner from "@atoms/spinner";
 import { BaseMovieProps, MovieDetailsProps } from "@typings/interfaces";
 
 const WriteReviewPage: React.FC = () => {

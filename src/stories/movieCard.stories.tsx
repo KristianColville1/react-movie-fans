@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import MovieCard from "@components/movieCard";
+import MovieCard from "@molecules/movieCard";
 import SampleMovie from "./sampleData";
 import { MemoryRouter } from "react-router";
 import MoviesContextProvider from "@contexts/moviesContext";
 import { action } from "@storybook/addon-actions";
-import AddToFavouritesIcon from "@components/cardIcons/addToFavourites";
+import AddToFavouritesIcon from "@atoms/cardIcons/addToFavourites";
 import React from 'react';
 
 const meta = {
-  title: 'Home Page/MovieCard',
+  title: 'Molecules/MovieCard',
   component: MovieCard,
   decorators: [
     (Story) => <MemoryRouter initialEntries={["/"]}>{Story()}</MemoryRouter>,

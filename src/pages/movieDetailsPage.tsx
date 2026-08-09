@@ -1,11 +1,11 @@
 import React from "react"; // replace existing react import
 import { useParams } from "react-router-dom";
-import MovieDetails from "@components/movieDetails";
-import PageTemplate from "@components/templateMoviePage";
+import MovieDetails from "@organisms/movieDetails";
+import PageTemplate from "@templates/moviePage";
 // import useMovie from "@hooks/useMovie";
 import { getMovie } from "@api/tmdb-api";
 import { useQuery } from "react-query";
-import Spinner from "@components/spinner";
+import Spinner from "@atoms/spinner";
 import { MovieDetailsProps } from "@typings/interfaces";
 
 const MovieDetailsPage: React.FC = () => {
