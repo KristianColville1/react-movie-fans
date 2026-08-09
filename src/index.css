@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+/* CSS HEX */
+:root {
+    --navajo-white: #ffe0b5ff;
+    --jet-black: #272d2dff;
+    --pale-amber: #ede580ff;
+    --ocean-mist: #44bba4ff;
+    --magenta-bloom: #d35269ff;
+}

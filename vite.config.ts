@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath } from 'node:url'
 
 const srcPath = (folder: string) =>
@@ -7,7 +8,7 @@ const srcPath = (folder: string) =>
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   resolve: {
     // Keep in sync with `compilerOptions.paths` in tsconfig.json.
     alias: {
