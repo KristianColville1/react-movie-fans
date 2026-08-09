@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getMovie } from "@api/tmdb-api";
 import Spinner from "@atoms/spinner";
-import { BaseMovieProps, MovieDetailsProps } from "@typings/interfaces";
+import { MovieDetailsProps } from "@typings/interfaces";
 
 const WriteReviewPage: React.FC = () => {
     const location = useLocation();

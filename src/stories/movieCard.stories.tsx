@@ -3,9 +3,7 @@ import MovieCard from "@molecules/movieCard";
 import SampleMovie from "./sampleData";
 import { MemoryRouter } from "react-router";
 import MoviesContextProvider from "@contexts/moviesContext";
-import { action } from "@storybook/addon-actions";
 import AddToFavouritesIcon from "@atoms/cardIcons/addToFavourites";
-import React from 'react';
 
 const meta = {
   title: 'Molecules/MovieCard',
