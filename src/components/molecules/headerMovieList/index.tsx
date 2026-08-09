@@ -19,6 +19,12 @@ interface HeaderProps {
     title: string;
 }
 
+/**
+ * Header shown at the top of a movie list page.
+ *
+ * @param headerProps The title to display between the paging arrows.
+ * @returns JSX.Element
+ */
 const Header: React.FC<HeaderProps> = (headerProps) => {
     const title = headerProps.title;
 

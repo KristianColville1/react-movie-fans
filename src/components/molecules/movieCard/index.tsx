@@ -30,17 +30,24 @@ interface MovieCardProps {
     action: (m: BaseMovieProps) => React.ReactNode;
 }
 
+/**
+ * Card showing a movie's poster, title, release date and rating.
+ *
+ * @param movie The movie to display.
+ * @param action Renders the icon button shown in the card's actions.
+ * @returns JSX.Element
+ */
 const MovieCard: React.FC<MovieCardProps> = ({ movie, action }) => {
 
-  const { favourites } = useContext(MoviesContext); //NEW
+  const { favourites } = useContext(MoviesContext);
 
-  const isFavourite = favourites.find((id) => id === movie.id) ? true : false; //NEW
-    
+  const isFavourite = favourites.find((id) => id === movie.id) ? true : false;
+
     return (
         <Card sx={styles.card}>
             <CardHeader
                 avatar={
-                    isFavourite ? ( //CHANGED
+                    isFavourite ? (
                         <Avatar sx={styles.avatar}>
                             <FavoriteIcon />
                         </Avatar>

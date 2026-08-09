@@ -21,6 +21,12 @@ const styles = {
     },
 };
 
+/**
+ * Header shown at the top of a movie details page.
+ *
+ * @param movie The movie whose title, tagline and homepage are shown.
+ * @returns JSX.Element
+ */
 const MovieHeader: React.FC<MovieDetailsProps> = (movie) => {
     // get the favourites from localStorage
     const favourites: { id: number }[] = JSON.parse(
