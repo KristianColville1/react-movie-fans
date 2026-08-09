@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import MovieDetails from "@organisms/movieDetails";
 import SampleMovie from "./sampleData";
 import { MemoryRouter } from "react-router";
-import MoviesContextProvider from "@contexts/moviesContext";
+import MoviesContextProvider from "@contexts/moviesContextProvider";
 
 const meta = {
     title: "Organisms/MovieDetails",

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import MovieListHeader from "@molecules/headerMovieList";
 import { MemoryRouter } from "react-router";
-import MoviesContextProvider from "@contexts/moviesContext";
+import MoviesContextProvider from "@contexts/moviesContextProvider";
 
 const meta = {
     title: 'Molecules/MovieListHeader',
