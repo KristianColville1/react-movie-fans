@@ -23,7 +23,9 @@ const styles = {
 
 const MovieHeader: React.FC<MovieDetailsProps> = (movie) => {
     // get the favourites from localStorage
-    const favourites = JSON.parse(localStorage.getItem("favourites") || "[]");
+    const favourites: { id: number }[] = JSON.parse(
+        localStorage.getItem("favourites") || "[]",
+    );
 
     return (
         <Paper component="div" sx={styles.root}>
