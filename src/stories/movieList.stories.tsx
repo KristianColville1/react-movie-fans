@@ -1,12 +1,12 @@
 
 import type { Meta, StoryObj } from '@storybook/react';
-import MovieList from "../components/movieList";
+import MovieList from "@components/movieList";
 import SampleMovie from "./sampleData";
 import { MemoryRouter } from "react-router";
 
-import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
+import AddToFavouritesIcon from "@components/cardIcons/addToFavourites";
 import Grid from "@mui/material/Grid";
-import MoviesContextProvider from "../contexts/moviesContext";
+import MoviesContextProvider from "@contexts/moviesContext";
 
 
 const meta = {

@@ -1,5 +1,5 @@
 import React from "react";
-import SiteHeader from "../components/siteHeader";
+import SiteHeader from "@components/siteHeader";
 import { MemoryRouter } from "react-router";
 import type { Meta, StoryObj } from '@storybook/react';
 

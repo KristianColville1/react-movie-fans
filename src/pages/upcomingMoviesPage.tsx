@@ -1,15 +1,15 @@
 import React from "react";
-import PageTemplate from "../components/templateMovieListPage";
-import { getUpcomingMovies } from "../api/tmdb-api";
-import useFiltering from "../hooks/useFiltering";
+import PageTemplate from "@components/templateMovieListPage";
+import { getUpcomingMovies } from "@api/tmdb-api";
+import useFiltering from "@hooks/useFiltering";
 import MovieFilterUI, {
     titleFilter,
     genreFilter,
-} from "../components/movieFilterUI";
-import { DiscoverMovies } from "../types/interfaces";
+} from "@components/movieFilterUI";
+import { DiscoverMovies } from "@typings/interfaces";
 import { useQuery } from "react-query";
-import Spinner from "../components/spinner";
-import AddToPlaylistIcon from "../components/cardIcons/addToPlaylist";
+import Spinner from "@components/spinner";
+import AddToPlaylistIcon from "@components/cardIcons/addToPlaylist";
 
 const titleFiltering = {
     name: "title",

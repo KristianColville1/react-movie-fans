@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { BaseMovieProps, Review } from "../types/interfaces";
+import { BaseMovieProps, Review } from "@typings/interfaces";
 
 interface MovieContextInterface {
     favourites: number[];

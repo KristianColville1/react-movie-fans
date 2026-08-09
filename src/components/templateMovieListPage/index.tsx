@@ -1,8 +1,8 @@
 import React from "react";
-import Header from "../headerMovieList";
+import Header from "@components/headerMovieList";
 import Grid from "@mui/material/Grid";
-import MovieList from "../movieList";
-import { MovieListPageTemplateProps } from "../../types/interfaces";
+import MovieList from "@components/movieList";
+import { MovieListPageTemplateProps } from "@typings/interfaces";
 
 const styles = {
     root: {

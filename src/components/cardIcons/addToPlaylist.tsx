@@ -1,8 +1,8 @@
 import React, { MouseEvent, useContext } from "react";
-import { MoviesContext } from "../../contexts/moviesContext";
+import { MoviesContext } from "@contexts/moviesContext";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import IconButton from "@mui/material/IconButton";
-import { BaseMovieProps } from "../../types/interfaces";
+import { BaseMovieProps } from "@typings/interfaces";
 
 
 const AddToPlaylistIcon: React.FC<BaseMovieProps> = (movie) => {
