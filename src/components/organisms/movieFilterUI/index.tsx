@@ -21,6 +21,14 @@ interface MovieFilterUIProps {
     genreFilter: string;
 }
 
+/**
+ * Floating filter button that opens a drawer holding the filter card.
+ *
+ * @param onFilterValuesChange Called with the filter that changed and its new value.
+ * @param titleFilter The current title search text.
+ * @param genreFilter The id of the currently selected genre.
+ * @returns JSX.Element
+ */
 const MovieFilterUI: React.FC<MovieFilterUIProps> = ({
     onFilterValuesChange,
     titleFilter,

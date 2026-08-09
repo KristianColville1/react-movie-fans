@@ -3,6 +3,13 @@ import Movie from "@molecules/movieCard";
 import Grid from "@mui/material/Grid";
 import { BaseMovieListProps } from "@typings/interfaces";
 
+/**
+ * Grid of movie cards.
+ *
+ * @param movies The movies to show.
+ * @param action Renders the icon button shown on each card.
+ * @returns JSX.Element
+ */
 const MovieList: React.FC<BaseMovieListProps> = ({ movies, action }) => {
     const movieCards = movies.map((m) => (
         <Grid key={m.id} item xs={12} sm={6} md={4} lg={3} xl={2}>

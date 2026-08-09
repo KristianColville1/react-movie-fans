@@ -35,6 +35,14 @@ interface FilterMoviesCardProps {
     genreFilter: string;
 }
 
+/**
+ * Card holding the search field and genre menu used to filter a movie list.
+ *
+ * @param onUserInput Called with the filter that changed and its new value.
+ * @param titleFilter The current title search text.
+ * @param genreFilter The id of the currently selected genre.
+ * @returns JSX.Element
+ */
 const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ onUserInput, titleFilter, genreFilter }) => {
   const { data, error, isLoading, isError } = useQuery<GenreData, Error>(
       "genres",

@@ -20,6 +20,12 @@ const styles = {
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
+/**
+ * Fixed app bar with the site title and the main navigation, which collapses
+ * into a menu on smaller screens.
+ *
+ * @returns JSX.Element
+ */
 const SiteHeader: React.FC = () => {
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);

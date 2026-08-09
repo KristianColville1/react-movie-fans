@@ -14,6 +14,12 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 
 
+/**
+ * Form for writing a review of a movie, which is saved to the movies context.
+ *
+ * @param movie The movie being reviewed.
+ * @returns JSX.Element
+ */
 const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
     const defaultValues = {
         defaultValues: {
@@ -35,7 +41,7 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
     const navigate = useNavigate();
     const context = useContext(MoviesContext);
     const [rating, setRating] = useState(3);
-    const [open, setOpen] = useState(false); //NEW
+    const [open, setOpen] = useState(false);
 
     const handleRatingChange = (event: ChangeEvent<HTMLInputElement>) => {
         setRating(Number(event.target.value));
@@ -45,8 +51,7 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
          review.movieId = movie.id;
          review.rating = rating;
          context.addReview(movie, review);
-         setOpen(true); // NEW
-         // console.log(review);
+         setOpen(true);
      };
 
 

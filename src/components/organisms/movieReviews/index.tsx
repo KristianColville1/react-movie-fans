@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { getMovieReviews } from "@api/tmdb-api";
 import { excerpt } from "@/util";
 
-import { MovieDetailsProps, Review } from "@typings/interfaces"; // Import the MovieT type from the appropriate location
+import { MovieDetailsProps, Review } from "@typings/interfaces";
 
 const styles = {
     table: {
@@ -18,6 +18,13 @@ const styles = {
     },
 };
 
+/**
+ * Table of the reviews TMDB holds for a movie, each row linking to the full
+ * text of that review.
+ *
+ * @param movie The movie whose reviews are listed.
+ * @returns JSX.Element
+ */
 const MovieReviews: React.FC<MovieDetailsProps> = (movie) => {
     const [reviews, setReviews] = useState([]);
 
