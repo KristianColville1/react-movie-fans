@@ -1,3 +1,10 @@
+/**
+ * Fetches the first page of discoverable movies from TMDB.
+ *
+ * @returns The discover response, containing the page number, total counts
+ * and a `results` array of movies.
+ * @throws If the response status is not ok.
+ */
 export const getMovies = () => {
     return fetch(
         `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=1`,
@@ -14,6 +21,13 @@ export const getMovies = () => {
         });
 };
 
+/**
+ * Fetches the full details of a single movie.
+ *
+ * @param id The TMDB id of the movie.
+ * @returns The movie details, including its genres and production countries.
+ * @throws If the response status is not ok.
+ */
 export const getMovie = (id: string) => {
     return fetch(
         `https://api.themoviedb.org/3/movie/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}`,
@@ -31,6 +45,12 @@ export const getMovie = (id: string) => {
         });
 };
 
+/**
+ * Fetches the full list of movie genres, used to populate the filter menu.
+ *
+ * @returns An object with a `genres` array of id and name pairs.
+ * @throws If the response status is not ok.
+ */
 export const getGenres = () => {
     return fetch(
         "https://api.themoviedb.org/3/genre/movie/list?api_key=" +
@@ -49,6 +69,13 @@ export const getGenres = () => {
         });
 };
 
+/**
+ * Fetches the poster images for a movie.
+ *
+ * @param id The TMDB id of the movie.
+ * @returns The `posters` array from the images response, not the whole payload.
+ * @throws If the response status is not ok.
+ */
 export const getMovieImages = (id: string | number) => {
     return fetch(
         `https://api.themoviedb.org/3/movie/${id}/images?api_key=${import.meta.env.VITE_TMDB_KEY}`,
@@ -65,18 +92,29 @@ export const getMovieImages = (id: string | number) => {
         });
 };
 
+/**
+ * Fetches the reviews written for a movie.
+ *
+ * @param id The TMDB id of the movie.
+ * @returns The `results` array of reviews, not the whole payload.
+ */
 export const getMovieReviews = (id: string | number) => {
-    //movie id can be string or number
     return fetch(
         `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${import.meta.env.VITE_TMDB_KEY}`,
     )
         .then((res) => res.json())
         .then((json) => {
-            // console.log(json.results);
             return json.results;
         });
 };
 
+/**
+ * Fetches the first page of upcoming movie releases.
+ *
+ * @returns The same shape as the discover response, with a `results` array
+ * of movies.
+ * @throws If the response status is not ok.
+ */
 export const getUpcomingMovies = () => {
     return fetch(
         `https://api.themoviedb.org/3/movie/upcoming?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`,
