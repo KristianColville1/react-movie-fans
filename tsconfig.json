@@ -15,24 +15,23 @@
     "jsx": "react-jsx",
 
     /* Path aliases — keep in sync with `resolve.alias` in vite.config.ts */
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@api/*": ["src/api/*"],
-      "@assets/*": ["src/assets/*"],
-      "@components/*": ["src/components/*"],
+      "@/*": ["./src/*"],
+      "@api/*": ["./src/api/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@components/*": ["./src/components/*"],
       /* Atomic design layers within src/components */
-      "@atoms/*": ["src/components/atoms/*"],
-      "@molecules/*": ["src/components/molecules/*"],
-      "@organisms/*": ["src/components/organisms/*"],
-      "@templates/*": ["src/components/templates/*"],
-      "@contexts/*": ["src/contexts/*"],
-      "@hooks/*": ["src/hooks/*"],
-      "@images/*": ["src/images/*"],
-      "@pages/*": ["src/pages/*"],
-      "@stories/*": ["src/stories/*"],
+      "@atoms/*": ["./src/components/atoms/*"],
+      "@molecules/*": ["./src/components/molecules/*"],
+      "@organisms/*": ["./src/components/organisms/*"],
+      "@templates/*": ["./src/components/templates/*"],
+      "@contexts/*": ["./src/contexts/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@images/*": ["./src/images/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@stories/*": ["./src/stories/*"],
       /* `@types/*` is reserved by TS for declaration packages (TS6137) */
-      "@typings/*": ["src/types/*"]
+      "@typings/*": ["./src/types/*"]
     },
 
     /* Linting */
