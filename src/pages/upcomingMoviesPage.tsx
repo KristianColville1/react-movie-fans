@@ -6,7 +6,7 @@ import MovieFilterUI, {
     titleFilter,
     genreFilter,
 } from "@organisms/movieFilterUI";
-import { DiscoverMovies } from "@typings/interfaces";
+import { BaseMovieProps, DiscoverMovies } from "@typings/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "@atoms/spinner";
 import AddToPlaylistIcon from "@atoms/cardIcons/addToPlaylist";
