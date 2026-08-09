@@ -5,10 +5,8 @@ import { useQueries } from "react-query";
 import { getMovie } from "@api/tmdb-api";
 import Spinner from "@atoms/spinner";
 import useFiltering from "@hooks/useFiltering";
-import MovieFilterUI, {
-    titleFilter,
-    genreFilter,
-} from "@organisms/movieFilterUI";
+import MovieFilterUI from "@organisms/movieFilterUI";
+import { titleFilter, genreFilter } from "@organisms/movieFilterUI/filters";
 import RemoveFromFavourites from "@atoms/cardIcons/removeFromFavourites";
 import WriteReview from "@atoms/cardIcons/writeReview";
 

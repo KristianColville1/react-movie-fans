@@ -2,10 +2,8 @@ import React from "react";
 import PageTemplate from "@templates/movieListPage";
 import { getMovies } from "@api/tmdb-api";
 import useFiltering from "@hooks/useFiltering";
-import MovieFilterUI, {
-    titleFilter,
-    genreFilter,
-} from "@organisms/movieFilterUI";
+import MovieFilterUI from "@organisms/movieFilterUI";
+import { titleFilter, genreFilter } from "@organisms/movieFilterUI/filters";
 import { BaseMovieProps, DiscoverMovies } from "@typings/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "@atoms/spinner";
