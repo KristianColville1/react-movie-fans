@@ -5,6 +5,12 @@ import IconButton from "@mui/material/IconButton";
 import { BaseMovieProps } from "@typings/interfaces";
 
 
+/**
+ * Icon button that adds a movie to the user's must watch playlist.
+ *
+ * @param movie The movie to add.
+ * @returns JSX.Element
+ */
 const AddToPlaylistIcon: React.FC<BaseMovieProps> = (movie) => {
     const context = useContext(MoviesContext);
 

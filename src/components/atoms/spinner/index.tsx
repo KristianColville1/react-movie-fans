@@ -11,6 +11,11 @@ const styles = {
     },
 };
 
+/**
+ * Loading indicator shown while a request is in flight.
+ *
+ * @returns JSX.Element
+ */
 const CircularIndeterminate: React.FC = () => {
     return (
         <div style={styles.root}>

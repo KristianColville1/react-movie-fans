@@ -4,6 +4,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { MoviesContext } from "@contexts/moviesContext";
 import { BaseMovieProps } from "@typings/interfaces";
 
+/**
+ * Icon button that removes a movie from the user's favourites.
+ *
+ * @param movie The movie to remove.
+ * @returns JSX.Element
+ */
 const RemoveFromFavouritesIcon: React.FC<BaseMovieProps> = (movie) => {
     const context = useContext(MoviesContext);
 
