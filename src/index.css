@@ -1,10 +1,50 @@
+@layer theme, base, mui, components, utilities;
+
 @import "tailwindcss";
 
-/* CSS HEX */
-:root {
-    --navajo-white: #ffe0b5ff;
-    --jet-black: #272d2dff;
-    --pale-amber: #ede580ff;
-    --ocean-mist: #44bba4ff;
-    --magenta-bloom: #d35269ff;
+@theme {
+    /* Colors from coolors.co */
+    --color-navajo-white: #ffe0b5;
+    --color-jet-black: #272d2d;
+    --color-pale-amber: #ede580;
+    --color-ocean-mist: #44bba4;
+    --color-magenta-bloom: #d35269;
+    --color-surface: #323939;
+    --color-surface-raised: #3d4545;
+}
+
+@layer base {
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    html {
+        -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        background-color: var(--color-jet-black);
+        color: var(--color-navajo-white);
+        font-family:
+            system-ui,
+            -apple-system,
+            "Segoe UI",
+            Roboto,
+            Helvetica,
+            Arial,
+            sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    img,
+    svg,
+    video {
+        display: block;
+        max-width: 100%;
+    }
 }
