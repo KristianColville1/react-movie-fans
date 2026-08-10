@@ -4,12 +4,6 @@ import Grid from "@mui/material/Grid";
 import MovieList from "@organisms/movieList";
 import { MovieListPageTemplateProps } from "@typings/interfaces";
 
-const styles = {
-    root: {
-        backgroundColor: "#bfbfbf",
-    },
-};
-
 /**
  * Page layout for any list of movies, pairing a header with the movie grid.
  *
@@ -24,7 +18,7 @@ const MovieListPageTemplate: React.FC<MovieListPageTemplateProps> = ({
     action,
 }) => {
     return (
-        <Grid container sx={styles.root}>
+        <Grid container className="bg-jet-black p-4">
             <Grid item xs={12}>
                 <Header title={title} />
             </Grid>
