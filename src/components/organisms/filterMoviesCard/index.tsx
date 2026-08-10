@@ -16,18 +16,9 @@ import { useQuery } from "react-query";
 import Spinner from "@atoms/spinner";
 
 
-const styles = {
-    root: {
-        maxWidth: 345,
-    },
-    media: { height: 300 },
-
-    formControl: {
-        margin: 1,
-        minWidth: 220,
-        backgroundColor: "rgb(255, 255, 255)",
-    },
-};
+const cardStyle =
+    "max-w-[345px] rounded-none border-white/10 bg-surface text-navajo-white";
+const fieldStyle = "m-2 min-w-[220px] bg-navajo-white/95 rounded-t";
 
 interface FilterMoviesCardProps {
     onUserInput: (f: FilterOption, s: string) => void; // Add this line
@@ -79,14 +70,14 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ onUserInput, titleF
 
     return (
         <>
-            <Card sx={styles.root} variant="outlined">
+            <Card className={cardStyle} variant="outlined">
                 <CardContent>
                     <Typography variant="h5" component="h1">
                         <FilterAltIcon fontSize="large" />
                         Filter the movies.
                     </Typography>
                     <TextField
-                        sx={styles.formControl}
+                        className={fieldStyle}
                         id="filled-search"
                         label="Search field"
                         type="search"
@@ -95,7 +86,7 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ onUserInput, titleF
                         onChange={handleTextChange}
                     />
 
-                    <FormControl sx={styles.formControl}>
+                    <FormControl className={fieldStyle}>
                         <InputLabel id="genre-label">Genre</InputLabel>
                         <Select
                             labelId="genre-label"
@@ -114,7 +105,7 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ onUserInput, titleF
                     </FormControl>
                 </CardContent>
             </Card>
-            <Card sx={styles.root} variant="outlined">
+            <Card className={cardStyle} variant="outlined">
                 <CardContent>
                     <Typography variant="h5" component="h1">
                         <SortIcon fontSize="large" />
