@@ -5,16 +5,6 @@ import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 
-const styles = {
-    root: {
-        display: "flex",
-        justifyContent: "space-around",
-        alignItems: "center",
-        flexWrap: "wrap",
-        marginBottom: 1.5,
-    },
-};
-
 interface HeaderProps {
     title: string;
 }
@@ -29,16 +19,19 @@ const Header: React.FC<HeaderProps> = (headerProps) => {
     const title = headerProps.title;
 
     return (
-        <Paper component="div" sx={styles.root}>
-            <IconButton aria-label="go back">
-                <ArrowBackIcon color="primary" fontSize="large" />
+        <Paper
+            component="div"
+            className="mb-6 flex flex-wrap items-center justify-around rounded-xl bg-surface px-4 py-3 text-navajo-white"
+        >
+            <IconButton aria-label="go back" className="text-ocean-mist">
+                <ArrowBackIcon fontSize="large" />
             </IconButton>
 
-            <Typography variant="h4" component="h3">
+            <Typography variant="h4" component="h3" className="font-semibold">
                 {title}
             </Typography>
-            <IconButton aria-label="go forward">
-                <ArrowForwardIcon color="primary" fontSize="large" />
+            <IconButton aria-label="go forward" className="text-ocean-mist">
+                <ArrowForwardIcon fontSize="large" />
             </IconButton>
         </Paper>
     );
