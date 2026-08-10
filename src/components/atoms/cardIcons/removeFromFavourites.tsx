@@ -19,8 +19,8 @@ const RemoveFromFavouritesIcon: React.FC<BaseMovieProps> = (movie) => {
     };
 
     return (
-        <IconButton aria-label="remove from favorites" onClick={onUserRequest}>
-            <DeleteIcon color="primary" fontSize="large" />
+        <IconButton aria-label="remove from favorites" color="inherit" onClick={onUserRequest}>
+            <DeleteIcon color="inherit" fontSize="large" />
         </IconButton>
     );
 };
