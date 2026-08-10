@@ -3,18 +3,6 @@ import FilterCard from "@organisms/filterMoviesCard";
 import Fab from "@mui/material/Fab";
 import Drawer from "@mui/material/Drawer";
 
-const styles = {
-    root: {
-        backgroundColor: "#bfbfbf",
-    },
-    fab: {
-        marginTop: 8,
-        position: "fixed",
-        top: 20,
-        right: 2,
-    },
-};
-
 interface MovieFilterUIProps {
     onFilterValuesChange: (f: string, s: string) => void;
     titleFilter: string;
@@ -39,10 +27,9 @@ const MovieFilterUI: React.FC<MovieFilterUIProps> = ({
     return (
         <>
             <Fab
-                color="secondary"
                 variant="extended"
                 onClick={() => setDrawerOpen(true)}
-                sx={styles.fab}
+                className="fixed top-24 right-4 bg-magenta-bloom font-semibold text-jet-black hover:bg-magenta-bloom/90"
             >
                 Filter
             </Fab>
@@ -50,6 +37,7 @@ const MovieFilterUI: React.FC<MovieFilterUIProps> = ({
                 anchor="left"
                 open={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
+                PaperProps={{ className: "bg-surface text-navajo-white" }}
             >
                 <FilterCard
                     onUserInput={onFilterValuesChange}
