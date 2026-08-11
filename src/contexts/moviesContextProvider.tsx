@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { BaseMovieProps, Review } from "@typings/interfaces";
+import { BaseMovieProps, FantasyMovie, Review } from "@typings/interfaces";
 import { MoviesContext } from "@contexts/moviesContext";
 
 const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
@@ -8,6 +8,7 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
     const [myReviews, setMyReviews] = useState<Review[]>([]);
     const [favourites, setFavourites] = useState<number[]>([]);
     const [mustWatch, setMustWatch] = useState<number[]>([]);
+    const [fantasyMovie, setFantasyMovie] = useState<FantasyMovie | null>(null);
 
     const addToFavourites = useCallback((movie: BaseMovieProps) => {
         setFavourites((prevFavourites) => {
@@ -28,6 +29,10 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
         setMyReviews({ ...myReviews, [movie.id]: review });
     };
 
+    const saveFantasyMovie = useCallback((movie: FantasyMovie) => {
+        setFantasyMovie(movie);
+    }, []);
+
     const addToMustWatch = useCallback((movie: BaseMovieProps) => {
         setMustWatch((prevMustWatch) => {
             const newMustWatch = !prevMustWatch.includes(movie.id)
@@ -47,6 +52,8 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
                 addReview,
                 mustWatch,
                 addToMustWatch,
+                fantasyMovie,
+                saveFantasyMovie,
             }}
         >
             {children}
