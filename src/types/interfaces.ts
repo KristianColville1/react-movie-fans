@@ -108,7 +108,6 @@ export interface PopularActors {
     results: BaseActorProps[];
 }
 
-// A member of a movie's cast. Fewer fields than an actor's own record.
 export interface CastMember {
     id: number;
     name: string;
@@ -117,8 +116,6 @@ export interface CastMember {
     order: number;
 }
 
-// A movie as it appears in an actor's credits. TMDB omits most of
-// BaseMovieProps here, so it cannot reuse that type.
 export interface CreditedMovie {
     id: number;
     title: string;
