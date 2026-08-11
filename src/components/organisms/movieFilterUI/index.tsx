@@ -7,20 +7,26 @@ interface MovieFilterUIProps {
     onFilterValuesChange: (f: string, s: string) => void;
     titleFilter: string;
     genreFilter: string;
+    sortOption: string;
+    onSortChange: (value: string) => void;
 }
 
 /**
- * Floating filter button that opens a drawer holding the filter card.
+ * Floating filter button that opens a drawer holding the filter and sort card.
  *
  * @param onFilterValuesChange Called with the filter that changed and its new value.
  * @param titleFilter The current title search text.
  * @param genreFilter The id of the currently selected genre.
+ * @param sortOption The value of the currently selected sort criterion.
+ * @param onSortChange Called with the newly selected sort criterion.
  * @returns JSX.Element
  */
 const MovieFilterUI: React.FC<MovieFilterUIProps> = ({
     onFilterValuesChange,
     titleFilter,
     genreFilter,
+    sortOption,
+    onSortChange,
 }) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -43,6 +49,8 @@ const MovieFilterUI: React.FC<MovieFilterUIProps> = ({
                     onUserInput={onFilterValuesChange}
                     titleFilter={titleFilter}
                     genreFilter={genreFilter}
+                    sortOption={sortOption}
+                    onSortChange={onSortChange}
                 />
             </Drawer>
         </>

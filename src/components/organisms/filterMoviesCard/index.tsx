@@ -14,6 +14,7 @@ import Select from "@mui/material/Select";
 import { getGenres } from "@api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from "@atoms/spinner";
+import { sortOptions } from "@organisms/movieFilterUI/sorting";
 
 
 const cardStyle =
@@ -24,17 +25,22 @@ interface FilterMoviesCardProps {
     onUserInput: (f: FilterOption, s: string) => void; // Add this line
     titleFilter: string;
     genreFilter: string;
+    sortOption: string;
+    onSortChange: (value: string) => void;
 }
 
 /**
- * Card holding the search field and genre menu used to filter a movie list.
+ * Card holding the search field and genre menu used to filter a movie list,
+ * alongside the menu used to order it.
  *
  * @param onUserInput Called with the filter that changed and its new value.
  * @param titleFilter The current title search text.
  * @param genreFilter The id of the currently selected genre.
+ * @param sortOption The value of the currently selected sort criterion.
+ * @param onSortChange Called with the newly selected sort criterion.
  * @returns JSX.Element
  */
-const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ onUserInput, titleFilter, genreFilter }) => {
+const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ onUserInput, titleFilter, genreFilter, sortOption, onSortChange }) => {
   const { data, error, isLoading, isError } = useQuery<GenreData, Error>(
       "genres",
       getGenres,
@@ -66,6 +72,13 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ onUserInput, titleF
 
   const handleGenreChange = (e: SelectChangeEvent) => {
       handleChange(e, "genre", e.target.value);
+  };
+
+  // Sorting does not go through onUserInput. It is not a filter, so it has
+  // no entry in the filter values the list page keeps.
+  const handleSortChange = (e: SelectChangeEvent) => {
+      e.preventDefault();
+      onSortChange(e.target.value);
   };
 
     return (
@@ -111,6 +124,26 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ onUserInput, titleF
                         <SortIcon fontSize="large" />
                         Sort the movies.
                     </Typography>
+                    <FormControl className={fieldStyle}>
+                        <InputLabel id="sort-label">Sort by</InputLabel>
+                        <Select
+                            labelId="sort-label"
+                            id="sort-select"
+                            value={sortOption}
+                            onChange={handleSortChange}
+                        >
+                            {sortOptions.map((option) => {
+                                return (
+                                    <MenuItem
+                                        key={option.value}
+                                        value={option.value}
+                                    >
+                                        {option.label}
+                                    </MenuItem>
+                                );
+                            })}
+                        </Select>
+                    </FormControl>
                 </CardContent>
             </Card>
         </>
