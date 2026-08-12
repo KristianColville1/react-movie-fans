@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import PageTemplate from "@templates/movieListPage";
 import { MoviesContext } from "@contexts/moviesContext";
 import { useQueries } from "react-query";
@@ -7,6 +7,7 @@ import Spinner from "@atoms/spinner";
 import useFiltering from "@hooks/useFiltering";
 import MovieFilterUI from "@organisms/movieFilterUI";
 import { titleFilter, genreFilter } from "@organisms/movieFilterUI/filters";
+import { sortMovies } from "@organisms/movieFilterUI/sorting";
 import RemoveFromFavourites from "@atoms/cardIcons/removeFromFavourites";
 import WriteReview from "@atoms/cardIcons/writeReview";
 
@@ -28,6 +29,7 @@ const FavouriteMoviesPage: React.FC = () => {
         titleFiltering,
         genreFiltering,
     ]);
+    const [sortOption, setSortOption] = useState("title");
 
     // Create an array of queries and run them in parallel.
     const favouriteMovieQueries = useQueries(
@@ -47,15 +49,16 @@ const FavouriteMoviesPage: React.FC = () => {
     }
 
     const allFavourites = favouriteMovieQueries.map((q) => q.data);
-    const displayedMovies = allFavourites ? filterFunction(allFavourites) : [];
+    const displayedMovies = allFavourites
+        ? sortMovies(filterFunction(allFavourites), sortOption)
+        : [];
 
     const changeFilterValues = (type: string, value: string) => {
-        const changedFilter = { name: type, value: value };
-        const updatedFilterSet =
-            type === "title"
-                ? [changedFilter, filterValues[1]]
-                : [filterValues[0], changedFilter];
-        setFilterValues(updatedFilterSet);
+        setFilterValues(
+            filterValues.map((filter) =>
+                filter.name === type ? { ...filter, value } : filter,
+            ),
+        );
     };
 
 
@@ -78,6 +81,8 @@ const FavouriteMoviesPage: React.FC = () => {
                 onFilterValuesChange={changeFilterValues}
                 titleFilter={filterValues[0].value}
                 genreFilter={filterValues[1].value}
+                sortOption={sortOption}
+                onSortChange={setSortOption}
             />
         </>
     );

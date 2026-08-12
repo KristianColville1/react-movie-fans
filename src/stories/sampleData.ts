@@ -79,3 +79,60 @@ export default {
   vote_average: 7,
   vote_count: 9692,
 };
+
+export const SampleActor = {
+  id: 1245,
+  name: "Scarlett Johansson",
+  profile_path: "/6NsMbJXRlDZuDzatN2akFdGuTvx.jpg",
+  known_for_department: "Acting",
+  popularity: 87.4,
+  biography:
+    "Scarlett Ingrid Johansson is an American actress and singer, born in New York City to a Danish father and a mother from an Ashkenazi Jewish family.",
+  birthday: "1984-11-22",
+  deathday: null,
+  place_of_birth: "New York City, New York, USA",
+  homepage: undefined,
+};
+
+export const SampleCast = [
+  {
+    id: 1245,
+    name: "Scarlett Johansson",
+    character: "Natasha Romanoff",
+    profile_path: "/6NsMbJXRlDZuDzatN2akFdGuTvx.jpg",
+    order: 0,
+  },
+  {
+    id: 16828,
+    name: "Chris Evans",
+    character: "Steve Rogers",
+    profile_path: "/3bOGNsHlrswhyW79uvIHH1V43JI.jpg",
+    order: 1,
+  },
+  {
+    id: 103,
+    name: "Mark Ruffalo",
+    character: "Bruce Banner",
+    profile_path: "/z3dvKqMNDQWk3QLxzumloQVR0pv.jpg",
+    order: 2,
+  },
+];
+
+export const SampleCredits = [
+  {
+    id: 24428,
+    title: "The Avengers",
+    character: "Natasha Romanoff",
+    poster_path: "/RYMX2wcKCBAr24UyPD7xwmjaTn.jpg",
+    release_date: "2012-04-25",
+    vote_average: 7.7,
+  },
+  {
+    id: 271110,
+    title: "Captain America: Civil War",
+    character: "Natasha Romanoff",
+    poster_path: "/rAGiXaUfPzY7CDEyNKUofk3Kw2e.jpg",
+    release_date: "2016-04-27",
+    vote_average: 7.4,
+  },
+];

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import PageTemplate from "@templates/movieListPage";
 import { getUpcomingMovies } from "@api/tmdb-api";
 import useFiltering from "@hooks/useFiltering";
 import MovieFilterUI from "@organisms/movieFilterUI";
 import { titleFilter, genreFilter } from "@organisms/movieFilterUI/filters";
+import { sortMovies } from "@organisms/movieFilterUI/sorting";
 import { BaseMovieProps, DiscoverMovies } from "@typings/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "@atoms/spinner";
@@ -29,6 +30,7 @@ const UpcomingMoviesPage: React.FC = () => {
         titleFiltering,
         genreFiltering,
     ]);
+    const [sortOption, setSortOption] = useState("title");
 
     if (isLoading) {
         return <Spinner />;
@@ -39,16 +41,15 @@ const UpcomingMoviesPage: React.FC = () => {
     }
 
     const changeFilterValues = (type: string, value: string) => {
-        const changedFilter = { name: type, value: value };
-        const updatedFilterSet =
-            type === "title"
-                ? [changedFilter, filterValues[1]]
-                : [filterValues[0], changedFilter];
-        setFilterValues(updatedFilterSet);
+        setFilterValues(
+            filterValues.map((filter) =>
+                filter.name === type ? { ...filter, value } : filter,
+            ),
+        );
     };
 
     const movies = data ? data.results : [];
-    const displayedMovies = filterFunction(movies);
+    const displayedMovies = sortMovies(filterFunction(movies), sortOption);
 
     return (
         <>
@@ -63,6 +64,8 @@ const UpcomingMoviesPage: React.FC = () => {
                 onFilterValuesChange={changeFilterValues}
                 titleFilter={filterValues[0].value}
                 genreFilter={filterValues[1].value}
+                sortOption={sortOption}
+                onSortChange={setSortOption}
             />
         </>
     );

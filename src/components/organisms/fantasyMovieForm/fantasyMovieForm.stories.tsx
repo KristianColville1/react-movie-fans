@@ -1,0 +1,36 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import FantasyMovieForm from "@organisms/fantasyMovieForm";
+import { MemoryRouter } from "react-router";
+import MoviesContextProvider from "@contexts/moviesContextProvider";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
+
+const meta = {
+    title: "Organisms/FantasyMovieForm",
+    component: FantasyMovieForm,
+    decorators: [
+        (Story) => (
+            <MemoryRouter initialEntries={["/"]}>
+                <Story />
+            </MemoryRouter>
+        ),
+        (Story) => (
+            <MoviesContextProvider>
+                <Story />
+            </MoviesContextProvider>
+        ),
+        (Story) => (
+            <QueryClientProvider client={queryClient}>
+                <Story />
+            </QueryClientProvider>
+        ),
+    ],
+} satisfies Meta<typeof FantasyMovieForm>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Basic: Story = {};
+Basic.storyName = "Default";
