@@ -126,6 +126,7 @@ export interface CreditedMovie {
 }
 
 export interface FantasyMovie {
+    id: string;
     title: string;
     overview: string;
     genreIds: number[];

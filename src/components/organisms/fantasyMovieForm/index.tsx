@@ -16,10 +16,15 @@ import { MoviesContext } from "@contexts/moviesContext";
 import { FantasyMovie, GenreData } from "@typings/interfaces";
 import Spinner from "@atoms/spinner";
 
-const fieldStyle = "mb-4 w-full bg-navajo-white/95 rounded-t";
+const fieldStyle = "mb-4 w-full";
+const inputStyle =
+    "rounded-t bg-white/95 text-jet-black [&_.MuiSelect-icon]:text-jet-black/60";
+const labelStyle = "text-jet-black/70";
+const helperStyle = "text-navajo-white/70";
 
 /**
- * Form for inventing a fantasy movie, which is saved to the movies context.
+ * Form for inventing a fantasy movie, which is added to the movies context.
+ * The id is put on by the context, so the form only collects the details.
  *
  * @returns JSX.Element
  */
@@ -36,7 +41,7 @@ const FantasyMovieForm: React.FC = () => {
         formState: { errors },
         handleSubmit,
         reset,
-    } = useForm<FantasyMovie>({
+    } = useForm<Omit<FantasyMovie, "id">>({
         defaultValues: {
             title: "",
             overview: "",
@@ -57,7 +62,7 @@ const FantasyMovieForm: React.FC = () => {
 
     const genres = data?.genres || [];
 
-    const onSubmit: SubmitHandler<FantasyMovie> = (movie) => {
+    const onSubmit: SubmitHandler<Omit<FantasyMovie, "id">> = (movie) => {
         context.saveFantasyMovie(movie);
         setOpen(true);
         reset();
@@ -89,6 +94,8 @@ const FantasyMovieForm: React.FC = () => {
                         <TextField
                             {...field}
                             className={fieldStyle}
+                            InputProps={{ className: inputStyle }}
+                            InputLabelProps={{ className: labelStyle }}
                             variant="filled"
                             label="Title"
                             id="fantasy-title"
@@ -109,6 +116,8 @@ const FantasyMovieForm: React.FC = () => {
                         <TextField
                             {...field}
                             className={fieldStyle}
+                            InputProps={{ className: inputStyle }}
+                            InputLabelProps={{ className: labelStyle }}
                             variant="filled"
                             label="Overview"
                             id="fantasy-overview"
@@ -128,11 +137,15 @@ const FantasyMovieForm: React.FC = () => {
                     control={control}
                     render={({ field }) => (
                         <FormControl className={fieldStyle} variant="filled">
-                            <InputLabel id="fantasy-genres-label">
+                            <InputLabel
+                                id="fantasy-genres-label"
+                                className={labelStyle}
+                            >
                                 Genres
                             </InputLabel>
                             <Select
                                 {...field}
+                                className={inputStyle}
                                 labelId="fantasy-genres-label"
                                 id="fantasy-genres"
                                 multiple
@@ -158,11 +171,15 @@ const FantasyMovieForm: React.FC = () => {
                         <TextField
                             {...field}
                             className={fieldStyle}
+                            InputProps={{ className: inputStyle }}
+                            InputLabelProps={{
+                                className: labelStyle,
+                                shrink: true,
+                            }}
                             variant="filled"
                             label="Release date"
                             id="fantasy-release-date"
                             type="date"
-                            InputLabelProps={{ shrink: true }}
                         />
                     )}
                 />
@@ -180,6 +197,8 @@ const FantasyMovieForm: React.FC = () => {
                         <TextField
                             {...field}
                             className={fieldStyle}
+                            InputProps={{ className: inputStyle }}
+                            InputLabelProps={{ className: labelStyle }}
                             variant="filled"
                             label="Runtime in minutes"
                             id="fantasy-runtime"
@@ -201,10 +220,13 @@ const FantasyMovieForm: React.FC = () => {
                         <TextField
                             {...field}
                             className={fieldStyle}
+                            InputProps={{ className: inputStyle }}
+                            InputLabelProps={{ className: labelStyle }}
                             variant="filled"
                             label="Production companies"
                             id="fantasy-production-companies"
                             helperText="Separate several companies with commas"
+                            FormHelperTextProps={{ className: helperStyle }}
                         />
                     )}
                 />
