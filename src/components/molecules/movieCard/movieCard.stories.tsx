@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import MovieCard from "@molecules/movieCard";
-import SampleMovie from "./sampleData";
+import SampleMovie from "@stories/sampleData";
 import { MemoryRouter } from "react-router";
 import MoviesContextProvider from "@contexts/moviesContextProvider";
 import AddToFavouritesIcon from "@atoms/cardIcons/addToFavourites";

@@ -84,3 +84,52 @@ export interface DiscoverMovies {
       rating: number;
       movieId: number;
   }
+
+export interface BaseActorProps {
+    id: number;
+    name: string;
+    profile_path?: string;
+    known_for_department: string;
+    popularity: number;
+}
+
+export interface ActorDetailsProps extends BaseActorProps {
+    biography: string;
+    birthday: string | null;
+    deathday: string | null;
+    place_of_birth: string | null;
+    homepage: string | undefined;
+}
+
+export interface PopularActors {
+    page: number;
+    total_pages: number;
+    total_results: number;
+    results: BaseActorProps[];
+}
+
+export interface CastMember {
+    id: number;
+    name: string;
+    character: string;
+    profile_path?: string;
+    order: number;
+}
+
+export interface CreditedMovie {
+    id: number;
+    title: string;
+    character: string;
+    poster_path?: string;
+    release_date: string;
+    vote_average: number;
+}
+
+export interface FantasyMovie {
+    title: string;
+    overview: string;
+    genreIds: number[];
+    releaseDate: string;
+    runtime: number;
+    productionCompanies: string;
+}

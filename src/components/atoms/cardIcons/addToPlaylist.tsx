@@ -19,8 +19,8 @@ const AddToPlaylistIcon: React.FC<BaseMovieProps> = (movie) => {
         context.addToMustWatch(movie);
     };
     return (
-        <IconButton aria-label="add to playlist" onClick={onUserSelect}>
-            <PlaylistAddIcon color="primary" fontSize="large" />
+        <IconButton aria-label="add to playlist" color="inherit" onClick={onUserSelect}>
+            <PlaylistAddIcon color="inherit" fontSize="large" />
         </IconButton>
     );
 };

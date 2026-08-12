@@ -1,5 +1,7 @@
 import type { Preview } from "@storybook/react";
-import { fn } from '@storybook/test';
+import { fn } from "@storybook/test";
+import { StyledEngineProvider } from "@mui/material/styles";
+import "../src/index.css";
 
 const preview: Preview = {
   parameters: {
@@ -11,6 +13,13 @@ const preview: Preview = {
       },
     },
   },
+  decorators: [
+    (Story) => (
+      <StyledEngineProvider enableCssLayer>
+        <Story />
+      </StyledEngineProvider>
+    ),
+  ],
 };
 
 export default preview;

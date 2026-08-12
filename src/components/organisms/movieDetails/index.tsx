@@ -5,11 +5,15 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import MonetizationIcon from "@mui/icons-material/MonetizationOn";
 import StarRate from "@mui/icons-material/StarRate";
 import Typography from "@mui/material/Typography";
-import { MovieDetailsProps } from "@typings/interfaces";
+import { CastMember, MovieDetailsProps } from "@typings/interfaces";
 import NavigationIcon from "@mui/icons-material/Navigation";
 import Fab from "@mui/material/Fab";
 import Drawer from "@mui/material/Drawer";
 import MovieReviews from "@organisms/movieReviews";
+import CastList from "@molecules/castList";
+import { getMovieCredits } from "@api/tmdb-api";
+import { useQuery } from "react-query";
+import Spinner from "@atoms/spinner";
 
 const styles = {
     chipSet: {
@@ -33,13 +37,21 @@ const styles = {
 
 /**
  * Body of the movie details page, showing the overview, the genre and stat
- * chips, and a drawer holding the reviews.
+ * chips, the billed cast, and a drawer holding the reviews.
  *
  * @param movie The movie to display.
  * @returns JSX.Element
  */
 const MovieDetails: React.FC<MovieDetailsProps> = (movie) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const {
+        data: cast,
+        error: castError,
+        isLoading: castLoading,
+        isError: castIsError,
+    } = useQuery<CastMember[], Error>(["credits", movie.id], () =>
+        getMovieCredits(movie.id),
+    );
 
     return (
         <>
@@ -80,6 +92,14 @@ const MovieDetails: React.FC<MovieDetailsProps> = (movie) => {
                 />
                 <Chip label={`Released: ${movie.release_date}`} />
             </Paper>
+
+            <Typography variant="h5" component="h3">
+                Cast
+            </Typography>
+            {castLoading && <Spinner />}
+            {castIsError && <h1>{castError.message}</h1>}
+            {cast && <CastList cast={cast.slice(0, 12)} />}
+
             <Fab
                 color="secondary"
                 variant="extended"

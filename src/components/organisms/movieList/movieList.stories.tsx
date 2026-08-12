@@ -1,7 +1,7 @@
 
 import type { Meta } from '@storybook/react';
 import MovieList from "@organisms/movieList";
-import SampleMovie from "./sampleData";
+import SampleMovie from "@stories/sampleData";
 import { MemoryRouter } from "react-router";
 
 import AddToFavouritesIcon from "@atoms/cardIcons/addToFavourites";
