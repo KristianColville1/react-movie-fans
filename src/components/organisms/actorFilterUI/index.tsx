@@ -11,8 +11,8 @@ const cardStyle =
     "max-w-[345px] rounded-none border-white/10 bg-surface text-navajo-white";
 const fieldStyle = "m-2 min-w-[220px]";
 const inputStyle =
-    "rounded-t bg-jet-black/40 text-navajo-white [&_.MuiSelect-icon]:text-navajo-white/70";
-const labelStyle = "text-navajo-white/70";
+    "rounded-t bg-white/95 text-jet-black [&_.MuiSelect-icon]:text-jet-black/60";
+const labelStyle = "text-jet-black/70";
 
 interface ActorFilterUIProps {
     onNameChange: (value: string) => void;
