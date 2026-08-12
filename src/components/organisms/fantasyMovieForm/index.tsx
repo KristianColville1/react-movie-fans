@@ -19,7 +19,8 @@ import Spinner from "@atoms/spinner";
 const fieldStyle = "mb-4 w-full bg-navajo-white/95 rounded-t";
 
 /**
- * Form for inventing a fantasy movie, which is saved to the movies context.
+ * Form for inventing a fantasy movie, which is added to the movies context.
+ * The id is put on by the context, so the form only collects the details.
  *
  * @returns JSX.Element
  */
@@ -36,7 +37,7 @@ const FantasyMovieForm: React.FC = () => {
         formState: { errors },
         handleSubmit,
         reset,
-    } = useForm<FantasyMovie>({
+    } = useForm<Omit<FantasyMovie, "id">>({
         defaultValues: {
             title: "",
             overview: "",
@@ -57,7 +58,7 @@ const FantasyMovieForm: React.FC = () => {
 
     const genres = data?.genres || [];
 
-    const onSubmit: SubmitHandler<FantasyMovie> = (movie) => {
+    const onSubmit: SubmitHandler<Omit<FantasyMovie, "id">> = (movie) => {
         context.saveFantasyMovie(movie);
         setOpen(true);
         reset();
