@@ -136,3 +136,14 @@ export const SampleCredits = [
     vote_average: 7.4,
   },
 ];
+
+export const SampleFantasyMovie = {
+    id: "8f14e45f-ceea-467a-9a2f-5d0a1b2c3d4e",
+    title: "The Last Lighthouse",
+    overview:
+        "A keeper on a forgotten island discovers the light has been guiding something back for a hundred years.",
+    genreIds: [18, 9648, 27],
+    releaseDate: "2027-10-29",
+    runtime: 118,
+    productionCompanies: "Saltwater Pictures, Nine Bells Film",
+};
