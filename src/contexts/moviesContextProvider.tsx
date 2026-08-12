@@ -36,9 +36,13 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
         );
     }, []);
 
-    const addReview = (movie: BaseMovieProps, review: Review) => {
-        setMyReviews({ ...myReviews, [movie.id]: review });
-    };
+    // Reviews carry the movie they belong to, so the list stays flat.
+    const addReview = useCallback((movie: BaseMovieProps, review: Review) => {
+        setMyReviews((prevReviews) => [
+            ...prevReviews,
+            { ...review, movieId: movie.id },
+        ]);
+    }, []);
 
     const saveFantasyMovie = useCallback((movie: Omit<FantasyMovie, "id">) => {
         setFantasyMovies((prevFantasyMovies) => [
@@ -69,6 +73,7 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
                 favourites,
                 addToFavourites,
                 removeFromFavourites,
+                myReviews,
                 addReview,
                 mustWatch,
                 addToMustWatch,
