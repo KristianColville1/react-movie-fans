@@ -30,6 +30,7 @@
       "@images/*": ["./src/images/*"],
       "@pages/*": ["./src/pages/*"],
       "@stories/*": ["./src/stories/*"],
+      "@storage/*": ["./src/storage/*"],
       /* `@types/*` is reserved by TS for declaration packages (TS6137) */
       "@typings/*": ["./src/types/*"]
     },

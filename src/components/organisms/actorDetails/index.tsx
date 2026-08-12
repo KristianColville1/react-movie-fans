@@ -12,6 +12,9 @@ import { useQuery } from "react-query";
 import Spinner from "@atoms/spinner";
 import Filmography from "@molecules/filmography";
 
+const chipStyle =
+    "bg-jet-black/60 text-navajo-white ring-1 ring-white/10 [&_.MuiChip-icon]:text-ocean-mist";
+
 /**
  * Body of the actor details page, showing the biography, a set of fact chips
  * and the actor's filmography.
@@ -56,6 +59,7 @@ const ActorDetails: React.FC<ActorDetailsProps> = (actor) => {
                     <Chip
                         icon={<TheatersIcon />}
                         label={actor.known_for_department}
+                        className={chipStyle}
                     />
                 </li>
                 {actor.birthday && (
@@ -63,12 +67,16 @@ const ActorDetails: React.FC<ActorDetailsProps> = (actor) => {
                         <Chip
                             icon={<CakeIcon />}
                             label={`Born: ${actor.birthday}`}
+                            className={chipStyle}
                         />
                     </li>
                 )}
                 {actor.deathday && (
                     <li>
-                        <Chip label={`Died: ${actor.deathday}`} />
+                        <Chip
+                            label={`Died: ${actor.deathday}`}
+                            className={chipStyle}
+                        />
                     </li>
                 )}
                 {actor.place_of_birth && (
@@ -76,6 +84,7 @@ const ActorDetails: React.FC<ActorDetailsProps> = (actor) => {
                         <Chip
                             icon={<PlaceIcon />}
                             label={actor.place_of_birth}
+                            className={chipStyle}
                         />
                     </li>
                 )}

@@ -19,7 +19,10 @@ import { sortOptions } from "@organisms/movieFilterUI/sorting";
 
 const cardStyle =
     "max-w-[345px] rounded-none border-white/10 bg-surface text-navajo-white";
-const fieldStyle = "m-2 min-w-[220px] bg-navajo-white/95 rounded-t";
+const fieldStyle = "m-2 min-w-[220px]";
+const inputStyle =
+    "rounded-t bg-white/95 text-jet-black [&_.MuiSelect-icon]:text-jet-black/60";
+const labelStyle = "text-jet-black/70";
 
 interface FilterMoviesCardProps {
     onUserInput: (f: FilterOption, s: string) => void; // Add this line
@@ -91,6 +94,8 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ onUserInput, titleF
                     </Typography>
                     <TextField
                         className={fieldStyle}
+                        InputProps={{ className: inputStyle }}
+                        InputLabelProps={{ className: labelStyle }}
                         id="filled-search"
                         label="Search field"
                         type="search"
@@ -99,9 +104,12 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ onUserInput, titleF
                         onChange={handleTextChange}
                     />
 
-                    <FormControl className={fieldStyle}>
-                        <InputLabel id="genre-label">Genre</InputLabel>
+                    <FormControl className={fieldStyle} variant="filled">
+                        <InputLabel id="genre-label" className={labelStyle}>
+                            Genre
+                        </InputLabel>
                         <Select
+                            className={inputStyle}
                             labelId="genre-label"
                             id="genre-select"
                             value={genreFilter}
@@ -124,9 +132,12 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ onUserInput, titleF
                         <SortIcon fontSize="large" />
                         Sort the movies.
                     </Typography>
-                    <FormControl className={fieldStyle}>
-                        <InputLabel id="sort-label">Sort by</InputLabel>
+                    <FormControl className={fieldStyle} variant="filled">
+                        <InputLabel id="sort-label" className={labelStyle}>
+                            Sort by
+                        </InputLabel>
                         <Select
+                            className={inputStyle}
                             labelId="sort-label"
                             id="sort-select"
                             value={sortOption}

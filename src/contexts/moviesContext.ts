@@ -5,22 +5,26 @@ export interface MovieContextInterface {
     favourites: number[];
     addToFavourites: (movie: BaseMovieProps) => void;
     removeFromFavourites: (movie: BaseMovieProps) => void;
+    myReviews: Review[];
     addReview: (movie: BaseMovieProps, review: Review) => void;
     mustWatch: number[];
     addToMustWatch: (movie: BaseMovieProps) => void;
-    fantasyMovie: FantasyMovie | null;
-    saveFantasyMovie: (movie: FantasyMovie) => void;
+    fantasyMovies: FantasyMovie[];
+    saveFantasyMovie: (movie: Omit<FantasyMovie, "id">) => void;
+    removeFantasyMovie: (id: string) => void;
 }
 
 const initialContextState: MovieContextInterface = {
     favourites: [],
     addToFavourites: () => {},
     removeFromFavourites: () => {},
+    myReviews: [],
     addReview: () => {},
     mustWatch: [],
     addToMustWatch: () => {},
-    fantasyMovie: null,
+    fantasyMovies: [],
     saveFantasyMovie: () => {},
+    removeFantasyMovie: () => {},
 };
 
 export const MoviesContext =

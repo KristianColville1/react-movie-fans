@@ -13,6 +13,7 @@ import AddMovieReviewPage from "@pages/addMovieReviewPage";
 import ActorsPage from "@pages/actorsPage";
 import ActorDetailsPage from "@pages/actorDetailsPage";
 import FantasyMoviePage from "@pages/fantasyMoviePage";
+import FantasyMovieDetailsPage from "@pages/fantasyMovieDetailsPage";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -41,6 +42,10 @@ const App: React.FC = () => {
                         />
                         <Route path="/movies/:id" element={<MoviePage />} />
                         <Route path="/fantasy" element={<FantasyMoviePage />} />
+                        <Route
+                            path="/fantasy/:id"
+                            element={<FantasyMovieDetailsPage />}
+                        />
                         <Route path="/actors" element={<ActorsPage />} />
                         <Route
                             path="/actors/:id"

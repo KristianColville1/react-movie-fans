@@ -1,7 +1,7 @@
 import React from "react";
 import PageTemplate from "@templates/moviePage";
 import ReviewForm from "@organisms/reviewForm";
-import { useLocation } from "react-router-dom";
+import { useLocation, Navigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getMovie } from "@api/tmdb-api";
 import Spinner from "@atoms/spinner";
@@ -9,15 +9,25 @@ import { MovieDetailsProps } from "@typings/interfaces";
 
 const WriteReviewPage: React.FC = () => {
     const location = useLocation();
-    const { movieId } = location.state;
+    // The form is reached from a movie card, which passes the id in route
+    // state. Landing here directly leaves that empty.
+    const state = location.state as { movieId?: number } | null;
+    const movieId = state?.movieId;
+
     const {
         data: movie,
         error,
         isLoading,
         isError,
-    } = useQuery<MovieDetailsProps, Error>(["movie", movieId], () =>
-        getMovie(movieId),
+    } = useQuery<MovieDetailsProps, Error>(
+        ["movie", movieId],
+        () => getMovie(String(movieId)),
+        { enabled: movieId !== undefined },
     );
+
+    if (movieId === undefined) {
+        return <Navigate to="/" replace />;
+    }
 
     if (isLoading) {
         return <Spinner />;

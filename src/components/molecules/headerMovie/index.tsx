@@ -8,19 +8,6 @@ import HomeIcon from "@mui/icons-material/Home";
 import { MovieDetailsProps } from "@typings/interfaces";
 import Avatar from "@mui/material/Avatar";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-const styles = {
-    root: {
-        display: "flex",
-        justifyContent: "space-around",
-        alignItems: "center",
-        flexWrap: "wrap",
-        padding: 1.5,
-    },
-    avatar: {
-        backgroundColor: "rgb(255, 0, 0)",
-    },
-};
-
 /**
  * Header shown at the top of a movie details page.
  *
@@ -34,27 +21,36 @@ const MovieHeader: React.FC<MovieDetailsProps> = (movie) => {
     );
 
     return (
-        <Paper component="div" sx={styles.root}>
-            <IconButton aria-label="go back">
-                <ArrowBackIcon color="primary" fontSize="large" />
+        <Paper
+            component="div"
+            className="mb-6 flex flex-wrap items-center justify-around rounded-xl bg-surface px-4 py-3 text-navajo-white"
+        >
+            <IconButton aria-label="go back" className="text-ocean-mist">
+                <ArrowBackIcon fontSize="large" />
             </IconButton>
 
             {favourites.some((f) => f.id === movie.id) ? (
-                <Avatar sx={styles.avatar}>
+                <Avatar className="bg-magenta-bloom text-jet-black">
                     <FavoriteIcon />
                 </Avatar>
             ) : null}
-            <Typography variant="h4" component="h3">
+            <Typography
+                variant="h4"
+                component="h3"
+                className="text-center font-semibold"
+            >
                 {movie.title}
                 {"   "}
                 <a href={movie.homepage}>
-                    <HomeIcon color="primary" fontSize="large" />
+                    <HomeIcon className="text-ocean-mist" fontSize="large" />
                 </a>
                 <br />
-                <span>{`${movie.tagline}`} </span>
+                <span className="text-base text-navajo-white/70">
+                    {`${movie.tagline}`}{" "}
+                </span>
             </Typography>
-            <IconButton aria-label="go forward">
-                <ArrowForwardIcon color="primary" fontSize="large" />
+            <IconButton aria-label="go forward" className="text-ocean-mist">
+                <ArrowForwardIcon fontSize="large" />
             </IconButton>
         </Paper>
     );

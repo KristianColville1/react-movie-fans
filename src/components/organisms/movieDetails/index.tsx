@@ -15,25 +15,11 @@ import { getMovieCredits } from "@api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from "@atoms/spinner";
 
-const styles = {
-    chipSet: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexWrap: "wrap",
-        listStyle: "none",
-        padding: 1.5,
-        margin: 0,
-    },
-    chipLabel: {
-        margin: 0.5,
-    },
-    fab: {
-        position: "fixed",
-        top: 50,
-        right: 2,
-    },
-};
+const chipStyle =
+    "bg-jet-black/60 text-navajo-white ring-1 ring-white/10 [&_.MuiChip-icon]:text-ocean-mist";
+const chipHeadingStyle = "bg-ocean-mist font-semibold text-jet-black";
+const chipSetStyle =
+    "m-0 flex list-none flex-wrap items-center justify-center gap-2 rounded-xl bg-surface p-3 text-navajo-white";
 
 /**
  * Body of the movie details page, showing the overview, the genre and stat
@@ -63,34 +49,36 @@ const MovieDetails: React.FC<MovieDetailsProps> = (movie) => {
                 {movie.overview}
             </Typography>
 
-            <Paper component="ul" sx={styles.chipSet}>
+            <Paper component="ul" className={chipSetStyle}>
                 <li>
-                    <Chip
-                        label="Genres"
-                        sx={styles.chipLabel}
-                        color="primary"
-                    />
+                    <Chip label="Genres" className={chipHeadingStyle} />
                 </li>
                 {movie.genres.map((g) => (
                     <li key={g.name}>
-                        <Chip label={g.name} />
+                        <Chip label={g.name} className={chipStyle} />
                     </li>
                 ))}
             </Paper>
-            <Paper component="ul" sx={styles.chipSet}>
+            <Paper component="ul" className={chipSetStyle}>
                 <Chip
                     icon={<AccessTimeIcon />}
                     label={`${movie.runtime} min.`}
+                    className={chipStyle}
                 />
                 <Chip
                     icon={<MonetizationIcon />}
                     label={`${movie.revenue.toLocaleString()}`}
+                    className={chipStyle}
                 />
                 <Chip
                     icon={<StarRate />}
                     label={`${movie.vote_average} (${movie.vote_count}`}
+                    className={chipStyle}
                 />
-                <Chip label={`Released: ${movie.release_date}`} />
+                <Chip
+                    label={`Released: ${movie.release_date}`}
+                    className={chipStyle}
+                />
             </Paper>
 
             <Typography variant="h5" component="h3">
@@ -101,10 +89,9 @@ const MovieDetails: React.FC<MovieDetailsProps> = (movie) => {
             {cast && <CastList cast={cast.slice(0, 12)} />}
 
             <Fab
-                color="secondary"
                 variant="extended"
                 onClick={() => setDrawerOpen(true)}
-                sx={styles.fab}
+                className="fixed right-6 bottom-6 bg-ocean-mist font-semibold text-jet-black shadow-lg shadow-black/40 hover:bg-ocean-mist/90"
             >
                 <NavigationIcon />
                 Reviews
