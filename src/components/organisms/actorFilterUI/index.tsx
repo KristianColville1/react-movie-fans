@@ -9,7 +9,10 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 
 const cardStyle =
     "max-w-[345px] rounded-none border-white/10 bg-surface text-navajo-white";
-const fieldStyle = "m-2 min-w-[220px] bg-navajo-white/95 rounded-t";
+const fieldStyle = "m-2 min-w-[220px]";
+const inputStyle =
+    "rounded-t bg-jet-black/40 text-navajo-white [&_.MuiSelect-icon]:text-navajo-white/70";
+const labelStyle = "text-navajo-white/70";
 
 interface ActorFilterUIProps {
     onNameChange: (value: string) => void;
@@ -56,6 +59,8 @@ const ActorFilterUI: React.FC<ActorFilterUIProps> = ({
                         </Typography>
                         <TextField
                             className={fieldStyle}
+                            InputProps={{ className: inputStyle }}
+                            InputLabelProps={{ className: labelStyle }}
                             id="actor-name-search"
                             label="Search field"
                             type="search"
