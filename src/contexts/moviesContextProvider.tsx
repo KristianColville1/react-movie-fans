@@ -1,6 +1,10 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { BaseMovieProps, FantasyMovie, Review } from "@typings/interfaces";
 import { MoviesContext } from "@contexts/moviesContext";
+import {
+    loadFantasyMovies,
+    saveFantasyMovies,
+} from "@storage/fantasyMovieStore";
 
 const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
     children,
@@ -8,7 +12,14 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
     const [myReviews, setMyReviews] = useState<Review[]>([]);
     const [favourites, setFavourites] = useState<number[]>([]);
     const [mustWatch, setMustWatch] = useState<number[]>([]);
-    const [fantasyMovie, setFantasyMovie] = useState<FantasyMovie | null>(null);
+    const [fantasyMovies, setFantasyMovies] =
+        useState<FantasyMovie[]>(loadFantasyMovies);
+
+    // The list is written back whenever it changes, so every caller only has
+    // to update state and the saved copy keeps up on its own.
+    useEffect(() => {
+        saveFantasyMovies(fantasyMovies);
+    }, [fantasyMovies]);
 
     const addToFavourites = useCallback((movie: BaseMovieProps) => {
         setFavourites((prevFavourites) => {
@@ -29,8 +40,17 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
         setMyReviews({ ...myReviews, [movie.id]: review });
     };
 
-    const saveFantasyMovie = useCallback((movie: FantasyMovie) => {
-        setFantasyMovie(movie);
+    const saveFantasyMovie = useCallback((movie: Omit<FantasyMovie, "id">) => {
+        setFantasyMovies((prevFantasyMovies) => [
+            ...prevFantasyMovies,
+            { ...movie, id: crypto.randomUUID() },
+        ]);
+    }, []);
+
+    const removeFantasyMovie = useCallback((id: string) => {
+        setFantasyMovies((prevFantasyMovies) =>
+            prevFantasyMovies.filter((movie) => movie.id !== id),
+        );
     }, []);
 
     const addToMustWatch = useCallback((movie: BaseMovieProps) => {
@@ -52,8 +72,9 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
                 addReview,
                 mustWatch,
                 addToMustWatch,
-                fantasyMovie,
+                fantasyMovies,
                 saveFantasyMovie,
+                removeFantasyMovie,
             }}
         >
             {children}
