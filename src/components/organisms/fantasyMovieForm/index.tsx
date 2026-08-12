@@ -18,8 +18,8 @@ import Spinner from "@atoms/spinner";
 
 const fieldStyle = "mb-4 w-full";
 const inputStyle =
-    "rounded-t bg-jet-black/40 text-navajo-white [&_.MuiSelect-icon]:text-navajo-white/70";
-const labelStyle = "text-navajo-white/70";
+    "rounded-t bg-white/95 text-jet-black [&_.MuiSelect-icon]:text-jet-black/60";
+const labelStyle = "text-jet-black/70";
 const helperStyle = "text-navajo-white/70";
 
 /**
