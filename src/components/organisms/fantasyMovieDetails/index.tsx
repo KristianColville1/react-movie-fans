@@ -10,6 +10,9 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { FantasyMovie } from "@typings/interfaces";
 import { Link } from "react-router-dom";
 
+const chipStyle =
+    "bg-jet-black/60 text-navajo-white ring-1 ring-white/10 [&_.MuiChip-icon]:text-ocean-mist";
+
 /**
  * Full page view of one invented movie.
  *
@@ -41,19 +44,21 @@ const FantasyMovieDetails: React.FC<{
             >
                 {genreNames.map((name) => (
                     <li key={name}>
-                        <Chip label={name} />
+                        <Chip label={name} className={chipStyle} />
                     </li>
                 ))}
                 <li>
                     <Chip
                         icon={<AccessTimeIcon />}
                         label={`${movie.runtime} min.`}
+                        className={chipStyle}
                     />
                 </li>
                 <li>
                     <Chip
                         icon={<CalendarMonthIcon />}
                         label={`Released: ${movie.releaseDate}`}
+                        className={chipStyle}
                     />
                 </li>
                 {movie.productionCompanies && (
@@ -61,6 +66,7 @@ const FantasyMovieDetails: React.FC<{
                         <Chip
                             icon={<BusinessIcon />}
                             label={movie.productionCompanies}
+                            className={chipStyle}
                         />
                     </li>
                 )}
