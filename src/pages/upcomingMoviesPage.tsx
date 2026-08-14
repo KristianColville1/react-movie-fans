@@ -3,7 +3,13 @@ import PageTemplate from "@templates/movieListPage";
 import { getUpcomingMovies } from "@api/tmdb-api";
 import useFiltering from "@hooks/useFiltering";
 import MovieFilterUI from "@organisms/movieFilterUI";
-import { titleFilter, genreFilter } from "@organisms/movieFilterUI/filters";
+import {
+    titleFilter,
+    genreFilter,
+    yearFromFilter,
+    yearToFilter,
+    ratingFilter,
+} from "@organisms/movieFilterUI/filters";
 import { sortMovies } from "@organisms/movieFilterUI/sorting";
 import { BaseMovieProps, DiscoverMovies } from "@typings/interfaces";
 import { useQuery } from "react-query";
@@ -18,8 +24,23 @@ const titleFiltering = {
 };
 const genreFiltering = {
     name: "genre",
-    value: "0",
+    value: "",
     condition: genreFilter,
+};
+const yearFromFiltering = {
+    name: "yearFrom",
+    value: "",
+    condition: yearFromFilter,
+};
+const yearToFiltering = {
+    name: "yearTo",
+    value: "",
+    condition: yearToFilter,
+};
+const ratingFiltering = {
+    name: "rating",
+    value: "",
+    condition: ratingFilter,
 };
 
 const UpcomingMoviesPage: React.FC = () => {
@@ -34,6 +55,9 @@ const UpcomingMoviesPage: React.FC = () => {
     const { getFilterValue, setFilterValue, filterFunction } = useFiltering([
         titleFiltering,
         genreFiltering,
+        yearFromFiltering,
+        yearToFiltering,
+        ratingFiltering,
     ]);
     const [sortOption, setSortOption] = useState("title");
 
@@ -67,6 +91,9 @@ const UpcomingMoviesPage: React.FC = () => {
                 onFilterValuesChange={setFilterValue}
                 titleFilter={getFilterValue("title")}
                 genreFilter={getFilterValue("genre")}
+                yearFromFilter={getFilterValue("yearFrom")}
+                yearToFilter={getFilterValue("yearTo")}
+                ratingFilter={getFilterValue("rating")}
                 sortOption={sortOption}
                 onSortChange={setSortOption}
             />

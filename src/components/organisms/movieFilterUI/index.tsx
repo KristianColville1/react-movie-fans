@@ -7,6 +7,9 @@ interface MovieFilterUIProps {
     onFilterValuesChange: (f: string, s: string) => void;
     titleFilter: string;
     genreFilter: string;
+    yearFromFilter: string;
+    yearToFilter: string;
+    ratingFilter: string;
     sortOption: string;
     onSortChange: (value: string) => void;
 }
@@ -16,7 +19,10 @@ interface MovieFilterUIProps {
  *
  * @param onFilterValuesChange Called with the filter that changed and its new value.
  * @param titleFilter The current title search text.
- * @param genreFilter The id of the currently selected genre.
+ * @param genreFilter The chosen genre ids, comma separated.
+ * @param yearFromFilter The earliest release year to keep.
+ * @param yearToFilter The latest release year to keep.
+ * @param ratingFilter The lowest average score to keep.
  * @param sortOption The value of the currently selected sort criterion.
  * @param onSortChange Called with the newly selected sort criterion.
  * @returns JSX.Element
@@ -25,6 +31,9 @@ const MovieFilterUI: React.FC<MovieFilterUIProps> = ({
     onFilterValuesChange,
     titleFilter,
     genreFilter,
+    yearFromFilter,
+    yearToFilter,
+    ratingFilter,
     sortOption,
     onSortChange,
 }) => {
@@ -49,6 +58,9 @@ const MovieFilterUI: React.FC<MovieFilterUIProps> = ({
                     onUserInput={onFilterValuesChange}
                     titleFilter={titleFilter}
                     genreFilter={genreFilter}
+                    yearFromFilter={yearFromFilter}
+                    yearToFilter={yearToFilter}
+                    ratingFilter={ratingFilter}
                     sortOption={sortOption}
                     onSortChange={onSortChange}
                 />

@@ -6,7 +6,13 @@ import { getMovie } from "@api/tmdb-api";
 import Spinner from "@atoms/spinner";
 import useFiltering from "@hooks/useFiltering";
 import MovieFilterUI from "@organisms/movieFilterUI";
-import { titleFilter, genreFilter } from "@organisms/movieFilterUI/filters";
+import {
+    titleFilter,
+    genreFilter,
+    yearFromFilter,
+    yearToFilter,
+    ratingFilter,
+} from "@organisms/movieFilterUI/filters";
 import { sortMovies } from "@organisms/movieFilterUI/sorting";
 import RemoveFromFavourites from "@atoms/cardIcons/removeFromFavourites";
 import WriteReview from "@atoms/cardIcons/writeReview";
@@ -19,8 +25,23 @@ const titleFiltering = {
 };
 const genreFiltering = {
     name: "genre",
-    value: "0",
+    value: "",
     condition: genreFilter,
+};
+const yearFromFiltering = {
+    name: "yearFrom",
+    value: "",
+    condition: yearFromFilter,
+};
+const yearToFiltering = {
+    name: "yearTo",
+    value: "",
+    condition: yearToFilter,
+};
+const ratingFiltering = {
+    name: "rating",
+    value: "",
+    condition: ratingFilter,
 };
 
 const FavouriteMoviesPage: React.FC = () => {
@@ -28,6 +49,9 @@ const FavouriteMoviesPage: React.FC = () => {
     const { getFilterValue, setFilterValue, filterFunction } = useFiltering([
         titleFiltering,
         genreFiltering,
+        yearFromFiltering,
+        yearToFiltering,
+        ratingFiltering,
     ]);
     const [sortOption, setSortOption] = useState("title");
 
@@ -72,6 +96,9 @@ const FavouriteMoviesPage: React.FC = () => {
                 onFilterValuesChange={setFilterValue}
                 titleFilter={getFilterValue("title")}
                 genreFilter={getFilterValue("genre")}
+                yearFromFilter={getFilterValue("yearFrom")}
+                yearToFilter={getFilterValue("yearTo")}
+                ratingFilter={getFilterValue("rating")}
                 sortOption={sortOption}
                 onSortChange={setSortOption}
             />

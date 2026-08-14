@@ -33,7 +33,10 @@ export const Basic: Story = {
     args: {
         onFilterValuesChange: action("filter input"),
         titleFilter: "",
-        genreFilter: "0",
+        genreFilter: "",
+        yearFromFilter: "",
+        yearToFilter: "",
+        ratingFilter: "",
         sortOption: "title",
         onSortChange: action("sort input"),
     },
