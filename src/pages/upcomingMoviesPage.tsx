@@ -31,7 +31,7 @@ const UpcomingMoviesPage: React.FC = () => {
         () => getUpcomingMovies(page),
         { keepPreviousData: true },
     );
-    const { filterValues, setFilterValues, filterFunction } = useFiltering([
+    const { getFilterValue, setFilterValue, filterFunction } = useFiltering([
         titleFiltering,
         genreFiltering,
     ]);
@@ -45,13 +45,6 @@ const UpcomingMoviesPage: React.FC = () => {
         return <h1>{error.message}</h1>;
     }
 
-    const changeFilterValues = (type: string, value: string) => {
-        setFilterValues(
-            filterValues.map((filter) =>
-                filter.name === type ? { ...filter, value } : filter,
-            ),
-        );
-    };
 
     const movies = data ? data.results : [];
     const displayedMovies = sortMovies(filterFunction(movies), sortOption);
@@ -71,9 +64,9 @@ const UpcomingMoviesPage: React.FC = () => {
                 onChange={setPage}
             />
             <MovieFilterUI
-                onFilterValuesChange={changeFilterValues}
-                titleFilter={filterValues[0].value}
-                genreFilter={filterValues[1].value}
+                onFilterValuesChange={setFilterValue}
+                titleFilter={getFilterValue("title")}
+                genreFilter={getFilterValue("genre")}
                 sortOption={sortOption}
                 onSortChange={setSortOption}
             />

@@ -25,7 +25,7 @@ const genreFiltering = {
 
 const FavouriteMoviesPage: React.FC = () => {
     const { favourites: movieIds } = useContext(MoviesContext);
-    const { filterValues, setFilterValues, filterFunction } = useFiltering([
+    const { getFilterValue, setFilterValue, filterFunction } = useFiltering([
         titleFiltering,
         genreFiltering,
     ]);
@@ -53,15 +53,6 @@ const FavouriteMoviesPage: React.FC = () => {
         ? sortMovies(filterFunction(allFavourites), sortOption)
         : [];
 
-    const changeFilterValues = (type: string, value: string) => {
-        setFilterValues(
-            filterValues.map((filter) =>
-                filter.name === type ? { ...filter, value } : filter,
-            ),
-        );
-    };
-
-
     return (
         <>
             <PageTemplate
@@ -78,9 +69,9 @@ const FavouriteMoviesPage: React.FC = () => {
             />
 
             <MovieFilterUI
-                onFilterValuesChange={changeFilterValues}
-                titleFilter={filterValues[0].value}
-                genreFilter={filterValues[1].value}
+                onFilterValuesChange={setFilterValue}
+                titleFilter={getFilterValue("title")}
+                genreFilter={getFilterValue("genre")}
                 sortOption={sortOption}
                 onSortChange={setSortOption}
             />

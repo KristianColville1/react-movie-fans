@@ -24,7 +24,7 @@ const ActorsPage: React.FC = () => {
         () => getActors(page),
         { keepPreviousData: true },
     );
-    const { filterValues, setFilterValues, filterFunction } = useFiltering([
+    const { getFilterValue, setFilterValue, filterFunction } = useFiltering([
         nameFiltering,
     ]);
 
@@ -36,13 +36,6 @@ const ActorsPage: React.FC = () => {
         return <h1>{error.message}</h1>;
     }
 
-    const changeNameFilter = (value: string) => {
-        setFilterValues(
-            filterValues.map((filter) =>
-                filter.name === "name" ? { ...filter, value } : filter,
-            ),
-        );
-    };
 
     const actors = data ? data.results : [];
     const displayedActors = filterFunction(actors);
@@ -56,8 +49,8 @@ const ActorsPage: React.FC = () => {
                 onChange={setPage}
             />
             <ActorFilterUI
-                onNameChange={changeNameFilter}
-                nameFilter={filterValues[0].value}
+                onNameChange={(value) => setFilterValue("name", value)}
+                nameFilter={getFilterValue("name")}
             />
         </>
     );

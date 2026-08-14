@@ -27,9 +27,21 @@ const useFiltering = <T,>(filters: Filter<T>[]) => {
             });
         }, collection);
 
+    // Read and write by name so pages never index into filterValues. Adding
+    // a filter then costs nothing at the call sites.
+    const getFilterValue = (name: string) =>
+        filterValues.find((f) => f.name === name)?.value ?? "";
+
+    const setFilterValue = (name: string, value: string) =>
+        setFilterValues((prevValues) =>
+            prevValues.map((f) => (f.name === name ? { ...f, value } : f)),
+        );
+
     return {
         filterValues,
         setFilterValues,
+        getFilterValue,
+        setFilterValue,
         filterFunction,
     };
 };
