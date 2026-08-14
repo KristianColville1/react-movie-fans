@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PageTemplate from "@templates/actorListPage";
 import { getActors } from "@api/tmdb-api";
 import useFiltering from "@hooks/useFiltering";
@@ -7,6 +7,7 @@ import { nameFilter } from "@organisms/actorFilterUI/filters";
 import { PopularActors } from "@typings/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "@atoms/spinner";
+import Pagination from "@molecules/pagination";
 
 const nameFiltering = {
     name: "name",
@@ -15,9 +16,13 @@ const nameFiltering = {
 };
 
 const ActorsPage: React.FC = () => {
+    const [page, setPage] = useState(1);
+    // keepPreviousData holds the previous page on screen while the next one
+    // loads, so the grid does not blank out between pages.
     const { data, error, isLoading, isError } = useQuery<PopularActors, Error>(
-        "actors",
-        getActors,
+        ["actors", page],
+        () => getActors(page),
+        { keepPreviousData: true },
     );
     const { filterValues, setFilterValues, filterFunction } = useFiltering([
         nameFiltering,
@@ -45,6 +50,11 @@ const ActorsPage: React.FC = () => {
     return (
         <>
             <PageTemplate title="Popular Actors" actors={displayedActors} />
+            <Pagination
+                page={page}
+                totalPages={data ? data.total_pages : 1}
+                onChange={setPage}
+            />
             <ActorFilterUI
                 onNameChange={changeNameFilter}
                 nameFilter={filterValues[0].value}

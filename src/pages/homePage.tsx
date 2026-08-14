@@ -9,6 +9,7 @@ import { BaseMovieProps, DiscoverMovies } from "@typings/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "@atoms/spinner";
 import AddToFavouritesIcon from "@atoms/cardIcons/addToFavourites";
+import Pagination from "@molecules/pagination";
 
 const titleFiltering = {
     name: "title",
@@ -22,9 +23,13 @@ const genreFiltering = {
 };
 
 const HomePage: React.FC = () => {
+    const [page, setPage] = useState(1);
+    // keepPreviousData holds the previous page on screen while the next one
+    // loads, so the grid does not blank out between pages.
     const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>(
-        "discover",
-        getMovies,
+        ["discover", page],
+        () => getMovies(page),
+        { keepPreviousData: true },
     );
     const { filterValues, setFilterValues, filterFunction } = useFiltering([
         titleFiltering,
@@ -59,6 +64,11 @@ const HomePage: React.FC = () => {
                  action={(movie: BaseMovieProps) => {
                      return <AddToFavouritesIcon {...movie} />;
                  }}
+             />
+             <Pagination
+                 page={page}
+                 totalPages={data ? data.total_pages : 1}
+                 onChange={setPage}
              />
              <MovieFilterUI
                  onFilterValuesChange={changeFilterValues}
