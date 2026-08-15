@@ -14,6 +14,9 @@ import ActorsPage from "@pages/actorsPage";
 import ActorDetailsPage from "@pages/actorDetailsPage";
 import FantasyMoviePage from "@pages/fantasyMoviePage";
 import FantasyMovieDetailsPage from "@pages/fantasyMovieDetailsPage";
+import LoginPage from "@pages/loginPage";
+import PrivateRoute from "@atoms/privateRoute";
+import AuthContextProvider from "@contexts/authContextProvider";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -28,41 +31,54 @@ const App: React.FC = () => {
     return (
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>
-                <SiteHeader />
-                <MoviesContextProvider>
-                    <Routes>
-                        <Route
-                            path="/movies/favourites"
-                            element={<FavouriteMoviesPage />}
-                        />
-                        <Route
-                            path="/movies/upcoming"
-                            element={<UpcomingMoviesPage />}
-                        />
-                        <Route path="/movies/:id" element={<MoviePage />} />
-                        <Route path="/fantasy" element={<FantasyMoviePage />} />
-                        <Route
-                            path="/fantasy/:id"
-                            element={<FantasyMovieDetailsPage />}
-                        />
-                        <Route path="/actors" element={<ActorsPage />} />
-                        <Route
-                            path="/actors/:id"
-                            element={<ActorDetailsPage />}
-                        />
-                        <Route
-                            path="/reviews/form"
-                            element={<AddMovieReviewPage />}
-                        />
-                        <Route
-                            path="/reviews/:id"
-                            element={<MovieReviewPage />}
-                        />
+                {/* The header shows who is signed in, so it sits inside the
+                    auth provider alongside the routes. */}
+                <AuthContextProvider>
+                    <SiteHeader />
+                    <MoviesContextProvider>
+                        <Routes>
+                            <Route path="/login" element={<LoginPage />} />
+                            <Route
+                                path="/movies/upcoming"
+                                element={<UpcomingMoviesPage />}
+                            />
+                            <Route path="/movies/:id" element={<MoviePage />} />
+                            <Route path="/actors" element={<ActorsPage />} />
+                            <Route
+                                path="/actors/:id"
+                                element={<ActorDetailsPage />}
+                            />
 
-                        <Route path="/" element={<HomePage />} />
-                        <Route path="*" element={<Navigate to="/" />} />
-                    </Routes>
-                </MoviesContextProvider>
+                            {/* Anything belonging to one person sits behind
+                                the guard. */}
+                            <Route element={<PrivateRoute />}>
+                                <Route
+                                    path="/movies/favourites"
+                                    element={<FavouriteMoviesPage />}
+                                />
+                                <Route
+                                    path="/fantasy"
+                                    element={<FantasyMoviePage />}
+                                />
+                                <Route
+                                    path="/fantasy/:id"
+                                    element={<FantasyMovieDetailsPage />}
+                                />
+                                <Route
+                                    path="/reviews/form"
+                                    element={<AddMovieReviewPage />}
+                                />
+                                <Route
+                                    path="/reviews/:id"
+                                    element={<MovieReviewPage />}
+                                />
+                            </Route>
+
+                            <Route path="/" element={<HomePage />} />
+                            <Route path="*" element={<Navigate to="/" />} />
+                        </Routes>
+                    </MoviesContextProvider>
+                </AuthContextProvider>
             </BrowserRouter>
             <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
