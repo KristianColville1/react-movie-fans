@@ -1,39 +1,94 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useContext } from "react";
 import { BaseMovieProps, FantasyMovie, Review } from "@typings/interfaces";
 import { MoviesContext } from "@contexts/moviesContext";
+import { AuthContext } from "@contexts/authContext";
 import {
     loadFantasyMovies,
-    saveFantasyMovies,
+    insertFantasyMovie,
+    deleteFantasyMovie,
 } from "@storage/fantasyMovieStore";
+import {
+    loadFavourites,
+    addFavourite,
+    removeFavourite,
+} from "@storage/favouritesStore";
+import {
+    loadFavouriteActors,
+    addFavouriteActor,
+    removeFavouriteActor,
+} from "@storage/favouriteActorsStore";
 
 const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
     children,
 }) => {
+    const { user } = useContext(AuthContext);
     const [myReviews, setMyReviews] = useState<Review[]>([]);
     const [favourites, setFavourites] = useState<number[]>([]);
+    const [favouriteActors, setFavouriteActors] = useState<number[]>([]);
     const [mustWatch, setMustWatch] = useState<number[]>([]);
-    const [fantasyMovies, setFantasyMovies] =
-        useState<FantasyMovie[]>(loadFantasyMovies);
+    const [fantasyMovies, setFantasyMovies] = useState<FantasyMovie[]>([]);
 
-    // The list is written back whenever it changes, so every caller only has
-    // to update state and the saved copy keeps up on its own.
+    // Everything stored belongs to a user, so it is read when one signs in
+    // and dropped when they sign out rather than lingering for the next one.
     useEffect(() => {
-        saveFantasyMovies(fantasyMovies);
-    }, [fantasyMovies]);
+        let active = true;
 
-    const addToFavourites = useCallback((movie: BaseMovieProps) => {
-        setFavourites((prevFavourites) => {
-            if (!prevFavourites.includes(movie.id)) {
-                return [...prevFavourites, movie.id];
+        if (!user) {
+            setFavourites([]);
+            setFavouriteActors([]);
+            setFantasyMovies([]);
+            setMyReviews([]);
+            return;
+        }
+
+        Promise.all([
+            loadFavourites(),
+            loadFavouriteActors(),
+            loadFantasyMovies(),
+        ]).then(([storedFavourites, storedActors, storedMovies]) => {
+            if (!active) {
+                return;
             }
-            return prevFavourites;
+            setFavourites(storedFavourites);
+            setFavouriteActors(storedActors);
+            setFantasyMovies(storedMovies);
         });
+
+        return () => {
+            active = false;
+        };
+    }, [user]);
+
+    // The local list is updated first so the card responds immediately, then
+    // the write goes out. A failed write is corrected on the next load.
+    const addToFavourites = useCallback((movie: BaseMovieProps) => {
+        setFavourites((prevFavourites) =>
+            prevFavourites.includes(movie.id)
+                ? prevFavourites
+                : [...prevFavourites, movie.id],
+        );
+        void addFavourite(movie.id);
     }, []);
 
     const removeFromFavourites = useCallback((movie: BaseMovieProps) => {
         setFavourites((prevFavourites) =>
             prevFavourites.filter((mId) => mId !== movie.id),
         );
+        void removeFavourite(movie.id);
+    }, []);
+
+    const addToFavouriteActors = useCallback((actorId: number) => {
+        setFavouriteActors((prevActors) =>
+            prevActors.includes(actorId) ? prevActors : [...prevActors, actorId],
+        );
+        void addFavouriteActor(actorId);
+    }, []);
+
+    const removeFromFavouriteActors = useCallback((actorId: number) => {
+        setFavouriteActors((prevActors) =>
+            prevActors.filter((aId) => aId !== actorId),
+        );
+        void removeFavouriteActor(actorId);
     }, []);
 
     // Reviews carry the movie they belong to, so the list stays flat.
@@ -44,27 +99,32 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
         ]);
     }, []);
 
-    const saveFantasyMovie = useCallback((movie: Omit<FantasyMovie, "id">) => {
-        setFantasyMovies((prevFantasyMovies) => [
-            ...prevFantasyMovies,
-            { ...movie, id: crypto.randomUUID() },
-        ]);
-    }, []);
+    // The database fills in the id, so the new movie is taken from what the
+    // insert returns rather than guessed at here.
+    const saveFantasyMovie = useCallback(
+        (movie: Omit<FantasyMovie, "id">) => {
+            void insertFantasyMovie(movie).then((stored) => {
+                if (stored) {
+                    setFantasyMovies((prevMovies) => [...prevMovies, stored]);
+                }
+            });
+        },
+        [],
+    );
 
     const removeFantasyMovie = useCallback((id: string) => {
-        setFantasyMovies((prevFantasyMovies) =>
-            prevFantasyMovies.filter((movie) => movie.id !== id),
+        setFantasyMovies((prevMovies) =>
+            prevMovies.filter((movie) => movie.id !== id),
         );
+        void deleteFantasyMovie(id);
     }, []);
 
     const addToMustWatch = useCallback((movie: BaseMovieProps) => {
-        setMustWatch((prevMustWatch) => {
-            const newMustWatch = !prevMustWatch.includes(movie.id)
-                ? [...prevMustWatch, movie.id]
-                : prevMustWatch;
-            console.log(newMustWatch);
-            return newMustWatch;
-        });
+        setMustWatch((prevMustWatch) =>
+            prevMustWatch.includes(movie.id)
+                ? prevMustWatch
+                : [...prevMustWatch, movie.id],
+        );
     }, []);
 
     return (
@@ -73,6 +133,9 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
                 favourites,
                 addToFavourites,
                 removeFromFavourites,
+                favouriteActors,
+                addToFavouriteActors,
+                removeFromFavouriteActors,
                 myReviews,
                 addReview,
                 mustWatch,
