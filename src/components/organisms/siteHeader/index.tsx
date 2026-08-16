@@ -42,6 +42,7 @@ const SiteHeader: React.FC = () => {
         { label: "Upcoming Movies", path: "/movies/upcoming", private: false },
         { label: "Actors", path: "/actors", private: false },
         { label: "Favorites", path: "/movies/favourites", private: true },
+        { label: "Favourite Actors", path: "/actors/favourites", private: true },
         { label: "Fantasy Movie", path: "/fantasy", private: true },
     ].filter((opt) => !opt.private || session);
 

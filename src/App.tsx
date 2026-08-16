@@ -15,6 +15,7 @@ import ActorDetailsPage from "@pages/actorDetailsPage";
 import FantasyMoviePage from "@pages/fantasyMoviePage";
 import FantasyMovieDetailsPage from "@pages/fantasyMovieDetailsPage";
 import LoginPage from "@pages/loginPage";
+import FavouriteActorsPage from "@pages/favouriteActorsPage";
 import PrivateRoute from "@atoms/privateRoute";
 import AuthContextProvider from "@contexts/authContextProvider";
 
@@ -55,6 +56,10 @@ const App: React.FC = () => {
                                 <Route
                                     path="/movies/favourites"
                                     element={<FavouriteMoviesPage />}
+                                />
+                                <Route
+                                    path="/actors/favourites"
+                                    element={<FavouriteActorsPage />}
                                 />
                                 <Route
                                     path="/fantasy"
