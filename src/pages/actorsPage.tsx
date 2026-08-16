@@ -8,6 +8,8 @@ import { PopularActors } from "@typings/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "@atoms/spinner";
 import Pagination from "@molecules/pagination";
+import AddToFavouriteActorsIcon from "@atoms/cardIcons/addToFavouriteActors";
+import { BaseActorProps } from "@typings/interfaces";
 
 const nameFiltering = {
     name: "name",
@@ -42,7 +44,13 @@ const ActorsPage: React.FC = () => {
 
     return (
         <>
-            <PageTemplate title="Popular Actors" actors={displayedActors} />
+            <PageTemplate
+                title="Popular Actors"
+                actors={displayedActors}
+                action={(actor: BaseActorProps) => (
+                    <AddToFavouriteActorsIcon {...actor} />
+                )}
+            />
             <Pagination
                 page={page}
                 totalPages={data ? data.total_pages : 1}
