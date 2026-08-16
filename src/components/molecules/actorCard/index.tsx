@@ -12,15 +12,17 @@ import { Link } from "react-router-dom";
 
 interface ActorCardProps {
     actor: BaseActorProps;
+    action: (a: BaseActorProps) => React.ReactNode;
 }
 
 /**
  * Card showing an actor's profile picture, name and department.
  *
  * @param actor The actor to display.
+ * @param action Renders the icon button shown in the card's actions.
  * @returns JSX.Element
  */
-const ActorCard: React.FC<ActorCardProps> = ({ actor }) => {
+const ActorCard: React.FC<ActorCardProps> = ({ actor, action }) => {
     return (
         <Card className="flex h-full max-w-[345px] flex-col overflow-hidden rounded-xl bg-surface text-navajo-white shadow-lg shadow-black/40 ring-1 ring-white/5 transition hover:ring-ocean-mist/60">
             <CardMedia
@@ -51,8 +53,9 @@ const ActorCard: React.FC<ActorCardProps> = ({ actor }) => {
             </CardContent>
             <CardActions
                 disableSpacing
-                className="mt-auto flex items-center justify-end border-t border-white/5 px-2 py-2"
+                className="mt-auto flex items-center justify-between border-t border-white/5 px-2 py-2"
             >
+                {action(actor)}
                 <Link to={`/actors/${actor.id}`}>
                     <Button
                         variant="outlined"
