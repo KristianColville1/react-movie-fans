@@ -14,7 +14,8 @@
     "db:diff": "supabase db diff --linked",
     "db:push": "supabase db push",
     "db:list": "supabase migration list --linked",
-    "db:link": "supabase link --project-ref ejqlttgvwpfhwwvufiav"
+    "db:link": "supabase link --project-ref ejqlttgvwpfhwwvufiav",
+    "test": "node e2e/run.mjs"
   },
   "dependencies": {
     "@emotion/react": "^11.7.1",
