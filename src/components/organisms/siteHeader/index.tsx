@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent } from "react";
+import React, { useState, useContext, MouseEvent } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -11,6 +11,7 @@ import Menu from "@mui/material/Menu";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { AuthContext } from "@contexts/authContext";
 
 const styles = {
     title: {
@@ -32,14 +33,24 @@ const SiteHeader: React.FC = () => {
     const open = Boolean(anchorEl);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
+    const { session, user, signOut } = useContext(AuthContext);
 
+    // Signed out visitors are not offered the routes that would only bounce
+    // them to the login page.
     const menuOptions = [
-        { label: "Home", path: "/" },
-        { label: "Upcoming Movies", path: "/movies/upcoming" },
-        { label: "Favorites", path: "/movies/favourites" },
-        { label: "Actors", path: "/actors" },
-        { label: "Fantasy Movie", path: "/fantasy" },
-    ];
+        { label: "Home", path: "/", private: false },
+        { label: "Upcoming Movies", path: "/movies/upcoming", private: false },
+        { label: "Actors", path: "/actors", private: false },
+        { label: "Favorites", path: "/movies/favourites", private: true },
+        { label: "Favourite Actors", path: "/actors/favourites", private: true },
+        { label: "Fantasy Movie", path: "/fantasy", private: true },
+    ].filter((opt) => !opt.private || session);
+
+    const handleSignOut = async () => {
+        setAnchorEl(null);
+        await signOut();
+        navigate("/");
+    };
 
     const handleMenuSelect = (pageURL: string) => {
         navigate(pageURL);
@@ -100,6 +111,19 @@ const SiteHeader: React.FC = () => {
                                         {opt.label}
                                     </MenuItem>
                                 ))}
+                                {session ? (
+                                    <MenuItem onClick={handleSignOut}>
+                                        Sign out
+                                    </MenuItem>
+                                ) : (
+                                    <MenuItem
+                                        onClick={() =>
+                                            handleMenuSelect("/login")
+                                        }
+                                    >
+                                        Sign in
+                                    </MenuItem>
+                                )}
                             </Menu>
                         </>
                     ) : (
@@ -113,6 +137,29 @@ const SiteHeader: React.FC = () => {
                                     {opt.label}
                                 </Button>
                             ))}
+                            {session ? (
+                                <>
+                                    <Typography
+                                        variant="body2"
+                                        className="mx-3 text-navajo-white/70"
+                                    >
+                                        {user?.email}
+                                    </Typography>
+                                    <Button
+                                        color="inherit"
+                                        onClick={handleSignOut}
+                                    >
+                                        Sign out
+                                    </Button>
+                                </>
+                            ) : (
+                                <Button
+                                    color="inherit"
+                                    onClick={() => handleMenuSelect("/login")}
+                                >
+                                    Sign in
+                                </Button>
+                            )}
                         </>
                     )}
                 </Toolbar>

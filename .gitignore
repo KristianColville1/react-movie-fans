@@ -27,3 +27,6 @@ storybook-static
 
 
 docs/private/
+# Playwright
+/test-results
+/playwright-report

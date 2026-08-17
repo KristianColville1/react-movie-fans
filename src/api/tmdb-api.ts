@@ -1,13 +1,14 @@
 /**
- * Fetches the first page of discoverable movies from TMDB.
+ * Fetches a page of discoverable movies from TMDB.
  *
+ * @param page The page to fetch, starting at 1.
  * @returns The discover response, containing the page number, total counts
  * and a results array of movies.
  * @throws If the response status is not ok.
  */
-export const getMovies = () => {
+export const getMovies = (page = 1) => {
     return fetch(
-        `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=1`,
+        `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`,
     )
         .then((response) => {
             if (!response.ok)
@@ -109,15 +110,16 @@ export const getMovieReviews = (id: string | number) => {
 };
 
 /**
- * Fetches the first page of popular actors.
+ * Fetches a page of popular actors.
  *
+ * @param page The page to fetch, starting at 1.
  * @returns The popular people response, containing the page number, total
  * counts and a results array of actors.
  * @throws If the response status is not ok.
  */
-export const getActors = () => {
+export const getActors = (page = 1) => {
     return fetch(
-        `https://api.themoviedb.org/3/person/popular?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`,
+        `https://api.themoviedb.org/3/person/popular?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=${page}`,
     )
         .then((response) => {
             if (!response.ok)
@@ -203,15 +205,16 @@ export const getMovieCredits = (id: string | number) => {
 };
 
 /**
- * Fetches the first page of upcoming movie releases.
+ * Fetches a page of upcoming movie releases.
  *
+ * @param page The page to fetch, starting at 1.
  * @returns The same shape as the discover response, with a results array
  * of movies.
  * @throws If the response status is not ok.
  */
-export const getUpcomingMovies = () => {
+export const getUpcomingMovies = (page = 1) => {
     return fetch(
-        `https://api.themoviedb.org/3/movie/upcoming?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`,
+        `https://api.themoviedb.org/3/movie/upcoming?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=${page}`,
     )
         .then((response) => {
             if (!response.ok)

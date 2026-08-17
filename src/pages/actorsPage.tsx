@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PageTemplate from "@templates/actorListPage";
 import { getActors } from "@api/tmdb-api";
 import useFiltering from "@hooks/useFiltering";
@@ -7,6 +7,9 @@ import { nameFilter } from "@organisms/actorFilterUI/filters";
 import { PopularActors } from "@typings/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "@atoms/spinner";
+import Pagination from "@molecules/pagination";
+import AddToFavouriteActorsIcon from "@atoms/cardIcons/addToFavouriteActors";
+import { BaseActorProps } from "@typings/interfaces";
 
 const nameFiltering = {
     name: "name",
@@ -15,11 +18,15 @@ const nameFiltering = {
 };
 
 const ActorsPage: React.FC = () => {
+    const [page, setPage] = useState(1);
+    // keepPreviousData holds the previous page on screen while the next one
+    // loads, so the grid does not blank out between pages.
     const { data, error, isLoading, isError } = useQuery<PopularActors, Error>(
-        "actors",
-        getActors,
+        ["actors", page],
+        () => getActors(page),
+        { keepPreviousData: true },
     );
-    const { filterValues, setFilterValues, filterFunction } = useFiltering([
+    const { getFilterValue, setFilterValue, filterFunction } = useFiltering([
         nameFiltering,
     ]);
 
@@ -31,23 +38,27 @@ const ActorsPage: React.FC = () => {
         return <h1>{error.message}</h1>;
     }
 
-    const changeNameFilter = (value: string) => {
-        setFilterValues(
-            filterValues.map((filter) =>
-                filter.name === "name" ? { ...filter, value } : filter,
-            ),
-        );
-    };
 
     const actors = data ? data.results : [];
     const displayedActors = filterFunction(actors);
 
     return (
         <>
-            <PageTemplate title="Popular Actors" actors={displayedActors} />
+            <PageTemplate
+                title="Popular Actors"
+                actors={displayedActors}
+                action={(actor: BaseActorProps) => (
+                    <AddToFavouriteActorsIcon {...actor} />
+                )}
+            />
+            <Pagination
+                page={page}
+                totalPages={data ? data.total_pages : 1}
+                onChange={setPage}
+            />
             <ActorFilterUI
-                onNameChange={changeNameFilter}
-                nameFilter={filterValues[0].value}
+                onNameChange={(value) => setFilterValue("name", value)}
+                nameFilter={getFilterValue("name")}
             />
         </>
     );

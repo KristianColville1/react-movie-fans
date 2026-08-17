@@ -5,6 +5,9 @@ export interface MovieContextInterface {
     favourites: number[];
     addToFavourites: (movie: BaseMovieProps) => void;
     removeFromFavourites: (movie: BaseMovieProps) => void;
+    favouriteActors: number[];
+    addToFavouriteActors: (actorId: number) => void;
+    removeFromFavouriteActors: (actorId: number) => void;
     myReviews: Review[];
     addReview: (movie: BaseMovieProps, review: Review) => void;
     mustWatch: number[];
@@ -18,6 +21,9 @@ const initialContextState: MovieContextInterface = {
     favourites: [],
     addToFavourites: () => {},
     removeFromFavourites: () => {},
+    favouriteActors: [],
+    addToFavouriteActors: () => {},
+    removeFromFavouriteActors: () => {},
     myReviews: [],
     addReview: () => {},
     mustWatch: [],

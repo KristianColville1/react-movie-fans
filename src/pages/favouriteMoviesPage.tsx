@@ -6,7 +6,13 @@ import { getMovie } from "@api/tmdb-api";
 import Spinner from "@atoms/spinner";
 import useFiltering from "@hooks/useFiltering";
 import MovieFilterUI from "@organisms/movieFilterUI";
-import { titleFilter, genreFilter } from "@organisms/movieFilterUI/filters";
+import {
+    titleFilter,
+    genreFilter,
+    yearFromFilter,
+    yearToFilter,
+    ratingFilter,
+} from "@organisms/movieFilterUI/filters";
 import { sortMovies } from "@organisms/movieFilterUI/sorting";
 import RemoveFromFavourites from "@atoms/cardIcons/removeFromFavourites";
 import WriteReview from "@atoms/cardIcons/writeReview";
@@ -19,15 +25,33 @@ const titleFiltering = {
 };
 const genreFiltering = {
     name: "genre",
-    value: "0",
+    value: "",
     condition: genreFilter,
+};
+const yearFromFiltering = {
+    name: "yearFrom",
+    value: "",
+    condition: yearFromFilter,
+};
+const yearToFiltering = {
+    name: "yearTo",
+    value: "",
+    condition: yearToFilter,
+};
+const ratingFiltering = {
+    name: "rating",
+    value: "",
+    condition: ratingFilter,
 };
 
 const FavouriteMoviesPage: React.FC = () => {
     const { favourites: movieIds } = useContext(MoviesContext);
-    const { filterValues, setFilterValues, filterFunction } = useFiltering([
+    const { getFilterValue, setFilterValue, filterFunction } = useFiltering([
         titleFiltering,
         genreFiltering,
+        yearFromFiltering,
+        yearToFiltering,
+        ratingFiltering,
     ]);
     const [sortOption, setSortOption] = useState("title");
 
@@ -53,15 +77,6 @@ const FavouriteMoviesPage: React.FC = () => {
         ? sortMovies(filterFunction(allFavourites), sortOption)
         : [];
 
-    const changeFilterValues = (type: string, value: string) => {
-        setFilterValues(
-            filterValues.map((filter) =>
-                filter.name === type ? { ...filter, value } : filter,
-            ),
-        );
-    };
-
-
     return (
         <>
             <PageTemplate
@@ -78,9 +93,12 @@ const FavouriteMoviesPage: React.FC = () => {
             />
 
             <MovieFilterUI
-                onFilterValuesChange={changeFilterValues}
-                titleFilter={filterValues[0].value}
-                genreFilter={filterValues[1].value}
+                onFilterValuesChange={setFilterValue}
+                titleFilter={getFilterValue("title")}
+                genreFilter={getFilterValue("genre")}
+                yearFromFilter={getFilterValue("yearFrom")}
+                yearToFilter={getFilterValue("yearTo")}
+                ratingFilter={getFilterValue("rating")}
                 sortOption={sortOption}
                 onSortChange={setSortOption}
             />
