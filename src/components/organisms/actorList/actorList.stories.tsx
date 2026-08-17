@@ -2,6 +2,9 @@ import type { Meta } from "@storybook/react";
 import ActorList from "@organisms/actorList";
 import { SampleActor } from "@stories/sampleData";
 import { MemoryRouter } from "react-router";
+import MoviesContextProvider from "@contexts/moviesContextProvider";
+import AddToFavouriteActorsIcon from "@atoms/cardIcons/addToFavouriteActors";
+import { BaseActorProps } from "@typings/interfaces";
 import Grid from "@mui/material/Grid";
 
 const meta = {
@@ -12,6 +15,11 @@ const meta = {
             <MemoryRouter initialEntries={["/"]}>
                 <Story />
             </MemoryRouter>
+        ),
+        (Story) => (
+            <MoviesContextProvider>
+                <Story />
+            </MoviesContextProvider>
         ),
     ],
 } satisfies Meta<typeof ActorList>;
@@ -28,7 +36,12 @@ export const Basic = () => {
     ];
     return (
         <Grid container spacing={5}>
-            <ActorList actors={actors} />
+            <ActorList
+                actors={actors}
+                action={(actor: BaseActorProps) => (
+                    <AddToFavouriteActorsIcon {...actor} />
+                )}
+            />
         </Grid>
     );
 };

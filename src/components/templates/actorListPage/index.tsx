@@ -7,6 +7,7 @@ import { BaseActorProps } from "@typings/interfaces";
 interface ActorListPageTemplateProps {
     actors: BaseActorProps[];
     title: string;
+    action: (a: BaseActorProps) => React.ReactNode;
 }
 
 /**
@@ -14,11 +15,13 @@ interface ActorListPageTemplateProps {
  *
  * @param actors The actors to list.
  * @param title The heading shown above the grid.
+ * @param action Renders the icon button shown on each card.
  * @returns JSX.Element
  */
 const ActorListPageTemplate: React.FC<ActorListPageTemplateProps> = ({
     actors,
     title,
+    action,
 }) => {
     return (
         <Grid container className="bg-jet-black p-4">
@@ -26,7 +29,7 @@ const ActorListPageTemplate: React.FC<ActorListPageTemplateProps> = ({
                 <Header title={title} />
             </Grid>
             <Grid item container spacing={5}>
-                <ActorList actors={actors}></ActorList>
+                <ActorList actors={actors} action={action} />
             </Grid>
         </Grid>
     );

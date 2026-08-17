@@ -51,7 +51,12 @@ export interface MoviePageProps {
 
 }
 
-export type FilterOption = "title" | "genre";
+export type FilterOption =
+    | "title"
+    | "genre"
+    | "yearFrom"
+    | "yearTo"
+    | "rating";
 
 export interface MovieListPageTemplateProps extends BaseMovieListProps {
     title: string;
