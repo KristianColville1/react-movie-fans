@@ -1,0 +1,12 @@
+node_modules
+dist
+storybook-static
+test-results
+playwright-report
+.git
+.github
+docs
+e2e
+supabase
+.env
+*.local
