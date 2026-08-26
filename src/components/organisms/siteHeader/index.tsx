@@ -67,13 +67,21 @@ const SiteHeader: React.FC = () => {
                 elevation={0}
                 className="bg-surface-raised text-navajo-white"
             >
-                <Toolbar>
-                    <Typography variant="h4" sx={styles.title}>
-                        TMDB Client
+                <Toolbar className="mx-auto w-full max-w-7xl">
+                    <Typography
+                        variant="h4"
+                        component="button"
+                        sx={styles.title}
+                        onClick={() => handleMenuSelect("/")}
+                        className="cursor-pointer border-0 bg-transparent p-0 text-left text-inherit"
+                    >
+                        MovieFans
                     </Typography>
-                    <Typography variant="h6" sx={styles.title}>
-                        All you ever wanted to know about Movies!
-                    </Typography>
+                    {!isMobile && (
+                        <Typography variant="h6" sx={styles.title}>
+                            All you ever wanted to know about Movies!
+                        </Typography>
+                    )}
                     {isMobile ? (
                         <>
                             <IconButton
