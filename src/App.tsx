@@ -17,6 +17,7 @@ import FantasyMovieDetailsPage from "@pages/fantasyMovieDetailsPage";
 import LoginPage from "@pages/loginPage";
 import FavouriteActorsPage from "@pages/favouriteActorsPage";
 import PrivateRoute from "@atoms/privateRoute";
+import ProfilePage from "@pages/profilePage";
 import AuthContextProvider from "@contexts/authContextProvider";
 
 const queryClient = new QueryClient({
@@ -54,6 +55,10 @@ const App: React.FC = () => {
                                 {/* Anything belonging to one person sits behind
                                     the guard. */}
                                 <Route element={<PrivateRoute />}>
+                                    <Route
+                                        path="/profile"
+                                        element={<ProfilePage />}
+                                    />
                                     <Route
                                         path="/movies/favourites"
                                         element={<FavouriteMoviesPage />}
