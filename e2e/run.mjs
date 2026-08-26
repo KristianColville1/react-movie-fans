@@ -3,6 +3,7 @@
 
 import {
     account,
+    openAccountMenu,
     assert,
     assertEqual,
     baseURL,
@@ -27,10 +28,12 @@ test(
     async (page) => {
         // reuses one fixed account, so repeat runs do not pile up users
         await signUpOrSignIn(page);
+        await openAccountMenu(page);
         assert(
             await page.getByText(signUpAccount.email).first().isVisible(),
-            "header does not show the new account",
+            "account menu does not show the new account",
         );
+        await page.keyboard.press("Escape");
         assert(
             await page
                 .getByRole("button", { name: "Fantasy Movie", exact: true })
@@ -49,10 +52,12 @@ test(
         assert(page.url().endsWith("/login"), "private route did not redirect");
 
         await signIn(page);
+        await openAccountMenu(page);
         assert(
             await page.getByText(account.email).first().isVisible(),
-            "header does not show the signed in account",
+            "account menu does not show the signed in account",
         );
+        await page.keyboard.press("Escape");
 
         await go(page, "/fantasy");
         assert(page.url().endsWith("/fantasy"), "private route did not open");
