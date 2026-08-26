@@ -4,6 +4,7 @@ import Grid from "@mui/material/Grid";
 import { getMovieImages, getMovieVideos } from "@api/tmdb-api";
 import { MovieImage, MovieDetailsProps } from "@typings/interfaces";
 import { useQuery } from "react-query";
+import { useLocation, useNavigate } from "react-router-dom";
 import Spinner from "@atoms/spinner";
 import MovieTrailer from "@molecules/movieTrailer";
 import PosterCarousel from "@molecules/posterCarousel";
@@ -26,6 +27,19 @@ const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({
     movie,
     children,
 }) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // the list that was clicked from travels in the router state, so a
+    // bookmarked link simply has no neighbours to walk
+    const siblingIds =
+        (location.state as { siblingIds?: number[] } | null)?.siblingIds ?? [];
+    const position = siblingIds.indexOf(movie.id);
+    const goToSibling = (offset: number) => () =>
+        navigate(`/movies/${siblingIds[position + offset]}`, {
+            state: { siblingIds },
+        });
+
     const { data, error, isLoading, isError } = useQuery<MovieImage[], Error>(
         ["images", movie.id],
         () => getMovieImages(movie.id),
@@ -52,7 +66,15 @@ const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({
 
     return (
         <div className="p-4">
-            <MovieHeader {...movie} />
+            <MovieHeader
+                {...movie}
+                onPrevious={position > 0 ? goToSibling(-1) : undefined}
+                onNext={
+                    position > -1 && position < siblingIds.length - 1
+                        ? goToSibling(1)
+                        : undefined
+                }
+            />
 
             <Grid container spacing={4}>
                 <Grid item xs={12} md={3}>

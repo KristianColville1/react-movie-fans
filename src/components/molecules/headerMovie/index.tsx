@@ -9,12 +9,21 @@ import { MovieDetailsProps } from "@typings/interfaces";
 import Avatar from "@mui/material/Avatar";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 /**
- * Header shown at the top of a movie details page.
+ * Header shown at the top of a movie details page. The arrows walk the list
+ * the visitor arrived from, and are left out when there is no list, which is
+ * what a bookmarked link gives you.
  *
  * @param movie The movie whose title, tagline and homepage are shown.
+ * @param onPrevious Opens the movie before this one in that list.
+ * @param onNext Opens the movie after this one in that list.
  * @returns JSX.Element
  */
-const MovieHeader: React.FC<MovieDetailsProps> = (movie) => {
+const MovieHeader: React.FC<
+    MovieDetailsProps & {
+        onPrevious?: () => void;
+        onNext?: () => void;
+    }
+> = ({ onPrevious, onNext, ...movie }) => {
     // get the favourites from localStorage
     const favourites: { id: number }[] = JSON.parse(
         localStorage.getItem("favourites") || "[]",
@@ -25,9 +34,15 @@ const MovieHeader: React.FC<MovieDetailsProps> = (movie) => {
             component="div"
             className="mb-6 flex flex-wrap items-center justify-around rounded-xl bg-surface px-4 py-3 text-navajo-white"
         >
-            <IconButton aria-label="go back" className="text-ocean-mist">
-                <ArrowBackIcon fontSize="large" />
-            </IconButton>
+            {onPrevious && (
+                <IconButton
+                    aria-label="go back"
+                    className="text-ocean-mist"
+                    onClick={onPrevious}
+                >
+                    <ArrowBackIcon fontSize="large" />
+                </IconButton>
+            )}
 
             {favourites.some((f) => f.id === movie.id) ? (
                 <Avatar className="bg-magenta-bloom text-jet-black">
@@ -49,9 +64,15 @@ const MovieHeader: React.FC<MovieDetailsProps> = (movie) => {
                     {`${movie.tagline}`}{" "}
                 </span>
             </Typography>
-            <IconButton aria-label="go forward" className="text-ocean-mist">
-                <ArrowForwardIcon fontSize="large" />
-            </IconButton>
+            {onNext && (
+                <IconButton
+                    aria-label="go forward"
+                    className="text-ocean-mist"
+                    onClick={onNext}
+                >
+                    <ArrowForwardIcon fontSize="large" />
+                </IconButton>
+            )}
         </Paper>
     );
 };
