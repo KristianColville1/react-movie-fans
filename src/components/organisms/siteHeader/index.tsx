@@ -8,6 +8,7 @@ import { styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+import Avatar from "@mui/material/Avatar";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -30,7 +31,10 @@ const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 const SiteHeader: React.FC = () => {
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+    const [accountAnchorEl, setAccountAnchorEl] =
+        useState<HTMLButtonElement | null>(null);
     const open = Boolean(anchorEl);
+    const accountOpen = Boolean(accountAnchorEl);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
     const { session, user, signOut } = useContext(AuthContext);
@@ -48,11 +52,14 @@ const SiteHeader: React.FC = () => {
 
     const handleSignOut = async () => {
         setAnchorEl(null);
+        setAccountAnchorEl(null);
         await signOut();
         navigate("/");
     };
 
     const handleMenuSelect = (pageURL: string) => {
+        setAnchorEl(null);
+        setAccountAnchorEl(null);
         navigate(pageURL);
     };
 
@@ -77,11 +84,6 @@ const SiteHeader: React.FC = () => {
                     >
                         MovieFans
                     </Typography>
-                    {!isMobile && (
-                        <Typography variant="h6" sx={styles.title}>
-                            All you ever wanted to know about Movies!
-                        </Typography>
-                    )}
                     {isMobile ? (
                         <>
                             <IconButton
@@ -120,6 +122,15 @@ const SiteHeader: React.FC = () => {
                                     </MenuItem>
                                 ))}
                                 {session ? (
+                                    <MenuItem
+                                        onClick={() =>
+                                            handleMenuSelect("/profile")
+                                        }
+                                    >
+                                        Profile
+                                    </MenuItem>
+                                ) : null}
+                                {session ? (
                                     <MenuItem onClick={handleSignOut}>
                                         Sign out
                                     </MenuItem>
@@ -140,6 +151,8 @@ const SiteHeader: React.FC = () => {
                                 <Button
                                     key={opt.label}
                                     color="inherit"
+                                    size="small"
+                                    className="px-2 text-sm normal-case"
                                     onClick={() => handleMenuSelect(opt.path)}
                                 >
                                     {opt.label}
@@ -147,22 +160,58 @@ const SiteHeader: React.FC = () => {
                             ))}
                             {session ? (
                                 <>
-                                    <Typography
-                                        variant="body2"
-                                        className="mx-3 text-navajo-white/70"
-                                    >
-                                        {user?.email}
-                                    </Typography>
-                                    <Button
+                                    <IconButton
+                                        aria-label="account"
+                                        aria-controls="account-menu"
+                                        aria-haspopup="true"
                                         color="inherit"
-                                        onClick={handleSignOut}
+                                        className="ml-2"
+                                        onClick={(event) =>
+                                            setAccountAnchorEl(
+                                                event.currentTarget,
+                                            )
+                                        }
                                     >
-                                        Sign out
-                                    </Button>
+                                        <Avatar className="h-8 w-8 bg-ocean-mist text-sm font-semibold text-jet-black">
+                                            {user?.email?.[0]?.toUpperCase()}
+                                        </Avatar>
+                                    </IconButton>
+                                    <Menu
+                                        id="account-menu"
+                                        anchorEl={accountAnchorEl}
+                                        anchorOrigin={{
+                                            vertical: "bottom",
+                                            horizontal: "right",
+                                        }}
+                                        transformOrigin={{
+                                            vertical: "top",
+                                            horizontal: "right",
+                                        }}
+                                        open={accountOpen}
+                                        onClose={() =>
+                                            setAccountAnchorEl(null)
+                                        }
+                                    >
+                                        <MenuItem disabled>
+                                            {user?.email}
+                                        </MenuItem>
+                                        <MenuItem
+                                            onClick={() =>
+                                                handleMenuSelect("/profile")
+                                            }
+                                        >
+                                            Profile
+                                        </MenuItem>
+                                        <MenuItem onClick={handleSignOut}>
+                                            Sign out
+                                        </MenuItem>
+                                    </Menu>
                                 </>
                             ) : (
                                 <Button
                                     color="inherit"
+                                    size="small"
+                                    className="px-2 text-sm normal-case"
                                     onClick={() => handleMenuSelect("/login")}
                                 >
                                     Sign in
