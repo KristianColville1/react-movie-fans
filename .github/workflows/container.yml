@@ -57,6 +57,10 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            VITE_TMDB_KEY=${{ secrets.VITE_TMDB_KEY }}
+            VITE_SUPABASE_URL=${{ secrets.VITE_SUPABASE_URL }}
+            VITE_SUPABASE_PUBLISHABLE_KEY=${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
 
       - name: Roll magic containers onto the new image
         if: vars.BUNNY_APP_ID != ''
