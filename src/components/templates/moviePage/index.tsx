@@ -51,10 +51,10 @@ const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({
     const [mainPoster, ...otherPosters] = images.slice(0, 13);
 
     return (
-        <>
+        <div className="p-4">
             <MovieHeader {...movie} />
 
-            <Grid container spacing={4} className="py-4">
+            <Grid container spacing={4}>
                 <Grid item xs={12} md={3}>
                     {mainPoster && (
                         <img
@@ -80,7 +80,7 @@ const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({
                     />
                 </Grid>
             </Grid>
-        </>
+        </div>
     );
 };
 
