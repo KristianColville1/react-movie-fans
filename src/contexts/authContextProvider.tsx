@@ -54,6 +54,20 @@ const AuthContextProvider: React.FC<React.PropsWithChildren> = ({
         await supabase.auth.signOut();
     }, []);
 
+    // the display name lives in the auth user metadata, so there is no
+    // profile table to keep in step with it
+    const updateDisplayName = useCallback(async (displayName: string) => {
+        const { error } = await supabase.auth.updateUser({
+            data: { display_name: displayName },
+        });
+        return error ? error.message : null;
+    }, []);
+
+    const updatePassword = useCallback(async (password: string) => {
+        const { error } = await supabase.auth.updateUser({ password });
+        return error ? error.message : null;
+    }, []);
+
     return (
         <AuthContext.Provider
             value={{
@@ -63,6 +77,8 @@ const AuthContextProvider: React.FC<React.PropsWithChildren> = ({
                 signUp,
                 signIn,
                 signOut,
+                updateDisplayName,
+                updatePassword,
             }}
         >
             {children}

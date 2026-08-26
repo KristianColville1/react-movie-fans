@@ -22,6 +22,8 @@ const meta = {
                     signUp: async () => null,
                     signIn: async () => null,
                     signOut: async () => {},
+                    updateDisplayName: async () => null,
+                    updatePassword: async () => null,
                 }}
             >
                 <Story />
