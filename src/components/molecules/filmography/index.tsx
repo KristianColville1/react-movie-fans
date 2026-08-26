@@ -5,6 +5,7 @@ import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import { CreditedMovie } from "@typings/interfaces";
 import { Link } from "react-router-dom";
+import img from "@images/film-poster-placeholder.png";
 
 interface FilmographyProps {
     credits: CreditedMovie[];
@@ -44,6 +45,16 @@ const Filmography: React.FC<FilmographyProps> = ({ credits }) => {
                         to={`/movies/${credit.id}`}
                         className="flex flex-wrap items-center gap-3 no-underline"
                     >
+                        <img
+                            src={
+                                credit.poster_path
+                                    ? `https://image.tmdb.org/t/p/w92${credit.poster_path}`
+                                    : img
+                            }
+                            alt={`${credit.title} poster`}
+                            loading="lazy"
+                            className="h-16 w-11 shrink-0 rounded object-cover ring-1 ring-white/10"
+                        />
                         <Typography
                             variant="body1"
                             className="font-semibold text-ocean-mist"
