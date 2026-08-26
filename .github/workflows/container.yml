@@ -1,39 +1,51 @@
 name: container
 
-# builds the image on every push to the long lived branches, and rolls magic
-# containers onto it when the bunny variables are set
 on:
   push:
-    branches: [main, develop]
+    branches:
+      - main
+      - develop
   workflow_dispatch:
 
-env:
-  REGISTRY: ghcr.io
-  IMAGE: ${{ github.repository }}
+concurrency:
+  group: container-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
-  build:
+  docker:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: docker/setup-buildx-action@v3
+      - name: Image name (GHCR requires lowercase)
+        id: image
+        run: |
+          repo_lower=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          echo "name=ghcr.io/${repo_lower}" >> "$GITHUB_OUTPUT"
 
-      - name: Log in to the container registry
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # lower cases the repo name, ghcr rejects capitals
-      - name: Work out the image name
-        id: name
-        run: echo "image=$(echo '${{ env.REGISTRY }}/${{ env.IMAGE }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+      - name: Docker metadata (tags)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ steps.image.outputs.name }}
+          tags: |
+            type=sha,prefix=,format=long
+            type=ref,event=branch
 
       - name: Build and push
         uses: docker/build-push-action@v6
@@ -41,18 +53,11 @@ jobs:
           context: .
           platforms: linux/amd64
           push: true
-          tags: |
-            ${{ steps.name.outputs.image }}:${{ github.sha }}
-            ${{ steps.name.outputs.image }}:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          build-args: |
-            VITE_TMDB_KEY=${{ secrets.VITE_TMDB_KEY }}
-            VITE_SUPABASE_URL=${{ secrets.VITE_SUPABASE_URL }}
-            VITE_SUPABASE_PUBLISHABLE_KEY=${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
 
-      # bunny does not watch the registry, the update has to be triggered.
-      # skipped until APP_ID is set, so the build still works without bunny
       - name: Roll magic containers onto the new image
         if: vars.BUNNY_APP_ID != ''
         uses: BunnyWay/actions/container-update-image@main
