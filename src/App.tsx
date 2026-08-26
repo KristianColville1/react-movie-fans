@@ -37,51 +37,53 @@ const App: React.FC = () => {
                 <AuthContextProvider>
                     <SiteHeader />
                     <MoviesContextProvider>
-                        <Routes>
-                            <Route path="/login" element={<LoginPage />} />
-                            <Route
-                                path="/movies/upcoming"
-                                element={<UpcomingMoviesPage />}
-                            />
-                            <Route path="/movies/:id" element={<MoviePage />} />
-                            <Route path="/actors" element={<ActorsPage />} />
-                            <Route
-                                path="/actors/:id"
-                                element={<ActorDetailsPage />}
-                            />
+                        <div className="mx-auto w-full max-w-7xl px-4">
+                            <Routes>
+                                <Route path="/login" element={<LoginPage />} />
+                                <Route
+                                    path="/movies/upcoming"
+                                    element={<UpcomingMoviesPage />}
+                                />
+                                <Route path="/movies/:id" element={<MoviePage />} />
+                                <Route path="/actors" element={<ActorsPage />} />
+                                <Route
+                                    path="/actors/:id"
+                                    element={<ActorDetailsPage />}
+                                />
 
-                            {/* Anything belonging to one person sits behind
-                                the guard. */}
-                            <Route element={<PrivateRoute />}>
-                                <Route
-                                    path="/movies/favourites"
-                                    element={<FavouriteMoviesPage />}
-                                />
-                                <Route
-                                    path="/actors/favourites"
-                                    element={<FavouriteActorsPage />}
-                                />
-                                <Route
-                                    path="/fantasy"
-                                    element={<FantasyMoviePage />}
-                                />
-                                <Route
-                                    path="/fantasy/:id"
-                                    element={<FantasyMovieDetailsPage />}
-                                />
-                                <Route
-                                    path="/reviews/form"
-                                    element={<AddMovieReviewPage />}
-                                />
-                                <Route
-                                    path="/reviews/:id"
-                                    element={<MovieReviewPage />}
-                                />
-                            </Route>
+                                {/* Anything belonging to one person sits behind
+                                    the guard. */}
+                                <Route element={<PrivateRoute />}>
+                                    <Route
+                                        path="/movies/favourites"
+                                        element={<FavouriteMoviesPage />}
+                                    />
+                                    <Route
+                                        path="/actors/favourites"
+                                        element={<FavouriteActorsPage />}
+                                    />
+                                    <Route
+                                        path="/fantasy"
+                                        element={<FantasyMoviePage />}
+                                    />
+                                    <Route
+                                        path="/fantasy/:id"
+                                        element={<FantasyMovieDetailsPage />}
+                                    />
+                                    <Route
+                                        path="/reviews/form"
+                                        element={<AddMovieReviewPage />}
+                                    />
+                                    <Route
+                                        path="/reviews/:id"
+                                        element={<MovieReviewPage />}
+                                    />
+                                </Route>
 
-                            <Route path="/" element={<HomePage />} />
-                            <Route path="*" element={<Navigate to="/" />} />
-                        </Routes>
+                                <Route path="/" element={<HomePage />} />
+                                <Route path="*" element={<Navigate to="/" />} />
+                            </Routes>
+                        </div>
                     </MoviesContextProvider>
                 </AuthContextProvider>
             </BrowserRouter>

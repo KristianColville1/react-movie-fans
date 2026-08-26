@@ -28,7 +28,7 @@ const ActorListPageTemplate: React.FC<ActorListPageTemplateProps> = ({
             <Grid item xs={12}>
                 <Header title={title} />
             </Grid>
-            <Grid item container spacing={5}>
+            <Grid item container spacing={2}>
                 <ActorList actors={actors} action={action} />
             </Grid>
         </Grid>
