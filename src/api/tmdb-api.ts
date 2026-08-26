@@ -1,15 +1,73 @@
+// tmdb names its sort values differently to the ones the sort control uses
+const sortValues: Record<string, string> = {
+    title: "title.asc",
+    release_date: "primary_release_date.desc",
+    vote_average: "vote_average.desc",
+    popularity: "popularity.desc",
+};
+
 /**
- * Fetches a page of discoverable movies from TMDB.
+ * Fetches a page of movies matching the chosen criteria. The criteria go to
+ * tmdb rather than being applied to the page after it arrives, so the results
+ * and the page count both cover the whole catalogue.
+ *
+ * A title goes to the search endpoint, which is the only one that takes text.
+ * It ignores the other criteria, so those are left to narrow the page.
  *
  * @param page The page to fetch, starting at 1.
- * @returns The discover response, containing the page number, total counts
- * and a results array of movies.
+ * @param filters The chosen criteria, all optional.
+ * @returns The response, containing the page number, total counts and a
+ * results array of movies.
  * @throws If the response status is not ok.
  */
-export const getMovies = (page = 1) => {
-    return fetch(
-        `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`,
-    )
+export const getMovies = (
+    page = 1,
+    filters: {
+        title?: string;
+        genre?: string;
+        yearFrom?: string;
+        yearTo?: string;
+        rating?: string;
+        sort?: string;
+    } = {},
+) => {
+    const query = new URLSearchParams({
+        api_key: import.meta.env.VITE_TMDB_KEY,
+        language: "en-US",
+        include_adult: "false",
+        page: String(page),
+    });
+
+    const title = filters.title?.trim();
+
+    if (title) {
+        query.set("query", title);
+    } else {
+        query.set("include_video", "false");
+        query.set("sort_by", sortValues[filters.sort ?? ""] ?? "popularity.desc");
+
+        // a pipe between ids is how tmdb spells or, which is the reading the
+        // genre checkboxes already have
+        const genres = filters.genre
+            ? filters.genre.split(",").filter(Boolean)
+            : [];
+        if (genres.length) {
+            query.set("with_genres", genres.join("|"));
+        }
+        if (filters.yearFrom) {
+            query.set("primary_release_date.gte", `${filters.yearFrom}-01-01`);
+        }
+        if (filters.yearTo) {
+            query.set("primary_release_date.lte", `${filters.yearTo}-12-31`);
+        }
+        if (filters.rating && Number(filters.rating) > 0) {
+            query.set("vote_average.gte", filters.rating);
+        }
+    }
+
+    const path = title ? "search/movie" : "discover/movie";
+
+    return fetch(`https://api.themoviedb.org/3/${path}?${query}`)
         .then((response) => {
             if (!response.ok)
                 throw new Error(
