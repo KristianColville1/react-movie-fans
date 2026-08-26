@@ -45,13 +45,6 @@ const ratingFiltering = {
 
 const HomePage: React.FC = () => {
     const [page, setPage] = useState(1);
-    // keepPreviousData holds the previous page on screen while the next one
-    // loads, so the grid does not blank out between pages.
-    const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>(
-        ["discover", page],
-        () => getMovies(page),
-        { keepPreviousData: true },
-    );
     const { getFilterValue, setFilterValue, filterFunction } = useFiltering([
         titleFiltering,
         genreFiltering,
@@ -59,7 +52,41 @@ const HomePage: React.FC = () => {
         yearToFiltering,
         ratingFiltering,
     ]);
-    const [sortOption, setSortOption] = useState("title");
+    // tmdb orders by popularity when asked for nothing, and that is what the
+    // page used to show, so it stays the default now the sort is a real query
+    const [sortOption, setSortOption] = useState("popularity");
+
+    const title = getFilterValue("title");
+    const filters = {
+        title,
+        genre: getFilterValue("genre"),
+        yearFrom: getFilterValue("yearFrom"),
+        yearTo: getFilterValue("yearTo"),
+        rating: getFilterValue("rating"),
+        sort: sortOption,
+    };
+
+    // keepPreviousData holds the previous page on screen while the next one
+    // loads, so the grid does not blank out between pages. the criteria are
+    // part of the key, so changing one fetches a new list rather than
+    // narrowing the page already on screen.
+    const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>(
+        ["discover", page, filters],
+        () => getMovies(page, filters),
+        { keepPreviousData: true },
+    );
+
+    // a new set of criteria is a new list, so page 40 of the old one means
+    // nothing
+    const changeFilter = (name: string, value: string) => {
+        setPage(1);
+        setFilterValue(name, value);
+    };
+
+    const changeSort = (value: string) => {
+        setPage(1);
+        setSortOption(value);
+    };
 
     if (isLoading) {
         return <Spinner />;
@@ -71,7 +98,11 @@ const HomePage: React.FC = () => {
 
 
     const movies = data ? data.results : [];
-    const displayedMovies = sortMovies(filterFunction(movies), sortOption);
+    // searching by title is the one case tmdb cannot narrow for us, so the
+    // rest of the criteria are applied to the page it returns
+    const displayedMovies = title
+        ? sortMovies(filterFunction(movies), sortOption)
+        : movies;
 
      return (
          <>
@@ -91,14 +122,14 @@ const HomePage: React.FC = () => {
                  onChange={setPage}
              />
              <MovieFilterUI
-                 onFilterValuesChange={setFilterValue}
+                 onFilterValuesChange={changeFilter}
                  titleFilter={getFilterValue("title")}
                  genreFilter={getFilterValue("genre")}
                 yearFromFilter={getFilterValue("yearFrom")}
                 yearToFilter={getFilterValue("yearTo")}
                 ratingFilter={getFilterValue("rating")}
                  sortOption={sortOption}
-                 onSortChange={setSortOption}
+                 onSortChange={changeSort}
              />
          </>
      );
