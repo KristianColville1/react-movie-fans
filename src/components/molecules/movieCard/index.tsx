@@ -19,6 +19,7 @@ import { MoviesContext } from "@contexts/moviesContext";
 interface MovieCardProps {
     movie: BaseMovieProps;
     action: (m: BaseMovieProps) => React.ReactNode;
+    siblingIds?: number[];
 }
 
 /**
@@ -26,9 +27,11 @@ interface MovieCardProps {
  *
  * @param movie The movie to display.
  * @param action Renders the icon button shown in the card's actions.
+ * @param siblingIds The ids of the movies listed alongside this one, so the
+ * movie page can walk to the next one.
  * @returns JSX.Element
  */
-const MovieCard: React.FC<MovieCardProps> = ({ movie, action }) => {
+const MovieCard: React.FC<MovieCardProps> = ({ movie, action, siblingIds }) => {
     const { favourites } = useContext(MoviesContext);
 
     const isFavourite = favourites.find((id) => id === movie.id) ? true : false;
@@ -88,7 +91,10 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, action }) => {
             >
                 {action(movie)}
 
-                <Link to={`/movies/${movie.id}`}>
+                <Link
+                    to={`/movies/${movie.id}`}
+                    state={siblingIds ? { siblingIds } : undefined}
+                >
                     <Button
                         variant="outlined"
                         size="medium"
