@@ -77,6 +77,9 @@ const HomePage: React.FC = () => {
          <>
              <PageTemplate
                  title="Discover Movies"
+                 page={page}
+                 totalPages={data ? data.total_pages : 1}
+                 onPageChange={setPage}
                  movies={displayedMovies}
                  action={(movie: BaseMovieProps) => {
                      return <AddToFavouritesIcon {...movie} />;

@@ -77,6 +77,9 @@ const UpcomingMoviesPage: React.FC = () => {
         <>
             <PageTemplate
                 title="Upcoming Movies"
+                page={page}
+                totalPages={data ? data.total_pages : 1}
+                onPageChange={setPage}
                 movies={displayedMovies}
                 action={(movie: BaseMovieProps) => {
                     return <AddToPlaylistIcon {...movie} />;

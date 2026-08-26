@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import MuiPagination from "@mui/material/Pagination";
 
 // TMDB refuses any page past 500, whatever total_pages reports.
-const maxPage = 500;
+export const maxPage = 500;
 
 /**
  * Page control shown under a list. Moving page also returns the view to the
