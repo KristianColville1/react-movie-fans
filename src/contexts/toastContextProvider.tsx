@@ -12,7 +12,14 @@ const severities: Record<string, "success" | "error" | "warning" | "info"> = {
     dark: "info",
 };
 
-const lifetime = 5500;
+const palette: Record<string, string> = {
+    success: "bg-ocean-mist text-jet-black",
+    error: "bg-magenta-bloom text-jet-black",
+    warning: "bg-pale-amber text-jet-black",
+    info: "bg-slate-700 text-white",
+};
+
+const lifetime = 3000;
 
 /**
  * Holds the toasts on screen and hands out the trigger that raises one. Each
@@ -48,21 +55,24 @@ const ToastContextProvider: React.FC<React.PropsWithChildren> = ({
         <ToastContext.Provider value={{ triggerToast }}>
             {children}
 
-            <div className="fixed bottom-6 left-1/2 z-50 flex w-80 max-w-[calc(100vw-2rem)] -translate-x-1/2 flex-col items-center gap-2">
-                {toasts.map((toast) => (
+            <div className="fixed top-20 left-1/2 z-50 flex w-80 max-w-[calc(100vw-2rem)] -translate-x-1/2 flex-col items-center gap-2">
+                {toasts.map((toast) => {
+                    const severity = severities[toast.variant] ?? "info";
+                    return (
                     <Alert
                         key={toast.id}
                         variant="filled"
-                        severity={severities[toast.variant] ?? "info"}
+                        severity={severity}
                         onClose={() => dismiss(toast.id)}
-                        className="rounded-xl shadow-lg shadow-black/40"
+                        className={`w-full rounded-xl shadow-lg shadow-black/40 ${palette[severity]} [&_.MuiAlert-action_button]:text-inherit [&_.MuiAlert-icon]:text-inherit`}
                     >
                         <AlertTitle className="font-semibold">
                             {toast.title}
                         </AlertTitle>
                         {toast.message}
                     </Alert>
-                ))}
+                    );
+                })}
             </div>
         </ToastContext.Provider>
     );
