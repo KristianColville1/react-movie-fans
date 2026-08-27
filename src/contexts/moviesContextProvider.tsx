@@ -127,6 +127,12 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
         );
     }, []);
 
+    const removeFromMustWatch = useCallback((movie: BaseMovieProps) => {
+        setMustWatch((prevMustWatch) =>
+            prevMustWatch.filter((id) => id !== movie.id),
+        );
+    }, []);
+
     return (
         <MoviesContext.Provider
             value={{
@@ -140,6 +146,7 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
                 addReview,
                 mustWatch,
                 addToMustWatch,
+                removeFromMustWatch,
                 fantasyMovies,
                 saveFantasyMovie,
                 removeFantasyMovie,
