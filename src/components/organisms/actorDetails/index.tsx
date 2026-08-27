@@ -11,6 +11,7 @@ import { getActorCredits } from "@api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from "@atoms/spinner";
 import Filmography from "@molecules/filmography";
+import AddToFavouriteActorsIcon from "@atoms/cardIcons/addToFavouriteActors";
 
 const chipStyle =
     "bg-jet-black/60 text-navajo-white ring-1 ring-white/10 [&_.MuiChip-icon]:text-ocean-mist";
@@ -49,6 +50,9 @@ const ActorDetails: React.FC<ActorDetailsProps> = (actor) => {
                 >
                     {actor.name}
                 </Typography>
+                <div className="ml-auto text-magenta-bloom">
+                    <AddToFavouriteActorsIcon {...actor} />
+                </div>
             </Paper>
 
             <Paper

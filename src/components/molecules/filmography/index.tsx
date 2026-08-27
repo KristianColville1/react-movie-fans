@@ -5,6 +5,8 @@ import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import { CreditedMovie } from "@typings/interfaces";
 import { Link } from "react-router-dom";
+import img from "@images/film-poster-placeholder.png";
+import { formatDate } from "@tools/dates";
 
 interface FilmographyProps {
     credits: CreditedMovie[];
@@ -44,6 +46,16 @@ const Filmography: React.FC<FilmographyProps> = ({ credits }) => {
                         to={`/movies/${credit.id}`}
                         className="flex flex-wrap items-center gap-3 no-underline"
                     >
+                        <img
+                            src={
+                                credit.poster_path
+                                    ? `https://image.tmdb.org/t/p/w92${credit.poster_path}`
+                                    : img
+                            }
+                            alt={`${credit.title} poster`}
+                            loading="lazy"
+                            className="h-16 w-11 shrink-0 rounded object-cover ring-1 ring-white/10"
+                        />
                         <Typography
                             variant="body1"
                             className="font-semibold text-ocean-mist"
@@ -61,14 +73,14 @@ const Filmography: React.FC<FilmographyProps> = ({ credits }) => {
                             className="flex items-center gap-1 text-navajo-white/70"
                         >
                             <CalendarIcon fontSize="small" />
-                            {credit.release_date || "Unreleased"}
+                            {formatDate(credit.release_date, "Unreleased")}
                         </Typography>
                         <Typography
                             variant="body2"
                             className="flex items-center gap-1 font-semibold text-pale-amber"
                         >
                             <StarRateIcon fontSize="small" />
-                            {credit.vote_average}
+                            {credit.vote_average.toFixed(1)}
                         </Typography>
                     </Link>
                 </li>

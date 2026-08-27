@@ -25,6 +25,7 @@ export default defineConfig({
       '@pages': srcPath('pages'),
       '@stories': srcPath('stories'),
       '@storage': srcPath('storage'),
+      '@tools': srcPath('tools'),
       '@typings': srcPath('types'),
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },

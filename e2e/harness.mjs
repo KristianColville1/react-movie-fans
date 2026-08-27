@@ -73,8 +73,16 @@ const fillAuth = async (page, { email, password }) => {
     await page.waitForTimeout(3000);
 };
 
+// the account avatar only renders when there is a session, and unlike the
+// sign out item it is not tucked inside a menu
 const signedIn = (page) =>
-    page.getByRole("button", { name: "Sign out", exact: true }).count();
+    page.getByRole("button", { name: "account", exact: true }).count();
+
+/** Opens the account menu in the header. */
+export const openAccountMenu = async (page) => {
+    await page.getByRole("button", { name: "account", exact: true }).click();
+    await page.waitForTimeout(400);
+};
 
 export const signIn = async (page) => {
     await page.goto(`${baseURL}/login`, { waitUntil: "networkidle" });
@@ -95,11 +103,10 @@ export const signUpOrSignIn = async (page) => {
 };
 
 export const signOut = async (page) => {
-    const button = page.getByRole("button", { name: "Sign out", exact: true });
-    if (await button.count()) {
-        await button.click();
-        await page.waitForTimeout(1500);
-    }
+    if (!(await signedIn(page))) return;
+    await openAccountMenu(page);
+    await page.getByRole("menuitem", { name: "Sign out", exact: true }).click();
+    await page.waitForTimeout(1500);
 };
 
 /** Deletes every fantasy movie, so a run leaves the account as it found it. */
