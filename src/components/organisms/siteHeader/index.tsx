@@ -45,10 +45,16 @@ const SiteHeader: React.FC = () => {
         { label: "Home", path: "/", private: false },
         { label: "Upcoming Movies", path: "/movies/upcoming", private: false },
         { label: "Actors", path: "/actors", private: false },
-        { label: "Favorites", path: "/movies/favourites", private: true },
-        { label: "Favourite Actors", path: "/actors/favourites", private: true },
         { label: "Fantasy Movie", path: "/fantasy", private: true },
     ].filter((opt) => !opt.private || session);
+
+    // the lists that belong to one person live under their own account
+    const accountOptions = [
+        { label: "Profile", path: "/profile" },
+        { label: "Favourite Movies", path: "/movies/favourites" },
+        { label: "Watch List", path: "/movies/watchlist" },
+        { label: "Favourite Actors", path: "/actors/favourites" },
+    ];
 
     const handleSignOut = async () => {
         setAnchorEl(null);
@@ -121,15 +127,18 @@ const SiteHeader: React.FC = () => {
                                         {opt.label}
                                     </MenuItem>
                                 ))}
-                                {session ? (
-                                    <MenuItem
-                                        onClick={() =>
-                                            handleMenuSelect("/profile")
-                                        }
-                                    >
-                                        Profile
-                                    </MenuItem>
-                                ) : null}
+                                {session
+                                    ? accountOptions.map((opt) => (
+                                          <MenuItem
+                                              key={opt.label}
+                                              onClick={() =>
+                                                  handleMenuSelect(opt.path)
+                                              }
+                                          >
+                                              {opt.label}
+                                          </MenuItem>
+                                      ))
+                                    : null}
                                 {session ? (
                                     <MenuItem onClick={handleSignOut}>
                                         Sign out
@@ -195,13 +204,16 @@ const SiteHeader: React.FC = () => {
                                         <MenuItem disabled>
                                             {user?.email}
                                         </MenuItem>
-                                        <MenuItem
-                                            onClick={() =>
-                                                handleMenuSelect("/profile")
-                                            }
-                                        >
-                                            Profile
-                                        </MenuItem>
+                                        {accountOptions.map((opt) => (
+                                            <MenuItem
+                                                key={opt.label}
+                                                onClick={() =>
+                                                    handleMenuSelect(opt.path)
+                                                }
+                                            >
+                                                {opt.label}
+                                            </MenuItem>
+                                        ))}
                                         <MenuItem onClick={handleSignOut}>
                                             Sign out
                                         </MenuItem>
