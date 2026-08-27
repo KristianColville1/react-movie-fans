@@ -79,7 +79,7 @@ const Filmography: React.FC<FilmographyProps> = ({ credits }) => {
                             className="flex items-center gap-1 font-semibold text-pale-amber"
                         >
                             <StarRateIcon fontSize="small" />
-                            {credit.vote_average}
+                            {credit.vote_average.toFixed(1)}
                         </Typography>
                     </Link>
                 </li>

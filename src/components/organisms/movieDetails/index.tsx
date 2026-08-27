@@ -72,7 +72,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = (movie) => {
                 />
                 <Chip
                     icon={<StarRate />}
-                    label={`${movie.vote_average} (${movie.vote_count}`}
+                    label={`${movie.vote_average.toFixed(1)} (${movie.vote_count})`}
                     className={chipStyle}
                 />
                 <Chip
