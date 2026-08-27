@@ -17,6 +17,11 @@ import {
     addFavouriteActor,
     removeFavouriteActor,
 } from "@storage/favouriteActorsStore";
+import {
+    loadMustWatch,
+    addMustWatch,
+    removeMustWatch,
+} from "@storage/mustWatchStore";
 
 const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
     children,
@@ -36,6 +41,7 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
         if (!user) {
             setFavourites([]);
             setFavouriteActors([]);
+            setMustWatch([]);
             setFantasyMovies([]);
             setMyReviews([]);
             return;
@@ -44,15 +50,19 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
         Promise.all([
             loadFavourites(),
             loadFavouriteActors(),
+            loadMustWatch(),
             loadFantasyMovies(),
-        ]).then(([storedFavourites, storedActors, storedMovies]) => {
-            if (!active) {
-                return;
-            }
-            setFavourites(storedFavourites);
-            setFavouriteActors(storedActors);
-            setFantasyMovies(storedMovies);
-        });
+        ]).then(
+            ([storedFavourites, storedActors, storedMustWatch, storedMovies]) => {
+                if (!active) {
+                    return;
+                }
+                setFavourites(storedFavourites);
+                setFavouriteActors(storedActors);
+                setMustWatch(storedMustWatch);
+                setFantasyMovies(storedMovies);
+            },
+        );
 
         return () => {
             active = false;
@@ -125,12 +135,14 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
                 ? prevMustWatch
                 : [...prevMustWatch, movie.id],
         );
+        void addMustWatch(movie.id);
     }, []);
 
     const removeFromMustWatch = useCallback((movie: BaseMovieProps) => {
         setMustWatch((prevMustWatch) =>
             prevMustWatch.filter((id) => id !== movie.id),
         );
+        void removeMustWatch(movie.id);
     }, []);
 
     return (
