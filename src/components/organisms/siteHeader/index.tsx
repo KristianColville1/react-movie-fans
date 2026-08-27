@@ -1,11 +1,12 @@
-import React, { useState, useContext, MouseEvent } from "react";
+import React, { useState, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
-import MenuIcon from "@mui/icons-material/Menu";
+import Collapse from "@mui/material/Collapse";
+import BurgerButton from "@atoms/burgerButton";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import Avatar from "@mui/material/Avatar";
@@ -30,10 +31,8 @@ const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
  */
 const SiteHeader: React.FC = () => {
     const navigate = useNavigate();
-    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const [accountAnchorEl, setAccountAnchorEl] =
         useState<HTMLButtonElement | null>(null);
-    const open = Boolean(anchorEl);
     const accountOpen = Boolean(accountAnchorEl);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
@@ -57,20 +56,21 @@ const SiteHeader: React.FC = () => {
     ];
 
     const handleSignOut = async () => {
-        setAnchorEl(null);
         setAccountAnchorEl(null);
         await signOut();
         navigate("/");
     };
 
     const handleMenuSelect = (pageURL: string) => {
-        setAnchorEl(null);
         setAccountAnchorEl(null);
         navigate(pageURL);
     };
 
-    const handleMenu = (event: MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
+    const [navOpen, setNavOpen] = useState(false);
+
+    const handleMenuSelectMobile = (pageURL: string) => {
+        setNavOpen(false);
+        handleMenuSelect(pageURL);
     };
 
     return (
@@ -91,69 +91,10 @@ const SiteHeader: React.FC = () => {
                         MovieFans
                     </Typography>
                     {isMobile ? (
-                        <>
-                            <IconButton
-                                aria-label="menu"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                onClick={handleMenu}
-                                color="inherit"
-                                size="large"
-                            >
-                                <MenuIcon />
-                            </IconButton>
-                            <Menu
-                                id="menu-appbar"
-                                anchorEl={anchorEl}
-                                anchorOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right",
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right",
-                                }}
-                                open={open}
-                                onClose={() => setAnchorEl(null)}
-                            >
-                                {menuOptions.map((opt) => (
-                                    <MenuItem
-                                        key={opt.label}
-                                        onClick={() =>
-                                            handleMenuSelect(opt.path)
-                                        }
-                                    >
-                                        {opt.label}
-                                    </MenuItem>
-                                ))}
-                                {session
-                                    ? accountOptions.map((opt) => (
-                                          <MenuItem
-                                              key={opt.label}
-                                              onClick={() =>
-                                                  handleMenuSelect(opt.path)
-                                              }
-                                          >
-                                              {opt.label}
-                                          </MenuItem>
-                                      ))
-                                    : null}
-                                {session ? (
-                                    <MenuItem onClick={handleSignOut}>
-                                        Sign out
-                                    </MenuItem>
-                                ) : (
-                                    <MenuItem
-                                        onClick={() =>
-                                            handleMenuSelect("/login")
-                                        }
-                                    >
-                                        Sign in
-                                    </MenuItem>
-                                )}
-                            </Menu>
-                        </>
+                        <BurgerButton
+                            open={navOpen}
+                            onClick={() => setNavOpen((shown) => !shown)}
+                        />
                     ) : (
                         <>
                             {menuOptions.map((opt) => (
@@ -232,6 +173,65 @@ const SiteHeader: React.FC = () => {
                         </>
                     )}
                 </Toolbar>
+
+                <Collapse in={isMobile && navOpen} timeout={300} unmountOnExit>
+                    <nav
+                        id="mobile-nav"
+                        className="flex flex-col border-t border-white/10 bg-surface-raised pb-2"
+                    >
+                        {menuOptions.map((opt) => (
+                            <Button
+                                key={opt.label}
+                                color="inherit"
+                                className="justify-start px-6 py-3 text-base normal-case"
+                                onClick={() => handleMenuSelectMobile(opt.path)}
+                            >
+                                {opt.label}
+                            </Button>
+                        ))}
+
+                        {session ? (
+                            <>
+                                <Typography
+                                    variant="body2"
+                                    className="px-6 pt-3 pb-1 text-navajo-white/50"
+                                >
+                                    {user?.email}
+                                </Typography>
+                                {accountOptions.map((opt) => (
+                                    <Button
+                                        key={opt.label}
+                                        color="inherit"
+                                        className="justify-start px-6 py-3 text-base normal-case"
+                                        onClick={() =>
+                                            handleMenuSelectMobile(opt.path)
+                                        }
+                                    >
+                                        {opt.label}
+                                    </Button>
+                                ))}
+                                <Button
+                                    color="inherit"
+                                    className="justify-start px-6 py-3 text-base normal-case"
+                                    onClick={() => {
+                                        setNavOpen(false);
+                                        void handleSignOut();
+                                    }}
+                                >
+                                    Sign out
+                                </Button>
+                            </>
+                        ) : (
+                            <Button
+                                color="inherit"
+                                className="justify-start px-6 py-3 text-base normal-case"
+                                onClick={() => handleMenuSelectMobile("/login")}
+                            >
+                                Sign in
+                            </Button>
+                        )}
+                    </nav>
+                </Collapse>
             </AppBar>
             <Offset />
         </>
