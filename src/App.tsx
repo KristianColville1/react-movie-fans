@@ -48,6 +48,10 @@ const App: React.FC = () => {
                             <Route path="/movies/:id" element={<MoviePage />} />
                             <Route path="/actors" element={<ActorsPage />} />
                             <Route
+                                path="/reviews/:id"
+                                element={<MovieReviewPage />}
+                            />
+                            <Route
                                 path="/actors/:id"
                                 element={<ActorDetailsPage />}
                             />
@@ -82,10 +86,6 @@ const App: React.FC = () => {
                                 <Route
                                     path="/reviews/form"
                                     element={<AddMovieReviewPage />}
-                                />
-                                <Route
-                                    path="/reviews/:id"
-                                    element={<MovieReviewPage />}
                                 />
                             </Route>
 
