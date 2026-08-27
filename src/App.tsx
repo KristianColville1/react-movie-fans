@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Navigate, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "@pages/homePage";
 import MoviePage from "@pages/movieDetailsPage";
 import FavouriteMoviesPage from "@pages/favouriteMoviesPage";
@@ -18,6 +18,9 @@ import FavouriteActorsPage from "@pages/favouriteActorsPage";
 import PrivateRoute from "@atoms/privateRoute";
 import ProfilePage from "@pages/profilePage";
 import AllContext from "@contexts/allContext";
+import SiteFooter from "@templates/siteFooter";
+import NotFoundPage from "@pages/errors/notFoundPage";
+import ServerErrorPage from "@pages/errors/serverErrorPage";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -82,9 +85,11 @@ const App: React.FC = () => {
                             </Route>
 
                             <Route path="/" element={<HomePage />} />
-                            <Route path="*" element={<Navigate to="/" />} />
+                            <Route path="/error" element={<ServerErrorPage />} />
+                            <Route path="*" element={<NotFoundPage />} />
                         </Routes>
                     </div>
+                    <SiteFooter />
                 </AllContext>
             </BrowserRouter>
             <ReactQueryDevtools initialIsOpen={false} />
