@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Paper from "@mui/material/Paper";
@@ -8,6 +8,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import { MovieDetailsProps } from "@typings/interfaces";
 import Avatar from "@mui/material/Avatar";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { MoviesContext } from "@contexts/moviesContext";
 /**
  * Header shown at the top of a movie details page. The arrows walk the list
  * the visitor arrived from, and are left out when there is no list, which is
@@ -24,10 +25,7 @@ const MovieHeader: React.FC<
         onNext?: () => void;
     }
 > = ({ onPrevious, onNext, ...movie }) => {
-    // get the favourites from localStorage
-    const favourites: { id: number }[] = JSON.parse(
-        localStorage.getItem("favourites") || "[]",
-    );
+    const { favourites } = useContext(MoviesContext);
 
     return (
         <Paper
@@ -44,8 +42,11 @@ const MovieHeader: React.FC<
                 </IconButton>
             )}
 
-            {favourites.some((f) => f.id === movie.id) ? (
-                <Avatar className="bg-magenta-bloom text-jet-black">
+            {favourites.includes(movie.id) ? (
+                <Avatar
+                    className="bg-magenta-bloom text-jet-black"
+                    aria-label="in your favourites"
+                >
                     <FavoriteIcon />
                 </Avatar>
             ) : null}
