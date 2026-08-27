@@ -11,6 +11,7 @@ import Grid from "@mui/material/Grid";
 import img from "@images/film-poster-placeholder.png";
 import { BaseMovieProps } from "@typings/interfaces";
 import { Link } from "react-router-dom";
+import { formatDate } from "@tools/dates";
 
 interface MovieCardProps {
     movie: BaseMovieProps;
@@ -48,7 +49,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, action, siblingIds }) => {
                             className="flex items-center gap-1.5 text-sm text-navajo-white/75"
                         >
                             <CalendarIcon fontSize="small" />
-                            {movie.release_date}
+                            {formatDate(movie.release_date)}
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>

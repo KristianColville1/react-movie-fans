@@ -14,6 +14,7 @@ import CastList from "@molecules/castList";
 import { getMovieCredits } from "@api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from "@atoms/spinner";
+import { formatDate } from "@tools/dates";
 
 const chipStyle =
     "bg-jet-black/60 text-navajo-white ring-1 ring-white/10 [&_.MuiChip-icon]:text-ocean-mist";
@@ -76,7 +77,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = (movie) => {
                     className={chipStyle}
                 />
                 <Chip
-                    label={`Released: ${movie.release_date}`}
+                    label={`Released: ${formatDate(movie.release_date)}`}
                     className={chipStyle}
                 />
             </Paper>

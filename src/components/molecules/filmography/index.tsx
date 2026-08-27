@@ -6,6 +6,7 @@ import StarRateIcon from "@mui/icons-material/StarRate";
 import { CreditedMovie } from "@typings/interfaces";
 import { Link } from "react-router-dom";
 import img from "@images/film-poster-placeholder.png";
+import { formatDate } from "@tools/dates";
 
 interface FilmographyProps {
     credits: CreditedMovie[];
@@ -72,7 +73,7 @@ const Filmography: React.FC<FilmographyProps> = ({ credits }) => {
                             className="flex items-center gap-1 text-navajo-white/70"
                         >
                             <CalendarIcon fontSize="small" />
-                            {credit.release_date || "Unreleased"}
+                            {formatDate(credit.release_date, "Unreleased")}
                         </Typography>
                         <Typography
                             variant="body2"
