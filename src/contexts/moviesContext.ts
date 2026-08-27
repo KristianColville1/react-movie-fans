@@ -12,6 +12,7 @@ export interface MovieContextInterface {
     addReview: (movie: BaseMovieProps, review: Review) => void;
     mustWatch: number[];
     addToMustWatch: (movie: BaseMovieProps) => void;
+    removeFromMustWatch: (movie: BaseMovieProps) => void;
     fantasyMovies: FantasyMovie[];
     saveFantasyMovie: (movie: Omit<FantasyMovie, "id">) => void;
     removeFantasyMovie: (id: string) => void;
@@ -28,6 +29,7 @@ const initialContextState: MovieContextInterface = {
     addReview: () => {},
     mustWatch: [],
     addToMustWatch: () => {},
+    removeFromMustWatch: () => {},
     fantasyMovies: [],
     saveFantasyMovie: () => {},
     removeFantasyMovie: () => {},

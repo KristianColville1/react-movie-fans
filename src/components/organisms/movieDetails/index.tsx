@@ -14,6 +14,7 @@ import CastList from "@molecules/castList";
 import { getMovieCredits } from "@api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from "@atoms/spinner";
+import { formatDate } from "@tools/dates";
 
 const chipStyle =
     "bg-jet-black/60 text-navajo-white ring-1 ring-white/10 [&_.MuiChip-icon]:text-ocean-mist";
@@ -72,11 +73,13 @@ const MovieDetails: React.FC<MovieDetailsProps> = (movie) => {
                 />
                 <Chip
                     icon={<StarRate />}
-                    label={`${movie.vote_average} (${movie.vote_count}`}
-                    className={chipStyle}
+                    label={`${movie.vote_average.toFixed(1)} (${movie.vote_count})`}
+                    className={`${chipStyle} cursor-pointer hover:ring-ocean-mist`}
+                    onClick={() => setDrawerOpen(true)}
+                    aria-label="read the reviews"
                 />
                 <Chip
-                    label={`Released: ${movie.release_date}`}
+                    label={`Released: ${formatDate(movie.release_date)}`}
                     className={chipStyle}
                 />
             </Paper>
@@ -100,6 +103,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = (movie) => {
                 anchor="top"
                 open={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
+                PaperProps={{ className: "bg-jet-black text-navajo-white" }}
             >
                 <MovieReviews {...movie} />
             </Drawer>

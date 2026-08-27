@@ -2,6 +2,7 @@ import React, { MouseEvent, useContext } from "react";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { MoviesContext } from "@contexts/moviesContext";
+import { useToast } from "@contexts/toastContext";
 import { BaseMovieProps } from "@typings/interfaces";
 
 /**
@@ -12,10 +13,16 @@ import { BaseMovieProps } from "@typings/interfaces";
  */
 const RemoveFromFavouritesIcon: React.FC<BaseMovieProps> = (movie) => {
     const context = useContext(MoviesContext);
+    const { triggerToast } = useToast();
 
     const onUserRequest = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         context.removeFromFavourites(movie);
+        triggerToast(
+            "info",
+            "Favourites",
+            `${movie.title} removed from your favourites`,
+        );
     };
 
     return (

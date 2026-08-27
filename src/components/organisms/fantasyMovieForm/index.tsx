@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
@@ -7,12 +7,11 @@ import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { useQuery } from "react-query";
 import { getGenres } from "@api/tmdb-api";
 import { MoviesContext } from "@contexts/moviesContext";
+import { useToast } from "@contexts/toastContext";
 import { FantasyMovie, GenreData } from "@typings/interfaces";
 import Spinner from "@atoms/spinner";
 
@@ -30,7 +29,7 @@ const helperStyle = "text-navajo-white/70";
  */
 const FantasyMovieForm: React.FC = () => {
     const context = useContext(MoviesContext);
-    const [open, setOpen] = useState(false);
+    const { triggerToast } = useToast();
     const { data, error, isLoading, isError } = useQuery<GenreData, Error>(
         "genres",
         getGenres,
@@ -64,7 +63,7 @@ const FantasyMovieForm: React.FC = () => {
 
     const onSubmit: SubmitHandler<Omit<FantasyMovie, "id">> = (movie) => {
         context.saveFantasyMovie(movie);
-        setOpen(true);
+        triggerToast("success", "Fantasy movies", `${movie.title} has been saved`);
         reset();
     };
 
@@ -73,17 +72,6 @@ const FantasyMovieForm: React.FC = () => {
             <Typography variant="h4" component="h2" className="mb-4">
                 Create your fantasy movie
             </Typography>
-
-            <Snackbar
-                anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                open={open}
-                onClose={() => setOpen(false)}
-                autoHideDuration={4000}
-            >
-                <Alert severity="success" onClose={() => setOpen(false)}>
-                    Your fantasy movie has been saved.
-                </Alert>
-            </Snackbar>
 
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Controller

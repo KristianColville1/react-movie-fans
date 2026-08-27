@@ -8,6 +8,8 @@ export interface AuthContextInterface {
     signUp: (email: string, password: string) => Promise<string | null>;
     signIn: (email: string, password: string) => Promise<string | null>;
     signOut: () => Promise<void>;
+    updateDisplayName: (displayName: string) => Promise<string | null>;
+    updatePassword: (password: string) => Promise<string | null>;
 }
 
 const initialContextState: AuthContextInterface = {
@@ -17,6 +19,8 @@ const initialContextState: AuthContextInterface = {
     signUp: async () => null,
     signIn: async () => null,
     signOut: async () => {},
+    updateDisplayName: async () => null,
+    updatePassword: async () => null,
 };
 
 export const AuthContext =
