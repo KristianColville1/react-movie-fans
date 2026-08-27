@@ -5,9 +5,21 @@ import Typography from "@mui/material/Typography";
 import FantasyMovieForm from "@organisms/fantasyMovieForm";
 import FantasyMovieList from "@organisms/fantasyMovieList";
 import { MoviesContext } from "@contexts/moviesContext";
+import { useToast } from "@contexts/toastContext";
 
 const FantasyMoviePage: React.FC = () => {
     const { fantasyMovies, removeFantasyMovie } = useContext(MoviesContext);
+    const { triggerToast } = useToast();
+
+    const onDelete = (id: string) => {
+        const deleted = fantasyMovies.find((m) => m.id === id);
+        removeFantasyMovie(id);
+        triggerToast(
+            "info",
+            "Fantasy movies",
+            `${deleted ? deleted.title : "That movie"} has been deleted`,
+        );
+    };
 
     return (
         <Grid container spacing={4} className="bg-jet-black p-4">
@@ -27,7 +39,7 @@ const FantasyMoviePage: React.FC = () => {
                     <Grid container spacing={3}>
                         <FantasyMovieList
                             movies={fantasyMovies}
-                            onDelete={removeFantasyMovie}
+                            onDelete={onDelete}
                         />
                     </Grid>
                 ) : (
