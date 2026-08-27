@@ -48,7 +48,7 @@ const ToastContextProvider: React.FC<React.PropsWithChildren> = ({
         <ToastContext.Provider value={{ triggerToast }}>
             {children}
 
-            <div className="fixed top-20 right-4 z-50 flex w-80 max-w-[calc(100vw-2rem)] flex-col gap-2">
+            <div className="fixed bottom-6 left-1/2 z-50 flex w-80 max-w-[calc(100vw-2rem)] -translate-x-1/2 flex-col items-center gap-2">
                 {toasts.map((toast) => (
                     <Alert
                         key={toast.id}

@@ -1,5 +1,6 @@
 import React, { MouseEvent, useContext } from "react";
 import { MoviesContext } from "@contexts/moviesContext";
+import { useToast } from "@contexts/toastContext";
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -15,6 +16,7 @@ import { BaseMovieProps } from "@typings/interfaces";
 const AddToFavouritesIcon: React.FC<BaseMovieProps> = (movie) => {
     const { favourites, addToFavourites, removeFromFavourites } =
         useContext(MoviesContext);
+    const { triggerToast } = useToast();
 
     const isFavourite = favourites.includes(movie.id);
 
@@ -22,9 +24,19 @@ const AddToFavouritesIcon: React.FC<BaseMovieProps> = (movie) => {
         e.preventDefault();
         if (isFavourite) {
             removeFromFavourites(movie);
+            triggerToast(
+                "info",
+                "Favourites",
+                `${movie.title} removed from your favourites`,
+            );
             return;
         }
         addToFavourites(movie);
+        triggerToast(
+            "success",
+            "Favourites",
+            `${movie.title} added to your favourites`,
+        );
     };
 
     return (
