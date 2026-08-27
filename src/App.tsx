@@ -17,6 +17,7 @@ import LoginPage from "@pages/loginPage";
 import FavouriteActorsPage from "@pages/favouriteActorsPage";
 import PrivateRoute from "@atoms/privateRoute";
 import ProfilePage from "@pages/profilePage";
+import MustWatchPage from "@pages/mustWatchPage";
 import AllContext from "@contexts/allContext";
 import SiteFooter from "@templates/siteFooter";
 import NotFoundPage from "@pages/errors/notFoundPage";
@@ -61,6 +62,10 @@ const App: React.FC = () => {
                                 <Route
                                     path="/movies/favourites"
                                     element={<FavouriteMoviesPage />}
+                                />
+                                <Route
+                                    path="/movies/watchlist"
+                                    element={<MustWatchPage />}
                                 />
                                 <Route
                                     path="/actors/favourites"
