@@ -1,20 +1,16 @@
-import React, { useContext } from "react";
+import React from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import CardHeader from "@mui/material/CardHeader";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import Grid from "@mui/material/Grid";
 import img from "@images/film-poster-placeholder.png";
 import { BaseMovieProps } from "@typings/interfaces";
 import { Link } from "react-router-dom";
-import Avatar from "@mui/material/Avatar";
-import { MoviesContext } from "@contexts/moviesContext";
 
 interface MovieCardProps {
     movie: BaseMovieProps;
@@ -32,26 +28,8 @@ interface MovieCardProps {
  * @returns JSX.Element
  */
 const MovieCard: React.FC<MovieCardProps> = ({ movie, action, siblingIds }) => {
-    const { favourites } = useContext(MoviesContext);
-
-    const isFavourite = favourites.find((id) => id === movie.id) ? true : false;
-
     return (
         <Card className="flex h-full max-w-[345px] flex-col overflow-hidden rounded-xl bg-surface text-navajo-white shadow-lg shadow-black/40 ring-1 ring-white/5 transition hover:ring-ocean-mist/60">
-            {isFavourite && (
-                <CardHeader
-                    className="py-2"
-                    avatar={
-                        <Avatar
-                            className="bg-magenta-bloom text-jet-black"
-                            aria-label="in your favourites"
-                        >
-                            <FavoriteIcon />
-                        </Avatar>
-                    }
-                />
-            )}
-
             <CardMedia
                 className="aspect-2/3 w-full"
                 image={
@@ -80,7 +58,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, action, siblingIds }) => {
                             className="flex items-center justify-end gap-1 text-sm font-semibold text-pale-amber"
                         >
                             <StarRateIcon fontSize="small" />
-                            {movie.vote_average}
+                            {movie.vote_average.toFixed(1)}
                         </Typography>
                     </Grid>
                 </Grid>
