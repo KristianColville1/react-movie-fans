@@ -8,7 +8,6 @@ import SiteHeader from "@organisms/siteHeader";
 import UpcomingMoviesPage from "@pages/upcomingMoviesPage";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import MoviesContextProvider from "@contexts/moviesContextProvider";
 import AddMovieReviewPage from "@pages/addMovieReviewPage";
 import ActorsPage from "@pages/actorsPage";
 import ActorDetailsPage from "@pages/actorDetailsPage";
@@ -18,7 +17,7 @@ import LoginPage from "@pages/loginPage";
 import FavouriteActorsPage from "@pages/favouriteActorsPage";
 import PrivateRoute from "@atoms/privateRoute";
 import ProfilePage from "@pages/profilePage";
-import AuthContextProvider from "@contexts/authContextProvider";
+import AllContext from "@contexts/allContext";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -33,64 +32,60 @@ const App: React.FC = () => {
     return (
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>
-                {/* The header shows who is signed in, so it sits inside the
-                    auth provider alongside the routes. */}
-                <AuthContextProvider>
+                <AllContext>
                     <SiteHeader />
-                    <MoviesContextProvider>
-                        <div className="mx-auto w-full max-w-7xl px-4">
-                            <Routes>
-                                <Route path="/login" element={<LoginPage />} />
-                                <Route
-                                    path="/movies/upcoming"
-                                    element={<UpcomingMoviesPage />}
-                                />
-                                <Route path="/movies/:id" element={<MoviePage />} />
-                                <Route path="/actors" element={<ActorsPage />} />
-                                <Route
-                                    path="/actors/:id"
-                                    element={<ActorDetailsPage />}
-                                />
+                    <div className="mx-auto w-full max-w-7xl px-4">
+                        <Routes>
+                            <Route path="/login" element={<LoginPage />} />
+                            <Route
+                                path="/movies/upcoming"
+                                element={<UpcomingMoviesPage />}
+                            />
+                            <Route path="/movies/:id" element={<MoviePage />} />
+                            <Route path="/actors" element={<ActorsPage />} />
+                            <Route
+                                path="/actors/:id"
+                                element={<ActorDetailsPage />}
+                            />
 
-                                {/* Anything belonging to one person sits behind
-                                    the guard. */}
-                                <Route element={<PrivateRoute />}>
-                                    <Route
-                                        path="/profile"
-                                        element={<ProfilePage />}
-                                    />
-                                    <Route
-                                        path="/movies/favourites"
-                                        element={<FavouriteMoviesPage />}
-                                    />
-                                    <Route
-                                        path="/actors/favourites"
-                                        element={<FavouriteActorsPage />}
-                                    />
-                                    <Route
-                                        path="/fantasy"
-                                        element={<FantasyMoviePage />}
-                                    />
-                                    <Route
-                                        path="/fantasy/:id"
-                                        element={<FantasyMovieDetailsPage />}
-                                    />
-                                    <Route
-                                        path="/reviews/form"
-                                        element={<AddMovieReviewPage />}
-                                    />
-                                    <Route
-                                        path="/reviews/:id"
-                                        element={<MovieReviewPage />}
-                                    />
-                                </Route>
+                            {/* Anything belonging to one person sits behind
+                                the guard. */}
+                            <Route element={<PrivateRoute />}>
+                                <Route
+                                    path="/profile"
+                                    element={<ProfilePage />}
+                                />
+                                <Route
+                                    path="/movies/favourites"
+                                    element={<FavouriteMoviesPage />}
+                                />
+                                <Route
+                                    path="/actors/favourites"
+                                    element={<FavouriteActorsPage />}
+                                />
+                                <Route
+                                    path="/fantasy"
+                                    element={<FantasyMoviePage />}
+                                />
+                                <Route
+                                    path="/fantasy/:id"
+                                    element={<FantasyMovieDetailsPage />}
+                                />
+                                <Route
+                                    path="/reviews/form"
+                                    element={<AddMovieReviewPage />}
+                                />
+                                <Route
+                                    path="/reviews/:id"
+                                    element={<MovieReviewPage />}
+                                />
+                            </Route>
 
-                                <Route path="/" element={<HomePage />} />
-                                <Route path="*" element={<Navigate to="/" />} />
-                            </Routes>
-                        </div>
-                    </MoviesContextProvider>
-                </AuthContextProvider>
+                            <Route path="/" element={<HomePage />} />
+                            <Route path="*" element={<Navigate to="/" />} />
+                        </Routes>
+                    </div>
+                </AllContext>
             </BrowserRouter>
             <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
