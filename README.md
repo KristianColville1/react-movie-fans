@@ -1,30 +1,51 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# MovieFans
 
-Currently, two official plugins are available:
+Developer: Kristian Colville
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+put responsive image here
 
-## Expanding the ESLint configuration
+Starting point: put base project here
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Table of Contents
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+* [Project Goals](#project-goals)
+  * [Personal Goals](#personal-goals)
+* [User Experience (UX)](#user-experience-ux)
+  * [Target Audience](#target-audience)
+* [Design](#design)
+  * [Color Scheme](#color-scheme)
+  * [Typography](#typography)
+  * [Layout](#layout)
+  * [Icons](#icons)
+  * [Leveraging Bulma](#leveraging-bulma)
+* [Technologies &amp; Tools](#technologies--tools)
+  * [Tech stack](#tech-stack)
+  * [Back end &amp; server](#back-end--server)
+  * [Code quality &amp; formatting](#code-quality--formatting)
+  * [Front end &amp; docs](#front-end--docs)
+* [Features](#features)
+  * [Release 1](#release-1)
+  * [Release 2](#release-2)
+  * [Release 3](#release-3)
+  * [Release 4](#release-4)
+* [Data](#data)
+* [Testing](#testing)
+  * [Actual Testing](#actual-testing)
+* [Bugs](#bugs)
+  * [Bug Details](#bug-details)
+* [Releases](#releases)
+  * [Overview](#overview)
+  * [Git Workflow](#git-workflow)
+  * [Development Strategy](#development-strategy)
+    * [Git Scope &amp; Branching](#git-scope--branching)
+  * [Release Results](#release-results)
+    * [Release 1](#release-1-1)
+    * [Release 2](#release-2-1)
+    * [Release 3](#release-3-1)
+    * [Release 4](#release-4-1)
+* [Development &amp; Deployment](#development--deployment)
+  * [Version Control](#version-control)
+  * [Cloning the Repository](#cloning-the-repository)
+  * [Render](#render)
+* [Credits](#credits)
