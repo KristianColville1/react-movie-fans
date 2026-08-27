@@ -74,9 +74,9 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, action, siblingIds }) => {
                     state={siblingIds ? { siblingIds } : undefined}
                 >
                     <Button
-                        variant="outlined"
-                        size="medium"
-                        className="border-ocean-mist text-ocean-mist hover:bg-ocean-mist hover:text-jet-black"
+                        variant="text"
+                        size="small"
+                        className="text-xs text-ocean-mist hover:bg-ocean-mist hover:text-jet-black"
                     >
                         More Info
                     </Button>
