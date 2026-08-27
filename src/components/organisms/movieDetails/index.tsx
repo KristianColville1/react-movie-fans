@@ -74,7 +74,9 @@ const MovieDetails: React.FC<MovieDetailsProps> = (movie) => {
                 <Chip
                     icon={<StarRate />}
                     label={`${movie.vote_average.toFixed(1)} (${movie.vote_count})`}
-                    className={chipStyle}
+                    className={`${chipStyle} cursor-pointer hover:ring-ocean-mist`}
+                    onClick={() => setDrawerOpen(true)}
+                    aria-label="read the reviews"
                 />
                 <Chip
                     label={`Released: ${formatDate(movie.release_date)}`}
@@ -101,6 +103,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = (movie) => {
                 anchor="top"
                 open={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
+                PaperProps={{ className: "bg-jet-black text-navajo-white" }}
             >
                 <MovieReviews {...movie} />
             </Drawer>
