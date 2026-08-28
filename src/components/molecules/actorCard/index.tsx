@@ -56,15 +56,16 @@ const ActorCard: React.FC<ActorCardProps> = ({ actor, action }) => {
                 className="mt-auto flex items-center justify-between border-t border-white/5 px-2 py-2"
             >
                 {action(actor)}
-                <Link to={`/actors/${actor.id}`}>
-                    <Button
-                        variant="outlined"
-                        size="medium"
-                        className="border-ocean-mist text-ocean-mist hover:bg-ocean-mist hover:text-jet-black"
-                    >
-                        More Info
-                    </Button>
-                </Link>
+                <Button
+                    component={Link}
+                    to={`/actors/${actor.id}`}
+                    aria-label={`More Info on ${actor.name}`}
+                    variant="outlined"
+                    size="medium"
+                    className="border-ocean-mist text-ocean-mist hover:bg-ocean-mist hover:text-jet-black"
+                >
+                    More Info
+                </Button>
             </CardActions>
         </Card>
     );
