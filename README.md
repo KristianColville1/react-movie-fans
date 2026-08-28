@@ -33,6 +33,7 @@ Starting point: [github.com/KristianColville1/labMoviesApp](https://github.com/K
   * [Release 2](#release-2)
   * [Release 3](#release-3)
   * [Release 4](#release-4)
+  * [Release 5](#release-5)
 * [Data](#data)
   * [TMDB](#tmdb)
   * [Supabase Schema](#supabase-schema)
@@ -54,6 +55,7 @@ Starting point: [github.com/KristianColville1/labMoviesApp](https://github.com/K
     * [Release 2](#release-2-1)
     * [Release 3](#release-3-1)
     * [Release 4](#release-4-1)
+    * [Release 5](#release-5-1)
 * [Development &amp; Deployment](#development--deployment)
   * [Version Control](#version-control)
   * [Cloning the Repository](#cloning-the-repository)
@@ -68,7 +70,7 @@ Starting point: [github.com/KristianColville1/labMoviesApp](https://github.com/K
 
 ## Project Goals
 
-MovieFans is a movie discovery single page application built on The Movie Database (TMDB) API. It extends the Movies app from the labs, and was developed in four releases, each one adding features from the next band of the grading spectrum. The application will:
+MovieFans is a movie discovery single page application built on The Movie Database (TMDB) API. It extends the Movies app from the labs, and was developed in five releases, each one adding features from the next band of the grading spectrum. The application will:
 
 - **Deliver a responsive, branded UI** using Tailwind for styling and MUI for structure, with a custom colour palette, an animated mobile nav, and a card grid that reflows from five columns down to one.
 - **Add Actors as a second data entity** with a paginated list view and a detail page carrying a biography and filmography, reached through its own parameterised route.
@@ -362,7 +364,7 @@ The largest release, and the one that makes the app feel finished.
 - **A watch list**, separate from favourites, with its own toggle and page, for films you mean to get to.
 - **A profile page** for the display name and password, with the account email moved into an avatar menu that also holds the personal lists.
 - **Toasts** confirm every add and remove, top centre, so an action on a card is acknowledged without moving the page.
-- **Reviews** open from the rating chip on a film, in a styled table, with a full review on its own page that a signed out visitor can read. A signed in user can write their own, which is saved against their account and appears at the top of that film's reviews marked as theirs.
+- **Reviews** open from the rating chip on a film, in a styled table, with a full review on its own page that a signed out visitor can read.
 - **Error pages.** A 404 for unknown addresses, shown in place so the address that failed stays in the bar, and a 500 for a server error.
 - **Presentation.** The site was named MovieFans, given a fixed width column and a tighter grid that steps from five posters a row down to one, a footer on every page, and a mobile navigation that slides down from a burger.
 
@@ -371,6 +373,15 @@ The largest release, and the one that makes the app feel finished.
 ![A movie detail page with its trailer](docs/image/README/feature-movie-detail.png)
 
 ![The same grid on a phone](docs/image/README/feature-mobile.png)
+
+### Release 5
+
+The pass made before submission, closing the gaps the earlier releases left rather than adding new ground.
+
+- **Your own review is saved.** A review written on the form is stored against your account and appears at the top of that film's reviews, marked as yours. It was held in memory for the session before, so it disappeared the moment it was submitted.
+- **The search is a form.** The criteria are filled in and then submitted with a Search button, rather than the list refetching on every keystroke and every checkbox. Clear all drops them in one go.
+- **An accessibility pass.** Every page has a `main` landmark and a real `h1`, card links name the film they lead to rather than twenty of them saying "More Info", the write review link says which film it reviews, and the card actions are a single link rather than a button nested inside one.
+- **A tidier mobile header.** The list header keeps its title and both arrows on one row at phone width instead of stacking into three, and the filter control sits out of the way of the heading.
 
 ---
 
@@ -521,7 +532,7 @@ Bugs found and fixed during development. Several came out of an adversarial revi
 
 ### Overview
 
-The project is delivered in staged **releases** that map to the bands of the grading spectrum. Each release closes a band and is marked with an annotated tag on `main`, so the state of the app at every stage can be checked out and reviewed on its own. Release 1 established the foundation, adding Actors as a second data entity alongside the housekeeping the lab app needed. Release 2 adapted the app with pagination, a multi criteria search, Supabase authentication and the first backend persistence. Release 3 containerised the build and put it live. Release 4 was the largest, covering branding, layout, the trailer and carousel, the profile page, toasts, the watch list, the error pages and the fix that moved filtering off the page on screen and onto the server.
+The project is delivered in staged **releases** that map to the bands of the grading spectrum. Each release closes a band and is marked with an annotated tag on `main`, so the state of the app at every stage can be checked out and reviewed on its own. Release 1 established the foundation, adding Actors as a second data entity alongside the housekeeping the lab app needed. Release 2 adapted the app with pagination, a multi criteria search, Supabase authentication and the first backend persistence. Release 3 containerised the build and put it live. Release 4 was the largest, covering branding, layout, the trailer and carousel, the profile page, toasts, the watch list, the error pages and the fix that moved filtering off the page on screen and onto the server. Release 5 is the pass made before submission, closing the gaps the earlier releases left: saving a user's own review, turning the search into a real form, and an accessibility pass.
 
 The bands do not map one to one onto the tags. Third party authentication is an Excellent band feature that was built early, in Release 2, because private routes were needed before anything could be stored per user, and the persistence that the Outstanding band asks for followed it in the same release for the same reason. The tags mark where work was closed rather than where a band began.
 
@@ -539,12 +550,13 @@ git push origin develop
 
 ### Development Strategy
 
-The assignment is delivered in four iterations:
+The assignment is delivered in five iterations:
 
 - **Release 1** the Good band
 - **Release 2** the Very Good band
 - **Release 3** the Excellent band
 - **Release 4** the Outstanding band
+- **Release 5** the pass before submission
 
 #### Timeline
 
@@ -555,6 +567,7 @@ The assignment is delivered in four iterations:
 | Release 2 tagged     | August 17th, 2026 |
 | Release 3 tagged     | August 26th, 2026 |
 | Release 4 tagged     | August 27th, 2026 |
+| Release 5 tagged     | August 28th, 2026 |
 | Final Submission     | August 31st, 2026 |
 | Approximate Duration | 3 weeks           |
 
@@ -593,6 +606,7 @@ The tags on `main`:
 - `adapt` Release 2 closed, the Very Good band
 - `release-3` Release 3 closed, the Excellent band
 - `release-4` Release 4 closed, the Outstanding band
+- `release-5` Release 5 closed, the pass before submission
 
 ### Release Results
 
@@ -659,6 +673,20 @@ Release 4 was the largest of the four and covers the rich feature set the Outsta
 **Reviews:** The reviews table and the full review view were styled, reviews open from the rating chip, and the review page was made public so a signed out visitor following the link is no longer bounced to sign in and left on a blank page.
 
 **Other:** A site footer, an animated mobile navigation that slides down from a burger, a date helper for release dates, ratings shown to one decimal place, and the movie header heart read from context rather than local storage.
+
+#### Release 5
+
+Release 5 is the pass made before submission. It adds no new ground; it closes the gaps the earlier releases left.
+
+**Review persistence:** A written review is now saved. This had been blocked by a defect rather than by time: `Review` was declared twice in the same file, once for the shape TMDB returns and once for the shape the form produces, and TypeScript merged the two into a single type that was wrong for both. The declarations were separated, the form's default values were pointed at the field it actually registers, and a `reviews` table was added with the same row level security as the other four. A review now goes to Supabase, comes back with the id the database gave it, and renders at the top of that film's reviews with a chip marking it as the reader's own. Verified in a browser: written, reloaded, still there, and invisible to a second account.
+
+**The search became a form:** The brief asks for criteria submitted on a web form, and the drawer had been filtering as you typed with no form element and no submit. The criteria are now held in the drawer until a Search button submits them, so the list refetches when the user asks rather than on every keystroke. The end to end test for it asserts both halves: that ticking a genre changes nothing on its own, and that searching then does.
+
+**Accessibility:** Every page gained a `main` landmark, and the page title became its `h1` rather than an `h3` under headings that only existed inside the filter drawer. Card actions were a `Button` nested inside a `Link`, which is invalid and ambiguous for assistive technology; they are now a single element that names where it goes, so a screen reader hears the film rather than the twentieth "More Info" on the page. The write review link, the one icon control that had no accessible name, got one.
+
+**Dependencies:** `lodash` was imported by `src/util.ts` but never declared in `package.json`, arriving underneath something else and surviving only because both the local install and the container build include development dependencies. A production only install would have broken the build. The one function used from it was a truncation, which is now written out directly, and the stray type package was removed.
+
+**Also:** the list header keeps its title and arrows on one row at phone width, the filter control moved clear of it on small screens, and `getMovieReviews` gained the response check every other function in the API module already had.
 
 ---
 
