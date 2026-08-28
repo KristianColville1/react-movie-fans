@@ -38,7 +38,7 @@ const App: React.FC = () => {
             <BrowserRouter>
                 <AllContext>
                     <SiteHeader />
-                    <div className="mx-auto w-full max-w-7xl px-4">
+                    <main className="mx-auto w-full max-w-7xl px-4">
                         <Routes>
                             <Route path="/login" element={<LoginPage />} />
                             <Route
@@ -93,7 +93,7 @@ const App: React.FC = () => {
                             <Route path="/error" element={<ServerErrorPage />} />
                             <Route path="*" element={<NotFoundPage />} />
                         </Routes>
-                    </div>
+                    </main>
                     <SiteFooter />
                 </AllContext>
             </BrowserRouter>
