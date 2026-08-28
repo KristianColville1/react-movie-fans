@@ -56,7 +56,7 @@ const MovieHeader: React.FC<
                     )}
                     <Typography
                         variant="h5"
-                        component="h3"
+                        component="h1"
                         className="text-lg leading-tight font-semibold break-words sm:text-2xl"
                     >
                         {movie.title}

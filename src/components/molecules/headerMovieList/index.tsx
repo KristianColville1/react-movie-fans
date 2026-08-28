@@ -56,7 +56,7 @@ const Header: React.FC<HeaderProps> = ({
 
             <Typography
                 variant="h4"
-                component="h3"
+                component="h1"
                 className="min-w-0 flex-1 text-center text-xl leading-tight font-semibold break-words sm:text-3xl"
             >
                 {title}
