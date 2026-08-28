@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useContext } from "react";
-import { BaseMovieProps, FantasyMovie, Review } from "@typings/interfaces";
+import { BaseMovieProps, FantasyMovie, MyReview } from "@typings/interfaces";
 import { MoviesContext } from "@contexts/moviesContext";
 import { AuthContext } from "@contexts/authContext";
 import {
@@ -22,12 +22,13 @@ import {
     addMustWatch,
     removeMustWatch,
 } from "@storage/mustWatchStore";
+import { loadMyReviews, addMyReview } from "@storage/reviewsStore";
 
 const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
     children,
 }) => {
     const { user } = useContext(AuthContext);
-    const [myReviews, setMyReviews] = useState<Review[]>([]);
+    const [myReviews, setMyReviews] = useState<MyReview[]>([]);
     const [favourites, setFavourites] = useState<number[]>([]);
     const [favouriteActors, setFavouriteActors] = useState<number[]>([]);
     const [mustWatch, setMustWatch] = useState<number[]>([]);
@@ -52,8 +53,15 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
             loadFavouriteActors(),
             loadMustWatch(),
             loadFantasyMovies(),
+            loadMyReviews(),
         ]).then(
-            ([storedFavourites, storedActors, storedMustWatch, storedMovies]) => {
+            ([
+                storedFavourites,
+                storedActors,
+                storedMustWatch,
+                storedMovies,
+                storedReviews,
+            ]) => {
                 if (!active) {
                     return;
                 }
@@ -61,6 +69,7 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
                 setFavouriteActors(storedActors);
                 setMustWatch(storedMustWatch);
                 setFantasyMovies(storedMovies);
+                setMyReviews(storedReviews);
             },
         );
 
@@ -101,12 +110,14 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
         void removeFavouriteActor(actorId);
     }, []);
 
-    // Reviews carry the movie they belong to, so the list stays flat.
-    const addReview = useCallback((movie: BaseMovieProps, review: Review) => {
-        setMyReviews((prevReviews) => [
-            ...prevReviews,
-            { ...review, movieId: movie.id },
-        ]);
+    // Reviews carry the movie they belong to, so the list stays flat. The
+    // database fills in the id, so the stored review is what goes into state.
+    const addReview = useCallback((movie: BaseMovieProps, review: MyReview) => {
+        void addMyReview({ ...review, movieId: movie.id }).then((stored) => {
+            if (stored) {
+                setMyReviews((prevReviews) => [...prevReviews, stored]);
+            }
+        });
     }, []);
 
     // The database fills in the id, so the new movie is taken from what the

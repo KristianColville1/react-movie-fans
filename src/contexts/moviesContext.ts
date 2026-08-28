@@ -1,5 +1,5 @@
 import React from "react";
-import { BaseMovieProps, FantasyMovie, Review } from "@typings/interfaces";
+import { BaseMovieProps, FantasyMovie, MyReview } from "@typings/interfaces";
 
 export interface MovieContextInterface {
     favourites: number[];
@@ -8,8 +8,8 @@ export interface MovieContextInterface {
     favouriteActors: number[];
     addToFavouriteActors: (actorId: number) => void;
     removeFromFavouriteActors: (actorId: number) => void;
-    myReviews: Review[];
-    addReview: (movie: BaseMovieProps, review: Review) => void;
+    myReviews: MyReview[];
+    addReview: (movie: BaseMovieProps, review: MyReview) => void;
     mustWatch: number[];
     addToMustWatch: (movie: BaseMovieProps) => void;
     removeFromMustWatch: (movie: BaseMovieProps) => void;
