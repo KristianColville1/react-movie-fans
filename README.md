@@ -335,7 +335,7 @@ The foundation. Actors are added as a second data entity and the app stops being
 The app learns who you are, and the catalogue becomes navigable rather than just long.
 
 - **Pagination** on discover, upcoming and actors, capped at the five hundred pages TMDB will serve. The previous page stays on screen while the next loads instead of blanking.
-- **Multi criteria search** in a drawer: title text, a scrollable group of genre checkboxes, a release year from and to, a minimum rating, and a clear all.
+- **Multi criteria search** on a form in a drawer: title text, a scrollable group of genre checkboxes, a release year from and to, a minimum rating, then Search to apply them or Clear all to drop them. The criteria are submitted rather than applied as you type, so the list refetches when you ask it to.
 - **Accounts.** Sign up and sign in on one toggled form, backed by Supabase email and password.
 - **Public and private routes.** The personal pages sit behind a guard, and a visitor sent to sign in is returned to the page they wanted rather than dropped on the home page.
 - **Premium functionality.** The filter and sort drawer is for signed in users; anonymous visitors get an invitation in its place. The private navigation entries are hidden from them too.
@@ -454,7 +454,7 @@ One detail worth recording, because it cost time: card counts come from `.MuiCar
 | 2 | signs in, opens a private route, signs out again                   | The guard redirects while anonymous, opens once signed in, survives a reload, and closes again after sign out |
 | 3 | a signed out visitor can walk movie to actor and back              | Public browsing, both parameterised routes, and the full hyperlink loop, with no account                      |
 | 4 | creates two fantasy movies, opens one on its own page, deletes one | The fantasy movie path end to end, including that a second creation adds rather than replaces                 |
-| 5 | pages through discover and narrows it by genre                     | Pagination moves the results, a genre filter changes them, and clear all restores them                        |
+| 5 | pages through discover and narrows it by genre                     | Pagination moves the results, ticking a genre changes nothing until the form is submitted, searching then changes them, and clear all restores them |
 | 6 | a genre filter narrows the whole catalogue, not the page on screen | Filtering happens server side: a filtered page one and page two each hold a full twenty results               |
 
 Test 2's reload step and test 6 both exist because of bugs that reached the app, described under [Bugs](#bugs).
@@ -473,27 +473,26 @@ Two stories fetch from TMDB when they mount, because the components behind them 
 
 ### Accessibility
 
-An accessibility pass is the clearest piece of outstanding work in the project, so what follows is what is in place and what is not, rather than a claim that the app is accessible.
+An accessibility pass was made over the app late on. What follows is what is in place and what is still not, rather than a claim that the app is fully accessible.
 
 **In place.**
 
 - Keeping MUI components rather than replacing them means the keyboard behaviour comes with them: the drawer traps focus and closes on Escape, menus move on arrow keys, and the pagination, selects and checkboxes are all operable without a mouse.
-- Every icon only control carries an `aria-label`, and the fantasy movie delete names the film it deletes rather than saying "delete".
+- Every page has a `<main>` landmark, and the page title is its `h1`, so the document outline describes the page rather than starting halfway down it.
+- Every icon only control carries an `aria-label`. The fantasy movie delete names the film it deletes, and the write review link names the film it reviews, rather than either saying only "delete" or nothing at all.
+- Card links carry the title they lead to, so a screen reader hears "More Info on The Odyssey" rather than twenty links all called "More Info".
+- Links are links and buttons are buttons. The card actions are a single element rather than a button nested inside an anchor, which is invalid and leaves assistive technology guessing.
 - Every form control is a labelled field with its label properly associated, and validation messages are attached to their field rather than only coloured.
 - The sign in failure is a live region, so a screen reader announces it.
 - `lang` is set, the page title is real, and the images that are `<img>` elements have alt text.
 
 **Not in place.**
 
-- No `<main>` landmark and no skip link, so a keyboard user tabs through the header on every page.
-- The heading structure is inverted. Page titles are `h3` and the only `h1` elements sit inside the filter drawer.
-- The poster grids have no text alternative, because cards render their poster as a CSS background rather than an image. This is the most significant gap.
-- Every card's link is announced as "More Info", twenty times a page.
-- The navigation is buttons rather than links, so it cannot be opened in a new tab.
+- The poster grids have no text alternative, because cards render their poster as a CSS background rather than an image. This is the largest remaining gap, and the card link naming the film is a partial answer to it rather than a fix.
+- No skip link, so a keyboard user still tabs through the header on every page.
+- The main navigation is buttons rather than links, so it cannot be opened in a new tab.
 - Focus is not moved on route change, reduced motion is not honoured by the smooth scrolling, and contrast has not been measured on the smaller muted text.
 - No automated checking: no axe, no Lighthouse budget, no Storybook accessibility addon.
-
-The next piece of work is the landmark, the heading levels and the nested control, followed by giving the cards a real accessible name, which is the change that would make the app usable rather than merely navigable.
 
 ---
 
