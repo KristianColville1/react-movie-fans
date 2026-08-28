@@ -33,7 +33,6 @@ Starting point: [github.com/KristianColville1/labMoviesApp](https://github.com/K
   * [Release 2](#release-2)
   * [Release 3](#release-3)
   * [Release 4](#release-4)
-  * [Future Features](#future-features)
 * [Data](#data)
   * [TMDB](#tmdb)
   * [Supabase Schema](#supabase-schema)
@@ -363,7 +362,7 @@ The largest release, and the one that makes the app feel finished.
 - **A watch list**, separate from favourites, with its own toggle and page, for films you mean to get to.
 - **A profile page** for the display name and password, with the account email moved into an avatar menu that also holds the personal lists.
 - **Toasts** confirm every add and remove, top centre, so an action on a card is acknowledged without moving the page.
-- **Reviews** open from the rating chip on a film, in a styled table, with a full review on its own page that a signed out visitor can read.
+- **Reviews** open from the rating chip on a film, in a styled table, with a full review on its own page that a signed out visitor can read. A signed in user can write their own, which is saved against their account and appears at the top of that film's reviews marked as theirs.
 - **Error pages.** A 404 for unknown addresses, shown in place so the address that failed stays in the bar, and a 500 for a server error.
 - **Presentation.** The site was named MovieFans, given a fixed width column and a tighter grid that steps from five posters a row down to one, a footer on every page, and a mobile navigation that slides down from a burger.
 
@@ -372,18 +371,6 @@ The largest release, and the one that makes the app feel finished.
 ![A movie detail page with its trailer](docs/image/README/feature-movie-detail.png)
 
 ![The same grid on a phone](docs/image/README/feature-mobile.png)
-
-### Future Features
-
-Work the app is shaped for but does not do yet.
-
-- **Ordered favourites.** Favourites come back in the order they were added. Letting a user arrange them needs a position column on the table and a reorder control on the page.
-- **Themed playlists.** The watch list is one list with no name. Giving it a title and a theme, and allowing more than one, is the difference between a watch list and playlists.
-- **A fantasy movie cast**, where each member has a role name and a description, and a **poster upload**, which is the piece that would bring Supabase Storage into the project alongside the database.
-- **Editing a fantasy movie.** The groundwork is already there, since the table carries an update policy, but there is no edit form and the store only inserts and deletes.
-- **Saving your own review.** A review can be written but not kept, because it is held for the session rather than stored.
-- **A similar movies strip** on the detail page, using TMDB's related titles to keep a visitor moving between films.
-- **Translation.** Left out deliberately, having chosen depth in the persistence and deployment work instead.
 
 ---
 
@@ -423,12 +410,13 @@ The schema is declarative. The files under `supabase/schemas` are the source of 
 | `must_watch`       | `(user_id, movie_id)` | `created_at`                                                                                                  |
 | `favourite_actors` | `(user_id, actor_id)` | `created_at`                                                                                                  |
 | `fantasy_movies`   | `id` uuid             | `title`, `overview`, `genre_ids`, `release_date`, `runtime`, `production_companies`, `created_at` |
+| `reviews`          | `id` uuid             | `movie_id`, `author`, `content`, `rating`, `agree`, `created_at`                                   |
 
 The composite key on the three list tables means a user cannot favourite the same film twice without any check in the app. Every table defaults `user_id` to `auth.uid()`, so the client never sends an owner, and references `auth.users` with `on delete cascade`, so deleting an account takes its rows with it.
 
 ### Row Level Security
 
-The Supabase publishable key ships in the bundle and is public by design, so row level security is the only thing keeping one user out of another's rows. Every table has it enabled with a policy per operation: select and delete match `auth.uid()` against the row's owner, and insert checks the row being written, which is what stops a user creating a row owned by somebody else. The three list tables get select, insert and delete, since a favourite is added or removed but never edited. `fantasy_movies` also gets update, because a fantasy movie is content its owner can change.
+The Supabase publishable key ships in the bundle and is public by design, so row level security is the only thing keeping one user out of another's rows. Every table has it enabled with a policy per operation: select and delete match `auth.uid()` against the row's owner, and insert checks the row being written, which is what stops a user creating a row owned by somebody else. The three list tables get select, insert and delete, since a favourite is added or removed but never edited, and `reviews` gets the same three. `fantasy_movies` also gets update, because a fantasy movie is content its owner can change.
 
 Each table was checked with two accounts, creating rows as one and confirming the other could neither see nor delete them.
 
