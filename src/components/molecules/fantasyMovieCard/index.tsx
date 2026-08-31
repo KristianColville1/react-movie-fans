@@ -67,15 +67,16 @@ const FantasyMovieCard: React.FC<{
                 >
                     <DeleteIcon />
                 </IconButton>
-                <Link to={`/fantasy/${movie.id}`}>
-                    <Button
-                        variant="outlined"
-                        size="medium"
-                        className="border-ocean-mist text-ocean-mist hover:bg-ocean-mist hover:text-jet-black"
-                    >
-                        More Info
-                    </Button>
-                </Link>
+                <Button
+                    component={Link}
+                    to={`/fantasy/${movie.id}`}
+                    aria-label={`More Info on ${movie.title}`}
+                    variant="outlined"
+                    size="medium"
+                    className="border-ocean-mist text-ocean-mist hover:bg-ocean-mist hover:text-jet-black"
+                >
+                    More Info
+                </Button>
             </CardActions>
         </Card>
     );

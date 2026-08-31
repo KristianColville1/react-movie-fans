@@ -39,33 +39,41 @@ const Header: React.FC<HeaderProps> = ({
     return (
         <Paper
             component="div"
-            className="mb-6 flex flex-wrap items-center justify-around rounded-xl bg-surface px-4 py-3 text-navajo-white"
+            className="mb-6 flex items-center gap-1 rounded-xl bg-surface px-1 py-3 text-navajo-white sm:gap-2 sm:px-3"
         >
-            {paged && (
-                <IconButton
-                    aria-label="go back"
-                    className="text-ocean-mist disabled:text-navajo-white/25"
-                    disabled={page <= 1}
-                    onClick={() => goTo(page - 1)}
-                >
-                    <ArrowBackIcon fontSize="large" />
-                </IconButton>
-            )}
+            <div className="w-12 shrink-0">
+                {paged && (
+                    <IconButton
+                        aria-label="go back"
+                        className="text-ocean-mist disabled:text-navajo-white/25"
+                        disabled={page <= 1}
+                        onClick={() => goTo(page - 1)}
+                    >
+                        <ArrowBackIcon fontSize="large" />
+                    </IconButton>
+                )}
+            </div>
 
-            <Typography variant="h4" component="h3" className="font-semibold">
+            <Typography
+                variant="h4"
+                component="h1"
+                className="min-w-0 flex-1 text-center text-xl leading-tight font-semibold break-words sm:text-3xl"
+            >
                 {title}
             </Typography>
 
-            {paged && (
-                <IconButton
-                    aria-label="go forward"
-                    className="text-ocean-mist disabled:text-navajo-white/25"
-                    disabled={page >= lastPage}
-                    onClick={() => goTo(page + 1)}
-                >
-                    <ArrowForwardIcon fontSize="large" />
-                </IconButton>
-            )}
+            <div className="flex w-12 shrink-0 justify-end">
+                {paged && (
+                    <IconButton
+                        aria-label="go forward"
+                        className="text-ocean-mist disabled:text-navajo-white/25"
+                        disabled={page >= lastPage}
+                        onClick={() => goTo(page + 1)}
+                    >
+                        <ArrowForwardIcon fontSize="large" />
+                    </IconButton>
+                )}
+            </div>
         </Paper>
     );
 };

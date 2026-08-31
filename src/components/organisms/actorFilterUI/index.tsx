@@ -46,14 +46,14 @@ const ActorFilterUI: React.FC<ActorFilterUIProps> = ({
                 <Fab
                     variant="extended"
                     onClick={() => setDrawerOpen(true)}
-                    className="fixed top-24 right-4 bg-magenta-bloom font-semibold text-jet-black hover:bg-magenta-bloom/90"
+                    className="fixed right-4 bottom-6 bg-magenta-bloom font-semibold text-jet-black hover:bg-magenta-bloom/90 sm:top-24 sm:bottom-auto"
                 >
                     Filter
                 </Fab>
             ) : (
                 <Typography
                     variant="body2"
-                    className="fixed top-24 right-4 rounded-full bg-surface-raised px-4 py-2 text-navajo-white/80"
+                    className="fixed right-4 bottom-6 rounded-full bg-surface-raised px-4 py-2 text-navajo-white/80 sm:top-24 sm:bottom-auto"
                 >
                     Sign in to filter and sort
                 </Typography>
@@ -66,7 +66,7 @@ const ActorFilterUI: React.FC<ActorFilterUIProps> = ({
             >
                 <Card className={cardStyle} variant="outlined">
                     <CardContent>
-                        <Typography variant="h5" component="h1">
+                        <Typography variant="h5" component="h2">
                             <FilterAltIcon fontSize="large" />
                             Filter the actors.
                         </Typography>

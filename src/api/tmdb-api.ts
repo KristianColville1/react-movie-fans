@@ -156,14 +156,21 @@ export const getMovieImages = (id: string | number) => {
  *
  * @param id The TMDB id of the movie.
  * @returns The results array of reviews, not the whole payload.
+ * @throws If the response status is not ok.
  */
 export const getMovieReviews = (id: string | number) => {
     return fetch(
         `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${import.meta.env.VITE_TMDB_KEY}`,
     )
-        .then((res) => res.json())
-        .then((json) => {
-            return json.results;
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("failed to fetch reviews");
+            }
+            return response.json();
+        })
+        .then((json) => json.results)
+        .catch((error) => {
+            throw error;
         });
 };
 

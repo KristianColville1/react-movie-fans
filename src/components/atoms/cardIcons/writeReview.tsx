@@ -13,6 +13,7 @@ const WriteReviewIcon: React.FC<BaseMovieProps> = (movie) => {
     return (
         <Link
             to={"/reviews/form"}
+            aria-label={`write a review of ${movie.title}`}
             state={{
                 movieId: movie.id,
             }}
