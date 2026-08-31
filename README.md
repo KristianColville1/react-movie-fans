@@ -567,7 +567,7 @@ The assignment is delivered in five iterations:
 | Release 2 tagged     | August 17th, 2026 |
 | Release 3 tagged     | August 26th, 2026 |
 | Release 4 tagged     | August 27th, 2026 |
-| Release 5 tagged     | August 28th, 2026 |
+| Release 5 tagged     | August 31st, 2026 |
 | Final Submission     | August 31st, 2026 |
 | Approximate Duration | 3 weeks           |
 
@@ -596,9 +596,9 @@ git tag -a base -m "Good band complete"
 git push origin main --tags
 ```
 
-The feature branches used in this repo were `feature/good-band`, `feature/new-chars`, `feature/deploy` and `release-4`, with `readme` carrying the documentation. Branches were kept on `origin` after merging rather than deleted, so `git branch -a` shows the incremental work as evidence.
+The feature branches used in this repo were `feature/good-band`, `feature/new-chars`, `feature/deploy`, `release-4` and `release-5`, with `readme` carrying the documentation. Branches were kept on `origin` after merging rather than deleted, so `git branch -a` shows the incremental work as evidence.
 
-Commits are one line and state the purpose of the session, and were made per file or per closely related group of files rather than in large batches. The history runs to just under two hundred commits across the four releases, starting from `ce0b683`, the lab app copied in unchanged as the base project.
+Commits are one line and state the purpose of the session, and were made per file or per closely related group of files rather than in large batches. The history runs to over two hundred commits across the five releases, starting from `ce0b683`, the lab app copied in unchanged as the base project.
 
 The tags on `main`:
 
