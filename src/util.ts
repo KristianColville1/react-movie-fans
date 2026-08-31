@@ -1,8 +1,14 @@
-import truncate from "lodash/truncate";
+const limit = 400;
 
+// cut back to the last space, comma or full stop before the limit so the
+// excerpt ends on a word rather than mid one
 export const excerpt = (string: string) => {
-    return truncate(string, {
-        length: 400, // maximum 400 characters
-        separator: /,?\.* +/, // separate by spaces, including preceding commas and periods
-    });
+    if (string.length <= limit) {
+        return string;
+    }
+
+    const cut = string.slice(0, limit);
+    const lastBreak = cut.search(/[^ ]*$/);
+
+    return `${cut.slice(0, lastBreak).replace(/,?\.* +$/, "")}...`;
 };

@@ -66,7 +66,7 @@ const ActorFilterUI: React.FC<ActorFilterUIProps> = ({
             >
                 <Card className={cardStyle} variant="outlined">
                     <CardContent>
-                        <Typography variant="h5" component="h1">
+                        <Typography variant="h5" component="h2">
                             <FilterAltIcon fontSize="large" />
                             Filter the actors.
                         </Typography>

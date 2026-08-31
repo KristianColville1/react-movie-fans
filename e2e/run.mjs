@@ -179,10 +179,20 @@ test(
         await page.locator(".MuiFab-root").first().click();
         await page.waitForTimeout(900);
         await page.locator('input[type="checkbox"]').first().check();
+        await page.waitForTimeout(600);
+
+        // the criteria are submitted on a form, so ticking alone changes
+        // nothing until the search goes in
+        assert(
+            (await posters()) === beforeGenre,
+            "the list changed before the search was submitted",
+        );
+
+        await page.getByRole("button", { name: "Search" }).click();
         await page.waitForTimeout(2500);
         assert(
             (await posters()) !== beforeGenre,
-            "ticking a genre did not change the list",
+            "searching a genre did not change the list",
         );
 
         await page.getByRole("button", { name: "Clear all" }).click();
@@ -205,6 +215,7 @@ test(
         await page.locator(".MuiFab-root").first().click();
         await page.waitForTimeout(900);
         await page.locator('input[type="checkbox"]').first().check();
+        await page.getByRole("button", { name: "Search" }).click();
         await page.waitForTimeout(2500);
         await page.keyboard.press("Escape");
         await page.waitForTimeout(1200);

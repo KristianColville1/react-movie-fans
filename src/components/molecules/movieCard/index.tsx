@@ -70,18 +70,17 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, action, siblingIds }) => {
             >
                 {action(movie)}
 
-                <Link
+                <Button
+                    component={Link}
                     to={`/movies/${movie.id}`}
                     state={siblingIds ? { siblingIds } : undefined}
+                    aria-label={`More Info on ${movie.title}`}
+                    variant="text"
+                    size="small"
+                    className="text-xs text-ocean-mist hover:bg-ocean-mist hover:text-jet-black"
                 >
-                    <Button
-                        variant="text"
-                        size="small"
-                        className="text-xs text-ocean-mist hover:bg-ocean-mist hover:text-jet-black"
-                    >
-                        More Info
-                    </Button>
-                </Link>
+                    More Info
+                </Button>
             </CardActions>
         </Card>
     );

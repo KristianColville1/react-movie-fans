@@ -33,7 +33,7 @@ Starting point: [github.com/KristianColville1/labMoviesApp](https://github.com/K
   * [Release 2](#release-2)
   * [Release 3](#release-3)
   * [Release 4](#release-4)
-  * [Future Features](#future-features)
+  * [Release 5](#release-5)
 * [Data](#data)
   * [TMDB](#tmdb)
   * [Supabase Schema](#supabase-schema)
@@ -55,6 +55,7 @@ Starting point: [github.com/KristianColville1/labMoviesApp](https://github.com/K
     * [Release 2](#release-2-1)
     * [Release 3](#release-3-1)
     * [Release 4](#release-4-1)
+    * [Release 5](#release-5-1)
 * [Development &amp; Deployment](#development--deployment)
   * [Version Control](#version-control)
   * [Cloning the Repository](#cloning-the-repository)
@@ -69,7 +70,7 @@ Starting point: [github.com/KristianColville1/labMoviesApp](https://github.com/K
 
 ## Project Goals
 
-MovieFans is a movie discovery single page application built on The Movie Database (TMDB) API. It extends the Movies app from the labs, and was developed in four releases, each one adding features from the next band of the grading spectrum. The application will:
+MovieFans is a movie discovery single page application built on The Movie Database (TMDB) API. It extends the Movies app from the labs, and was developed in five releases, each one adding features from the next band of the grading spectrum. The application will:
 
 - **Deliver a responsive, branded UI** using Tailwind for styling and MUI for structure, with a custom colour palette, an animated mobile nav, and a card grid that reflows from five columns down to one.
 - **Add Actors as a second data entity** with a paginated list view and a detail page carrying a biography and filmography, reached through its own parameterised route.
@@ -336,7 +337,7 @@ The foundation. Actors are added as a second data entity and the app stops being
 The app learns who you are, and the catalogue becomes navigable rather than just long.
 
 - **Pagination** on discover, upcoming and actors, capped at the five hundred pages TMDB will serve. The previous page stays on screen while the next loads instead of blanking.
-- **Multi criteria search** in a drawer: title text, a scrollable group of genre checkboxes, a release year from and to, a minimum rating, and a clear all.
+- **Multi criteria search** on a form in a drawer: title text, a scrollable group of genre checkboxes, a release year from and to, a minimum rating, then Search to apply them or Clear all to drop them. The criteria are submitted rather than applied as you type, so the list refetches when you ask it to.
 - **Accounts.** Sign up and sign in on one toggled form, backed by Supabase email and password.
 - **Public and private routes.** The personal pages sit behind a guard, and a visitor sent to sign in is returned to the page they wanted rather than dropped on the home page.
 - **Premium functionality.** The filter and sort drawer is for signed in users; anonymous visitors get an invitation in its place. The private navigation entries are hidden from them too.
@@ -373,17 +374,14 @@ The largest release, and the one that makes the app feel finished.
 
 ![The same grid on a phone](docs/image/README/feature-mobile.png)
 
-### Future Features
+### Release 5
 
-Work the app is shaped for but does not do yet.
+The pass made before submission, closing the gaps the earlier releases left rather than adding new ground.
 
-- **Ordered favourites.** Favourites come back in the order they were added. Letting a user arrange them needs a position column on the table and a reorder control on the page.
-- **Themed playlists.** The watch list is one list with no name. Giving it a title and a theme, and allowing more than one, is the difference between a watch list and playlists.
-- **A fantasy movie cast**, where each member has a role name and a description, and a **poster upload**, which is the piece that would bring Supabase Storage into the project alongside the database.
-- **Editing a fantasy movie.** The groundwork is already there, since the table carries an update policy, but there is no edit form and the store only inserts and deletes.
-- **Saving your own review.** A review can be written but not kept, because it is held for the session rather than stored.
-- **A similar movies strip** on the detail page, using TMDB's related titles to keep a visitor moving between films.
-- **Translation.** Left out deliberately, having chosen depth in the persistence and deployment work instead.
+- **Your own review is saved.** A review written on the form is stored against your account and appears at the top of that film's reviews, marked as yours. It was held in memory for the session before, so it disappeared the moment it was submitted.
+- **The search is a form.** The criteria are filled in and then submitted with a Search button, rather than the list refetching on every keystroke and every checkbox. Clear all drops them in one go.
+- **An accessibility pass.** Every page has a `main` landmark and a real `h1`, card links name the film they lead to rather than twenty of them saying "More Info", the write review link says which film it reviews, and the card actions are a single link rather than a button nested inside one.
+- **A tidier mobile header.** The list header keeps its title and both arrows on one row at phone width instead of stacking into three, and the filter control sits out of the way of the heading.
 
 ---
 
@@ -423,12 +421,13 @@ The schema is declarative. The files under `supabase/schemas` are the source of 
 | `must_watch`       | `(user_id, movie_id)` | `created_at`                                                                                                  |
 | `favourite_actors` | `(user_id, actor_id)` | `created_at`                                                                                                  |
 | `fantasy_movies`   | `id` uuid             | `title`, `overview`, `genre_ids`, `release_date`, `runtime`, `production_companies`, `created_at` |
+| `reviews`          | `id` uuid             | `movie_id`, `author`, `content`, `rating`, `agree`, `created_at`                                   |
 
 The composite key on the three list tables means a user cannot favourite the same film twice without any check in the app. Every table defaults `user_id` to `auth.uid()`, so the client never sends an owner, and references `auth.users` with `on delete cascade`, so deleting an account takes its rows with it.
 
 ### Row Level Security
 
-The Supabase publishable key ships in the bundle and is public by design, so row level security is the only thing keeping one user out of another's rows. Every table has it enabled with a policy per operation: select and delete match `auth.uid()` against the row's owner, and insert checks the row being written, which is what stops a user creating a row owned by somebody else. The three list tables get select, insert and delete, since a favourite is added or removed but never edited. `fantasy_movies` also gets update, because a fantasy movie is content its owner can change.
+The Supabase publishable key ships in the bundle and is public by design, so row level security is the only thing keeping one user out of another's rows. Every table has it enabled with a policy per operation: select and delete match `auth.uid()` against the row's owner, and insert checks the row being written, which is what stops a user creating a row owned by somebody else. The three list tables get select, insert and delete, since a favourite is added or removed but never edited, and `reviews` gets the same three. `fantasy_movies` also gets update, because a fantasy movie is content its owner can change.
 
 Each table was checked with two accounts, creating rows as one and confirming the other could neither see nor delete them.
 
@@ -466,7 +465,7 @@ One detail worth recording, because it cost time: card counts come from `.MuiCar
 | 2 | signs in, opens a private route, signs out again                   | The guard redirects while anonymous, opens once signed in, survives a reload, and closes again after sign out |
 | 3 | a signed out visitor can walk movie to actor and back              | Public browsing, both parameterised routes, and the full hyperlink loop, with no account                      |
 | 4 | creates two fantasy movies, opens one on its own page, deletes one | The fantasy movie path end to end, including that a second creation adds rather than replaces                 |
-| 5 | pages through discover and narrows it by genre                     | Pagination moves the results, a genre filter changes them, and clear all restores them                        |
+| 5 | pages through discover and narrows it by genre                     | Pagination moves the results, ticking a genre changes nothing until the form is submitted, searching then changes them, and clear all restores them |
 | 6 | a genre filter narrows the whole catalogue, not the page on screen | Filtering happens server side: a filtered page one and page two each hold a full twenty results               |
 
 Test 2's reload step and test 6 both exist because of bugs that reached the app, described under [Bugs](#bugs).
@@ -485,27 +484,26 @@ Two stories fetch from TMDB when they mount, because the components behind them 
 
 ### Accessibility
 
-An accessibility pass is the clearest piece of outstanding work in the project, so what follows is what is in place and what is not, rather than a claim that the app is accessible.
+An accessibility pass was made over the app late on. What follows is what is in place and what is still not, rather than a claim that the app is fully accessible.
 
 **In place.**
 
 - Keeping MUI components rather than replacing them means the keyboard behaviour comes with them: the drawer traps focus and closes on Escape, menus move on arrow keys, and the pagination, selects and checkboxes are all operable without a mouse.
-- Every icon only control carries an `aria-label`, and the fantasy movie delete names the film it deletes rather than saying "delete".
+- Every page has a `<main>` landmark, and the page title is its `h1`, so the document outline describes the page rather than starting halfway down it.
+- Every icon only control carries an `aria-label`. The fantasy movie delete names the film it deletes, and the write review link names the film it reviews, rather than either saying only "delete" or nothing at all.
+- Card links carry the title they lead to, so a screen reader hears "More Info on The Odyssey" rather than twenty links all called "More Info".
+- Links are links and buttons are buttons. The card actions are a single element rather than a button nested inside an anchor, which is invalid and leaves assistive technology guessing.
 - Every form control is a labelled field with its label properly associated, and validation messages are attached to their field rather than only coloured.
 - The sign in failure is a live region, so a screen reader announces it.
 - `lang` is set, the page title is real, and the images that are `<img>` elements have alt text.
 
 **Not in place.**
 
-- No `<main>` landmark and no skip link, so a keyboard user tabs through the header on every page.
-- The heading structure is inverted. Page titles are `h3` and the only `h1` elements sit inside the filter drawer.
-- The poster grids have no text alternative, because cards render their poster as a CSS background rather than an image. This is the most significant gap.
-- Every card's link is announced as "More Info", twenty times a page.
-- The navigation is buttons rather than links, so it cannot be opened in a new tab.
+- The poster grids have no text alternative, because cards render their poster as a CSS background rather than an image. This is the largest remaining gap, and the card link naming the film is a partial answer to it rather than a fix.
+- No skip link, so a keyboard user still tabs through the header on every page.
+- The main navigation is buttons rather than links, so it cannot be opened in a new tab.
 - Focus is not moved on route change, reduced motion is not honoured by the smooth scrolling, and contrast has not been measured on the smaller muted text.
 - No automated checking: no axe, no Lighthouse budget, no Storybook accessibility addon.
-
-The next piece of work is the landmark, the heading levels and the nested control, followed by giving the cards a real accessible name, which is the change that would make the app usable rather than merely navigable.
 
 ---
 
@@ -534,7 +532,7 @@ Bugs found and fixed during development. Several came out of an adversarial revi
 
 ### Overview
 
-The project is delivered in staged **releases** that map to the bands of the grading spectrum. Each release closes a band and is marked with an annotated tag on `main`, so the state of the app at every stage can be checked out and reviewed on its own. Release 1 established the foundation, adding Actors as a second data entity alongside the housekeeping the lab app needed. Release 2 adapted the app with pagination, a multi criteria search, Supabase authentication and the first backend persistence. Release 3 containerised the build and put it live. Release 4 was the largest, covering branding, layout, the trailer and carousel, the profile page, toasts, the watch list, the error pages and the fix that moved filtering off the page on screen and onto the server.
+The project is delivered in staged **releases** that map to the bands of the grading spectrum. Each release closes a band and is marked with an annotated tag on `main`, so the state of the app at every stage can be checked out and reviewed on its own. Release 1 established the foundation, adding Actors as a second data entity alongside the housekeeping the lab app needed. Release 2 adapted the app with pagination, a multi criteria search, Supabase authentication and the first backend persistence. Release 3 containerised the build and put it live. Release 4 was the largest, covering branding, layout, the trailer and carousel, the profile page, toasts, the watch list, the error pages and the fix that moved filtering off the page on screen and onto the server. Release 5 is the pass made before submission, closing the gaps the earlier releases left: saving a user's own review, turning the search into a real form, and an accessibility pass.
 
 The bands do not map one to one onto the tags. Third party authentication is an Excellent band feature that was built early, in Release 2, because private routes were needed before anything could be stored per user, and the persistence that the Outstanding band asks for followed it in the same release for the same reason. The tags mark where work was closed rather than where a band began.
 
@@ -552,12 +550,13 @@ git push origin develop
 
 ### Development Strategy
 
-The assignment is delivered in four iterations:
+The assignment is delivered in five iterations:
 
 - **Release 1** the Good band
 - **Release 2** the Very Good band
 - **Release 3** the Excellent band
 - **Release 4** the Outstanding band
+- **Release 5** the pass before submission
 
 #### Timeline
 
@@ -568,6 +567,7 @@ The assignment is delivered in four iterations:
 | Release 2 tagged     | August 17th, 2026 |
 | Release 3 tagged     | August 26th, 2026 |
 | Release 4 tagged     | August 27th, 2026 |
+| Release 5 tagged     | August 31st, 2026 |
 | Final Submission     | August 31st, 2026 |
 | Approximate Duration | 3 weeks           |
 
@@ -596,9 +596,9 @@ git tag -a base -m "Good band complete"
 git push origin main --tags
 ```
 
-The feature branches used in this repo were `feature/good-band`, `feature/new-chars`, `feature/deploy` and `release-4`, with `readme` carrying the documentation. Branches were kept on `origin` after merging rather than deleted, so `git branch -a` shows the incremental work as evidence.
+The feature branches used in this repo were `feature/good-band`, `feature/new-chars`, `feature/deploy`, `release-4` and `release-5`, with `readme` carrying the documentation. Branches were kept on `origin` after merging rather than deleted, so `git branch -a` shows the incremental work as evidence.
 
-Commits are one line and state the purpose of the session, and were made per file or per closely related group of files rather than in large batches. The history runs to just under two hundred commits across the four releases, starting from `ce0b683`, the lab app copied in unchanged as the base project.
+Commits are one line and state the purpose of the session, and were made per file or per closely related group of files rather than in large batches. The history runs to over two hundred commits across the five releases, starting from `ce0b683`, the lab app copied in unchanged as the base project.
 
 The tags on `main`:
 
@@ -606,6 +606,7 @@ The tags on `main`:
 - `adapt` Release 2 closed, the Very Good band
 - `release-3` Release 3 closed, the Excellent band
 - `release-4` Release 4 closed, the Outstanding band
+- `release-5` Release 5 closed, the pass before submission
 
 ### Release Results
 
@@ -672,6 +673,20 @@ Release 4 was the largest of the four and covers the rich feature set the Outsta
 **Reviews:** The reviews table and the full review view were styled, reviews open from the rating chip, and the review page was made public so a signed out visitor following the link is no longer bounced to sign in and left on a blank page.
 
 **Other:** A site footer, an animated mobile navigation that slides down from a burger, a date helper for release dates, ratings shown to one decimal place, and the movie header heart read from context rather than local storage.
+
+#### Release 5
+
+Release 5 is the pass made before submission. It adds no new ground; it closes the gaps the earlier releases left.
+
+**Review persistence:** A written review is now saved. This had been blocked by a defect rather than by time: `Review` was declared twice in the same file, once for the shape TMDB returns and once for the shape the form produces, and TypeScript merged the two into a single type that was wrong for both. The declarations were separated, the form's default values were pointed at the field it actually registers, and a `reviews` table was added with the same row level security as the other four. A review now goes to Supabase, comes back with the id the database gave it, and renders at the top of that film's reviews with a chip marking it as the reader's own. Verified in a browser: written, reloaded, still there, and invisible to a second account.
+
+**The search became a form:** The brief asks for criteria submitted on a web form, and the drawer had been filtering as you typed with no form element and no submit. The criteria are now held in the drawer until a Search button submits them, so the list refetches when the user asks rather than on every keystroke. The end to end test for it asserts both halves: that ticking a genre changes nothing on its own, and that searching then does.
+
+**Accessibility:** Every page gained a `main` landmark, and the page title became its `h1` rather than an `h3` under headings that only existed inside the filter drawer. Card actions were a `Button` nested inside a `Link`, which is invalid and ambiguous for assistive technology; they are now a single element that names where it goes, so a screen reader hears the film rather than the twentieth "More Info" on the page. The write review link, the one icon control that had no accessible name, got one.
+
+**Dependencies:** `lodash` was imported by `src/util.ts` but never declared in `package.json`, arriving underneath something else and surviving only because both the local install and the container build include development dependencies. A production only install would have broken the build. The one function used from it was a truncation, which is now written out directly, and the stray type package was removed.
+
+**Also:** the list header keeps its title and arrows on one row at phone width, the filter control moved clear of it on small screens, and `getMovieReviews` gained the response check every other function in the API module already had.
 
 ---
 

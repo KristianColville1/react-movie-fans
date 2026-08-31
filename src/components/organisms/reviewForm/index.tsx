@@ -8,7 +8,7 @@ import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { MoviesContext } from "@contexts/moviesContext";
 import { useNavigate } from "react-router-dom";
 import ratings from "./ratingCategories";
-import { BaseMovieProps, Review } from "@typings/interfaces";
+import { BaseMovieProps, MyReview } from "@typings/interfaces";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 
@@ -19,7 +19,8 @@ const labelStyle = "text-jet-black/70";
 const helperStyle = "text-navajo-white/70";
 
 /**
- * Form for writing a review of a movie, which is saved to the movies context.
+ * Form for writing a review of a movie, which is saved against the signed in
+ * user and shown alongside the tmdb reviews for that movie.
  *
  * @param movie The movie being reviewed.
  * @returns JSX.Element
@@ -28,7 +29,7 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
     const defaultValues = {
         defaultValues: {
             author: "",
-            review: "",
+            content: "",
             agree: false,
             rating: 3,
             movieId: 0,
@@ -40,7 +41,7 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
         formState: { errors },
         handleSubmit,
         reset,
-    } = useForm<Review>(defaultValues);
+    } = useForm<MyReview>(defaultValues);
 
     const navigate = useNavigate();
     const context = useContext(MoviesContext);
@@ -51,7 +52,7 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
         setRating(Number(event.target.value));
     };
 
-    const onSubmit: SubmitHandler<Review> = (review) => {
+    const onSubmit: SubmitHandler<MyReview> = (review) => {
         review.movieId = movie.id;
         review.rating = rating;
         context.addReview(movie, review);

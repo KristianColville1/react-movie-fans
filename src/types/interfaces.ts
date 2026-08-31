@@ -85,13 +85,14 @@ export interface DiscoverMovies {
     results: BaseMovieProps[];
 }
 
-  export interface Review {
-      author: string;
-      content: string;
-      agree: boolean;
-      rating: number;
-      movieId: number;
-  }
+export interface MyReview {
+    id?: string;
+    author: string;
+    content: string;
+    agree: boolean;
+    rating: number;
+    movieId: number;
+}
 
 export interface BaseActorProps {
     id: number;

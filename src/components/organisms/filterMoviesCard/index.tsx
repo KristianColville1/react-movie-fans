@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { FilterOption, GenreData } from "@typings/interfaces";
 import { SelectChangeEvent } from "@mui/material";
 import Card from "@mui/material/Card";
@@ -74,6 +74,28 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({
         getGenres,
     );
 
+    // The criteria are held here until the form is submitted, so the list
+    // only refetches when the user asks for it rather than on every keystroke.
+    const [draft, setDraft] = useState({
+        title: titleFilter,
+        genre: genreFilter,
+        yearFrom: yearFromFilter,
+        yearTo: yearToFilter,
+        rating: ratingFilter,
+    });
+
+    // What has been applied is the source of truth, so reopening the drawer
+    // shows the criteria the list is actually using.
+    useEffect(() => {
+        setDraft({
+            title: titleFilter,
+            genre: genreFilter,
+            yearFrom: yearFromFilter,
+            yearTo: yearToFilter,
+            rating: ratingFilter,
+        });
+    }, [titleFilter, genreFilter, yearFromFilter, yearToFilter, ratingFilter]);
+
     if (isLoading) {
         return <Spinner />;
     }
@@ -84,29 +106,40 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({
     // No sentinel row is added, so an empty response is just an empty list
     // rather than a read off the front of it.
     const genres = data?.genres || [];
-    const chosenGenres = splitChoices(genreFilter);
+    const chosenGenres = splitChoices(draft.genre);
 
     const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
-        onUserInput("title", e.target.value);
+        setDraft((prev) => ({ ...prev, title: e.target.value }));
     };
 
     const toggleGenre = (id: string) => {
         const next = chosenGenres.includes(id)
             ? chosenGenres.filter((g) => g !== id)
             : [...chosenGenres, id];
-        onUserInput("genre", next.join(","));
+        setDraft((prev) => ({ ...prev, genre: next.join(",") }));
     };
 
     const handleYearFromChange = (e: ChangeEvent<HTMLInputElement>) => {
-        onUserInput("yearFrom", e.target.value);
+        setDraft((prev) => ({ ...prev, yearFrom: e.target.value }));
     };
 
     const handleYearToChange = (e: ChangeEvent<HTMLInputElement>) => {
-        onUserInput("yearTo", e.target.value);
+        setDraft((prev) => ({ ...prev, yearTo: e.target.value }));
     };
 
     const handleRatingChange = (e: SelectChangeEvent) => {
-        onUserInput("rating", e.target.value);
+        setDraft((prev) => ({ ...prev, rating: e.target.value }));
+    };
+
+    // Every criterion goes up on submit. setFilterValue updates from the
+    // previous state, so the five calls do not stand on each other.
+    const handleSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        onUserInput("title", draft.title);
+        onUserInput("genre", draft.genre);
+        onUserInput("yearFrom", draft.yearFrom);
+        onUserInput("yearTo", draft.yearTo);
+        onUserInput("rating", draft.rating);
     };
 
     const clearAll = () => {
@@ -128,110 +161,122 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({
         <>
             <Card className={cardStyle} variant="outlined">
                 <CardContent>
-                    <Typography variant="h5" component="h1">
+                    <Typography variant="h5" component="h2">
                         <FilterAltIcon fontSize="large" />
                         Filter the movies.
                     </Typography>
 
-                    <TextField
-                        className={fieldStyle}
-                        InputProps={{ className: inputStyle }}
-                        InputLabelProps={{ className: labelStyle }}
-                        id="filled-search"
-                        label="Search field"
-                        type="search"
-                        value={titleFilter}
-                        variant="filled"
-                        onChange={handleTextChange}
-                    />
-
-                    <FormLabel className={groupLabelStyle} component="legend">
-                        Genres
-                    </FormLabel>
-                    <FormGroup className="mx-2 max-h-56 flex-nowrap overflow-y-auto">
-                        {genres.map((genre) => (
-                            <FormControlLabel
-                                key={genre.id}
-                                label={genre.name}
-                                control={
-                                    <Checkbox
-                                        size="small"
-                                        className={checkboxStyle}
-                                        checked={chosenGenres.includes(
-                                            String(genre.id),
-                                        )}
-                                        onChange={() =>
-                                            toggleGenre(String(genre.id))
-                                        }
-                                        inputProps={{
-                                            "aria-label": `Genre ${genre.name}`,
-                                        }}
-                                    />
-                                }
-                            />
-                        ))}
-                    </FormGroup>
-
-                    <FormLabel className={groupLabelStyle} component="legend">
-                        Release year
-                    </FormLabel>
-                    <Box className="flex">
+                    <form onSubmit={handleSubmit} noValidate>
                         <TextField
-                            className={narrowFieldStyle}
+                            className={fieldStyle}
                             InputProps={{ className: inputStyle }}
                             InputLabelProps={{ className: labelStyle }}
-                            id="year-from"
-                            label="From"
-                            type="number"
-                            value={yearFromFilter}
+                            id="filled-search"
+                            label="Search field"
+                            type="search"
+                            value={draft.title}
                             variant="filled"
-                            onChange={handleYearFromChange}
+                            onChange={handleTextChange}
                         />
-                        <TextField
-                            className={narrowFieldStyle}
-                            InputProps={{ className: inputStyle }}
-                            InputLabelProps={{ className: labelStyle }}
-                            id="year-to"
-                            label="To"
-                            type="number"
-                            value={yearToFilter}
-                            variant="filled"
-                            onChange={handleYearToChange}
-                        />
-                    </Box>
 
-                    <FormControl className={fieldStyle} variant="filled">
-                        <InputLabel id="rating-label" className={labelStyle}>
-                            Minimum rating
-                        </InputLabel>
-                        <Select
-                            className={inputStyle}
-                            labelId="rating-label"
-                            id="rating-select"
-                            value={ratingFilter}
-                            onChange={handleRatingChange}
-                        >
-                            <MenuItem value="">Any</MenuItem>
-                            {[5, 6, 7, 8, 9].map((score) => (
-                                <MenuItem key={score} value={String(score)}>
-                                    {score}+
-                                </MenuItem>
+                        <FormLabel className={groupLabelStyle} component="legend">
+                            Genres
+                        </FormLabel>
+                        <FormGroup className="mx-2 max-h-56 flex-nowrap overflow-y-auto">
+                            {genres.map((genre) => (
+                                <FormControlLabel
+                                    key={genre.id}
+                                    label={genre.name}
+                                    control={
+                                        <Checkbox
+                                            size="small"
+                                            className={checkboxStyle}
+                                            checked={chosenGenres.includes(
+                                                String(genre.id),
+                                            )}
+                                            onChange={() =>
+                                                toggleGenre(String(genre.id))
+                                            }
+                                            inputProps={{
+                                                "aria-label": `Genre ${genre.name}`,
+                                            }}
+                                        />
+                                    }
+                                />
                             ))}
-                        </Select>
-                    </FormControl>
+                        </FormGroup>
 
-                    <Button
-                        variant="outlined"
-                        onClick={clearAll}
-                        className="m-2 border-ocean-mist text-ocean-mist hover:bg-ocean-mist hover:text-jet-black"
-                    >
-                        Clear all
-                    </Button>
+                        <FormLabel className={groupLabelStyle} component="legend">
+                            Release year
+                        </FormLabel>
+                        <Box className="flex">
+                            <TextField
+                                className={narrowFieldStyle}
+                                InputProps={{ className: inputStyle }}
+                                InputLabelProps={{ className: labelStyle }}
+                                id="year-from"
+                                label="From"
+                                type="number"
+                                value={draft.yearFrom}
+                                variant="filled"
+                                onChange={handleYearFromChange}
+                            />
+                            <TextField
+                                className={narrowFieldStyle}
+                                InputProps={{ className: inputStyle }}
+                                InputLabelProps={{ className: labelStyle }}
+                                id="year-to"
+                                label="To"
+                                type="number"
+                                value={draft.yearTo}
+                                variant="filled"
+                                onChange={handleYearToChange}
+                            />
+                        </Box>
+
+                        <FormControl className={fieldStyle} variant="filled">
+                            <InputLabel id="rating-label" className={labelStyle}>
+                                Minimum rating
+                            </InputLabel>
+                            <Select
+                                className={inputStyle}
+                                labelId="rating-label"
+                                id="rating-select"
+                                value={draft.rating}
+                                onChange={handleRatingChange}
+                            >
+                                <MenuItem value="">Any</MenuItem>
+                                {[5, 6, 7, 8, 9].map((score) => (
+                                    <MenuItem key={score} value={String(score)}>
+                                        {score}+
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        <Box className="flex flex-wrap">
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                className="m-2 bg-magenta-bloom font-semibold text-jet-black hover:bg-magenta-bloom/90"
+                            >
+                                Search
+                            </Button>
+                            <Button
+                                type="button"
+                                variant="outlined"
+                                onClick={clearAll}
+                                className="m-2 border-ocean-mist text-ocean-mist hover:bg-ocean-mist hover:text-jet-black"
+                            >
+                                Clear all
+                            </Button>
+                        </Box>
+                    </form>
                 </CardContent>
             </Card>
             <Card className={cardStyle} variant="outlined">
                 <CardContent>
-                    <Typography variant="h5" component="h1">
+                    <Typography variant="h5" component="h2">
                         <SortIcon fontSize="large" />
                         Sort the movies.
                     </Typography>
